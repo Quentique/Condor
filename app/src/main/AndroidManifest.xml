@@ -16,6 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name="Sync"
+            android:label="Synchronisation - Condor"></service>
     </application>
 
 </manifest>

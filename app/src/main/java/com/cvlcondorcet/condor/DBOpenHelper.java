@@ -58,4 +58,6 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         public static final String COLUMN_VALUE = "value";
         public static final String COLUMN_DATE = "date";
     }
+
+
 }
