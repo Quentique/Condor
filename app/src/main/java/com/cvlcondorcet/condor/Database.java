@@ -39,6 +39,7 @@ public class Database {
     public ArrayList updateGen(JSONArray array) {
         ArrayList toBeDownloaded = new ArrayList();
         boolean logo = false;
+        boolean cover = false;
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject element = array.getJSONObject(i);
@@ -53,6 +54,12 @@ public class Database {
                         break;
                     case "logo":
                         if (logo) { toBeDownloaded.add(element.getString("value")); }
+                        break;
+                    case "cover_updated":
+                        if (element.getString("value") != timestamp("cover_updated")) { cover= true; }
+                        break;
+                    case "cover":
+                        if (cover) toBeDownloaded.add(element.getString("value"));
                         break;
                 }
                 database.replace(DBOpenHelper.General.TABLE_NAME, null, values);
