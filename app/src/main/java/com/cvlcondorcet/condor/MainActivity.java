@@ -20,5 +20,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(service);
             }
         });
+        Intent servicee = new Intent(getApplicationContext(), Sync.class);
+        startService(servicee);
     }
 }

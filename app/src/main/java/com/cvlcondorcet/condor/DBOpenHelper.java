@@ -52,7 +52,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     public static class Constants implements BaseColumns {
         public static final String DATABASE_NAME = "database.db";
-        public static final int DATABASE_VERSION = 4;
+        public static final int DATABASE_VERSION = 5;
     }
 
     public static class Posts implements BaseColumns {

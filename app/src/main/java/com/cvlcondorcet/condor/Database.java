@@ -143,6 +143,7 @@ public class Database {
                                     cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_NAME)),
                                     cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_BEGIN)),
                                     cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_END)));
+                    Log.i("DE", "One founded");
                     results.add(absence);
                 }
             } finally {

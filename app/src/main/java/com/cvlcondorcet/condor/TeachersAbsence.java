@@ -17,7 +17,7 @@ public class TeachersAbsence {
         this.beginning = g_date_beginning;
         this.end = g_date_end;
 
-        multipleDays = (beginning.startsWith(end.substring(0,9))) ? false : true;
+       // multipleDays = (beginning.startsWith(end.substring(0,9))) ? false : true;
     }
 
     public void setName(String name) {
