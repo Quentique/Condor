@@ -1,5 +1,7 @@
 package com.cvlcondorcet.condor;
 
+import android.util.Log;
+
 /**
  * Created by Quentin DE MUYNCK on 16/07/2017.
  */
@@ -16,8 +18,10 @@ public class TeachersAbsence {
         this.name = g_name;
         this.beginning = g_date_beginning;
         this.end = g_date_end;
-
-       // multipleDays = (beginning.startsWith(end.substring(0,9))) ? false : true;
+        try {
+            multipleDays = (beginning.startsWith(end.substring(0, 10))) ? false : true;
+            Log.i("de", end.substring(0, 10));
+        } catch (Exception e) { }
     }
 
     public void setName(String name) {
@@ -35,7 +39,7 @@ public class TeachersAbsence {
     public String getName() {
         return this.name;
     }
-
     public String getBeginning() { return beginning; }
     public String getEnd() { return end; }
+    public boolean getMultipleDays() { return multipleDays; }
 }

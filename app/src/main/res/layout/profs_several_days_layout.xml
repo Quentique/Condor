@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/prof_name1"
+        android:layout_weight="0.45"
+        android:background="@drawable/border"
+        android:layout_marginRight="0dp"
+        android:padding="@dimen/paddingProfs"
+        android:textSize="@dimen/textSizeProfs"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/begin_date"
+        android:layout_weight="0.275"
+        android:background="@drawable/border"
+        android:layout_marginRight="0dp"
+        android:padding="@dimen/paddingProfs"
+        android:textSize="@dimen/textSizeProfs"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/end_date"
+        android:layout_weight="0.275"
+        android:background="@drawable/border"
+        android:layout_marginRight="0dp"
+        android:padding="@dimen/paddingProfs"
+        android:textSize="@dimen/textSizeProfs"/>
+</LinearLayout>

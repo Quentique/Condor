@@ -13,21 +13,26 @@ import java.util.List;
  * Created by Quentin DE MUYNCK on 16/07/2017.
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<TeachersAbsence> list;
     private int itemsLayout;
-    private static int SINGLE = 0, SEVERAL = 1;
+    private int SINGLE = 0, SEVERAL = 1;
 
     public RecyclerViewAdapter(List<TeachersAbsence> items, int item) {
         this.list = items;
         this.itemsLayout = item;
     }
 
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewtype){
-        View v = LayoutInflater.from(parent.getContext()).inflate(itemsLayout, parent, false);
-        Log.i("DEBUG", "ViewHolder requested");
-        return new ViewHolder(v);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewtype){
+        if (viewtype == SINGLE) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_one_day_layout, parent, false);
+            return new ViewHolder(v);
+        } else {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_several_days_layout, parent, false);
+            return new ViewHolder2(v);
+        }
+
     }
 
     public int getItemCount() {
@@ -40,16 +45,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.i("Hello", "Data has changed");
     }
 
-    public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
-        String item = list.get(position).getName();
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        TeachersAbsence absence = list.get(position);
         Log.i("DEBUGGGGG", "ICH BIN DA");
-        holder.primaryText.setText(item);
+        if (absence.getMultipleDays()) {
+            ((ViewHolder2) holder).primaryText.setText(absence.getName());
+        } else
+        {
+            ((ViewHolder) holder).primaryText.setText(absence.getName());
+        }
        // holder.secondaryText.setText("no matter");
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (list.get(position).)
+        if (list.get(position).getMultipleDays())
+        {
+            Log.i("DE", "SEVERAL");
+            return SEVERAL;
+        } else { Log.i("de", "SINGLE"); return SINGLE; }
     }
 
 
@@ -59,6 +73,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             primaryText = (TextView) itemView.findViewById(R.id.profs);
+            //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
+        }
+    }
+
+    public static class ViewHolder2 extends RecyclerView.ViewHolder {
+        public TextView primaryText, secondaryText;
+
+        public ViewHolder2(View itemView) {
+            super(itemView);
+            primaryText = (TextView) itemView.findViewById(R.id.prof_name1);
             //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
         }
     }
