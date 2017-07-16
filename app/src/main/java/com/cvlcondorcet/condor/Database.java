@@ -129,6 +129,28 @@ public class Database {
         database.update(DBOpenHelper.General.TABLE_NAME, values, "name = 'timestamp'", null);*/
     }
 
+    public ArrayList<TeachersAbsence> getTeachersAbsence() {
+        ArrayList<TeachersAbsence> results = new ArrayList<>();
+        Cursor cursor = database.query(DBOpenHelper.Profs.TABLE_NAME,
+                        new String[] {DBOpenHelper.Profs.COLUMN_NAME, DBOpenHelper.Profs.COLUMN_BEGIN, DBOpenHelper.Profs.COLUMN_END},
+                        DBOpenHelper.Profs.COLUMN_DELETED + " != 1",
+                        null, null, null, null);
+        if (cursor != null & cursor.getCount()>0) {
+            try
+            {
+                while(cursor.moveToNext()) {
+                    TeachersAbsence absence = new TeachersAbsence(
+                                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_NAME)),
+                                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_BEGIN)),
+                                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_END)));
+                    results.add(absence);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        return results;
+    }
 
 }
 
