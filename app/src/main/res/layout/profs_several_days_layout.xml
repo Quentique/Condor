@@ -16,18 +16,10 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/begin_date"
-        android:layout_weight="0.275"
+        android:id="@+id/date2"
+        android:layout_weight="0.55"
         android:background="@drawable/border"
-        android:layout_marginRight="0dp"
-        android:padding="@dimen/paddingProfs"
-        android:textSize="@dimen/textSizeProfs"/>
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/end_date"
-        android:layout_weight="0.275"
-        android:background="@drawable/border"
+        android:textAlignment="center"
         android:layout_marginRight="0dp"
         android:padding="@dimen/paddingProfs"
         android:textSize="@dimen/textSizeProfs"/>

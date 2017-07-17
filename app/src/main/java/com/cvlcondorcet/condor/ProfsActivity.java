@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,11 @@ implements LoaderManager.LoaderCallbacks<List<TeachersAbsence>> {
         adapter = new RecyclerViewAdapter(teacher, R.layout.profs_one_day_layout);
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-
+        LinearLayout layout = (LinearLayout) findViewById(R.id.header);
+        ((TextView) layout.findViewById(R.id.profs)).setText("Professeur");
+        ((TextView) layout.findViewById(R.id.date)).setText("Date");
+        ((TextView) layout.findViewById(R.id.morning)).setText("Matin");
+        ((TextView) layout.findViewById(R.id.afternoon)).setText("Aprem");
         getSupportLoaderManager().initLoader(1, null, this);
     }
 

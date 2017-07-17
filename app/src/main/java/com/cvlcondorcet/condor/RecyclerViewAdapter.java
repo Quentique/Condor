@@ -49,10 +49,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TeachersAbsence absence = list.get(position);
         Log.i("DEBUGGGGG", "ICH BIN DA");
         if (absence.getMultipleDays()) {
-            ((ViewHolder2) holder).primaryText.setText(absence.getName());
+            ((ViewHolder2) holder).name.setText(absence.getName());
+            ((ViewHolder2) holder).date.setText("Du " + absence.getBeginning() + " au " + absence.getEnd());
         } else
         {
-            ((ViewHolder) holder).primaryText.setText(absence.getName());
+            ((ViewHolder) holder).name.setText(absence.getName());
+            ((ViewHolder) holder).date.setText(absence.getBeginning());
+            ((ViewHolder) holder).morning.setText((absence.getMorning()) ? "X" : "");
+            ((ViewHolder) holder).afternoon.setText((absence.getAfternoon()) ? "X" : "");
         }
        // holder.secondaryText.setText("no matter");
     }
@@ -68,21 +72,25 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView primaryText, secondaryText;
+        public TextView name, date, morning, afternoon;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            primaryText = (TextView) itemView.findViewById(R.id.profs);
+            name = (TextView) itemView.findViewById(R.id.profs);
+            date = (TextView) itemView.findViewById(R.id.date);
+            morning = (TextView) itemView.findViewById(R.id.morning);
+            afternoon = (TextView) itemView.findViewById(R.id.afternoon);
             //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
         }
     }
 
     public static class ViewHolder2 extends RecyclerView.ViewHolder {
-        public TextView primaryText, secondaryText;
+        public TextView name, date;
 
         public ViewHolder2(View itemView) {
             super(itemView);
-            primaryText = (TextView) itemView.findViewById(R.id.prof_name1);
+            name = (TextView) itemView.findViewById(R.id.prof_name1);
+            date = (TextView) itemView.findViewById(R.id.date2);
             //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
         }
     }
