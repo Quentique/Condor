@@ -1,5 +1,7 @@
 package com.cvlcondorcet.condor;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,12 +18,15 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<TeachersAbsence> list;
+    private List<TeachersAbsence> list, filteredList;
     private int itemsLayout;
     private int SINGLE = 0, SEVERAL = 1;
+    public Context ctx;
 
-    public RecyclerViewAdapter(List<TeachersAbsence> items, int item) {
+    public RecyclerViewAdapter(Context ctx, List<TeachersAbsence> items, int item) {
+        this.ctx = ctx;
         this.list = items;
+        this.filteredList = items;
         this.itemsLayout = item;
     }
 
@@ -36,17 +42,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public int getItemCount() {
-        return (list != null) ? list.size() : 0;
+        return (filteredList != null) ? filteredList.size() : 0;
     }
 
     public void setData(List<TeachersAbsence> list) {
         this.list = list;
+        filter("");
         notifyDataSetChanged();
         Log.i("Hello", "Data has changed");
     }
 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        TeachersAbsence absence = list.get(position);
+        TeachersAbsence absence = filteredList.get(position);
         Log.i("DEBUGGGGG", "ICH BIN DA");
         if (absence.getMultipleDays()) {
             ((ViewHolder2) holder).name.setText(absence.getName());
@@ -63,11 +70,37 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        if (list.get(position).getMultipleDays())
+        if (filteredList.get(position).getMultipleDays())
         {
             Log.i("DE", "SEVERAL");
             return SEVERAL;
         } else { Log.i("de", "SINGLE"); return SINGLE; }
+    }
+
+    public void filter(final String query) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    filteredList.clear();
+                }catch (NullPointerException e ) { filteredList = new ArrayList<>(); }
+                    final String qu = query.toLowerCase();
+                    Log.i("e", "Filter : " + qu);
+                    for (TeachersAbsence absence : list) {
+                        if (absence.getName().toLowerCase().contains(qu)) {
+                            filteredList.add(absence);
+                        }
+                    }
+
+                    ((Activity) ctx).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyDataSetChanged();
+                        }
+                    });
+
+            }
+        }).start();
     }
 
 
