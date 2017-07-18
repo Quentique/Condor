@@ -40,6 +40,7 @@ public class Database {
         ArrayList toBeDownloaded = new ArrayList();
         boolean logo = false;
         boolean cover = false;
+        boolean canteen = false;
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject element = array.getJSONObject(i);
@@ -61,6 +62,11 @@ public class Database {
                     case "cover":
                         if (cover) toBeDownloaded.add(element.getString("value"));
                         break;
+                    case "canteen_updated":
+                        if (element.getString("value") != timestamp("canteen_updated")) { canteen = true; }
+                        break;
+                    case "canteen":
+                        if (canteen) toBeDownloaded.add(element.getString("value"));
                 }
                 database.replace(DBOpenHelper.General.TABLE_NAME, null, values);
             } catch (JSONException e) {
@@ -84,6 +90,7 @@ public class Database {
                     values.put(DBOpenHelper.Posts.COLUMN_STATE, 1);
                 } else { values.put(DBOpenHelper.Posts.COLUMN_STATE, 0); }
                 values.put(DBOpenHelper.Posts.COLUMN_CAT, element.getString("categories"));
+                values.put(DBOpenHelper.Posts.COLUMN_PIC, element.getString("picture"));
                 database.replace(DBOpenHelper.Posts.TABLE_NAME, null, values);
             } catch (JSONException e)
             {
@@ -121,8 +128,18 @@ public class Database {
     }
 
     public void beginSync() {
-       database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + "VALUES ('last_sync', datetime('now', 'localtime'))");
-       /* ContentValues values = new ContentValues();
+        Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[]{DBOpenHelper.General.COLUMN_ID}, DBOpenHelper.General.COLUMN_NAME + " = 'last_sync'", null, null, null, null);
+        String id ="";
+        if (cursor.getCount()>0) {
+            cursor.moveToFirst();
+            id = cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_ID));
+        }
+        if (id.isEmpty()) {
+            database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + "VALUES ('last_sync', datetime('now', 'localtime'))");
+        } else {
+            database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_ID + ", " + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + "VALUES (" + id + ",'last_sync', datetime('now', 'localtime'))");
+        }
+            /* ContentValues values = new ContentValues();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String date = df.format(Calendar.getInstance().getTime());
         values.put(DBOpenHelper.General.COLUMN_VALUE, date);

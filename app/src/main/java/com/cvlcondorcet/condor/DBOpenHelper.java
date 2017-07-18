@@ -17,7 +17,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
             Posts.COLUMN_CONTENT + " TEXT, " +
             Posts.COLUMN_STATE  + " NUMERIC, " +
             Posts.COLUMN_DATE + " TEXT, " +
-            Posts.COLUMN_CAT + " TEXT)";
+            Posts.COLUMN_CAT + " TEXT, " +
+            Posts.COLUMN_PIC + " TEXT)";
 
     private static final String GEN_TABLE = "CREATE TABLE " + General.TABLE_NAME + "(" +
             General.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -52,7 +53,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     public static class Constants implements BaseColumns {
         public static final String DATABASE_NAME = "database.db";
-        public static final int DATABASE_VERSION = 5;
+        public static final int DATABASE_VERSION = 7;
     }
 
     public static class Posts implements BaseColumns {
@@ -63,6 +64,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         public static final String COLUMN_STATE = "deleted";
         public static final String COLUMN_DATE = "date";
         public static final String COLUMN_CAT = "categories";
+        public static final String COLUMN_PIC = "picture";
     }
 
     public static class General implements BaseColumns {
