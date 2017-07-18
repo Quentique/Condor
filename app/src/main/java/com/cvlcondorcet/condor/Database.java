@@ -161,5 +161,27 @@ public class Database {
         }
         return results;
     }
+
+    public ArrayList<Post> getPosts() {
+        ArrayList<Post> results = new ArrayList<>();
+        Cursor cursor = database.rawQuery("SELECT _id, name, substr(content, 0, 101), date, picture FROM posts WHERE deleted != 1", null);
+
+        if (cursor != null && cursor.getCount()>0) {
+            try {
+                while(cursor.moveToNext()) {
+                    Post post = new Post(
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_ID)),
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_NAME)),
+                            cursor.getString(cursor.getColumnIndex("substr(content, 0, 101)")),
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_PIC)),
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_DATE)));
+                    results.add(post);
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+        return results;
+    }
 }
 

@@ -24,7 +24,8 @@
             android:label="Synchronisation - Condor" />
 
         <activity android:name=".ProfsActivity" />
-        <activity android:name=".CanteenActivity"></activity>
+        <activity android:name=".CanteenActivity" />
+        <activity android:name=".PostsActivity"></activity>
     </application>
 
 </manifest>

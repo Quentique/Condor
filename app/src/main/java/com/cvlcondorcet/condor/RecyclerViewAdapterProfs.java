@@ -16,14 +16,14 @@ import java.util.List;
  * Created by Quentin DE MUYNCK on 16/07/2017.
  */
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<TeachersAbsence> list, filteredList;
     private int itemsLayout;
     private int SINGLE = 0, SEVERAL = 1;
     public Context ctx;
 
-    public RecyclerViewAdapter(Context ctx, List<TeachersAbsence> items, int item) {
+    public RecyclerViewAdapterProfs(Context ctx, List<TeachersAbsence> items, int item) {
         this.ctx = ctx;
         this.list = items;
         this.filteredList = items;
