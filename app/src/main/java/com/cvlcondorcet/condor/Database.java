@@ -27,11 +27,7 @@ public class Database {
         helper = new DBOpenHelper(context);
     }
 
-    public void open() throws SQLException {
-        database = helper.getWritableDatabase();
-        Log.i("WARNING", database.getPath());
-    }
-
+    public void open() throws SQLException { database = helper.getWritableDatabase(); }
     public void close() {
         database.close();
     }
@@ -77,7 +73,7 @@ public class Database {
     }
 
     public void updatePosts(JSONArray array) {
-        for (int i = 0; i < array.length(); i++){
+        for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject element = array.getJSONObject(i);
                 ContentValues values = new ContentValues();
@@ -92,8 +88,7 @@ public class Database {
                 values.put(DBOpenHelper.Posts.COLUMN_CAT, element.getString("categories"));
                 values.put(DBOpenHelper.Posts.COLUMN_PIC, element.getString("picture"));
                 database.replace(DBOpenHelper.Posts.TABLE_NAME, null, values);
-            } catch (JSONException e)
-            {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -119,6 +114,7 @@ public class Database {
     public String timestamp(String name) {
         String result;
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[] {DBOpenHelper.General.COLUMN_VALUE}, DBOpenHelper.General.COLUMN_NAME + " = ?", new String[] {name}, null, null, null);
+
         if (cursor != null && cursor.getCount()>0) {
             cursor.moveToFirst();
             Log.i("DEBUGONCE", cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
@@ -130,20 +126,17 @@ public class Database {
     public void beginSync() {
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[]{DBOpenHelper.General.COLUMN_ID}, DBOpenHelper.General.COLUMN_NAME + " = 'last_sync'", null, null, null, null);
         String id ="";
+
         if (cursor.getCount()>0) {
             cursor.moveToFirst();
             id = cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_ID));
         }
+
         if (id.isEmpty()) {
             database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + "VALUES ('last_sync', datetime('now', 'localtime'))");
         } else {
             database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_ID + ", " + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + "VALUES (" + id + ",'last_sync', datetime('now', 'localtime'))");
         }
-            /* ContentValues values = new ContentValues();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = df.format(Calendar.getInstance().getTime());
-        values.put(DBOpenHelper.General.COLUMN_VALUE, date);
-        database.update(DBOpenHelper.General.TABLE_NAME, values, "name = 'timestamp'", null);*/
     }
 
     public ArrayList<TeachersAbsence> getTeachersAbsence() {
@@ -152,15 +145,14 @@ public class Database {
                         new String[] {DBOpenHelper.Profs.COLUMN_NAME, DBOpenHelper.Profs.COLUMN_BEGIN, DBOpenHelper.Profs.COLUMN_END},
                         DBOpenHelper.Profs.COLUMN_DELETED + " != 1",
                         null, null, null, null);
+
         if (cursor != null & cursor.getCount()>0) {
-            try
-            {
+            try {
                 while(cursor.moveToNext()) {
                     TeachersAbsence absence = new TeachersAbsence(
                                     cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_NAME)),
                                     cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_BEGIN)),
                                     cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_END)));
-                    Log.i("DE", "One founded");
                     results.add(absence);
                 }
             } finally {
@@ -169,6 +161,5 @@ public class Database {
         }
         return results;
     }
-
 }
 

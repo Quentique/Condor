@@ -46,9 +46,7 @@ public class Sync extends IntentService {
     public void onHandleIntent(Intent i)
     {
         int icon = R.mipmap.ic_launcher;
-        // Le premier titre affiché
         CharSequence tickerText = "Condor's synchronization";
-        // Daté de maintenant
         long when = System.currentTimeMillis();
         NotificationManager manager;
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -66,32 +64,31 @@ public class Sync extends IntentService {
 
         try {
             db.open();
-            noti.setProgress(100, 5, false);
-            manager.notify(1, noti.build());
+                noti.setProgress(100, 5, false);
+                manager.notify(1, noti.build());
 
-        JSONArray gen = get(GEN_URL);
-        ArrayList liste;
-        liste = db.updateGen(gen);
-        for (int j = 0 ; j < liste.size() ; j++ ) {
-            downloadFile(liste.get(j).toString());
-        }
-            noti.setProgress(100, 30, false);
-            manager.notify(1, noti.build());
-        JSONArray posts = get(POSTS_URL);
-        db.updatePosts(posts);
-            noti.setProgress(100, 75, false);
-            manager.notify(1, noti.build());
-        JSONArray profs = get(PROFS_URL);
-        db.updateProfs(profs);
-        db.beginSync();
-            noti.setProgress(100, 100, false);
-            noti.setContentText("Synchronization ended");
-            manager.notify(1, noti.build());
-        db.close();
+            JSONArray gen = get(GEN_URL);
+            ArrayList liste;
+            liste = db.updateGen(gen);
+            for (int j = 0 ; j < liste.size() ; j++ ) {
+                downloadFile(liste.get(j).toString());
+            }
+                noti.setProgress(100, 30, false);
+                manager.notify(1, noti.build());
+            JSONArray posts = get(POSTS_URL);
+            db.updatePosts(posts);
+                noti.setProgress(100, 75, false);
+                manager.notify(1, noti.build());
+            JSONArray profs = get(PROFS_URL);
+            db.updateProfs(profs);
+            db.beginSync();
+                noti.setProgress(100, 100, false);
+                noti.setContentText("Synchronization ended");
+                manager.notify(1, noti.build());
+            db.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         manager.cancel(1);
         stopSelf();
     }
@@ -100,14 +97,15 @@ public class Sync extends IntentService {
         String answer = "";
         URL url = null;
         JSONArray tab = new JSONArray();
+
         try{
             String machin = "";
             if (content == GEN_URL) {machin = db.timestamp("timestamp"); } else { machin = db.timestamp("last_sync"); }
             url = new URL(base_URL + content + "?timestamp=" + machin);
-        }catch (MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
         HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) url.openConnection();
@@ -127,10 +125,10 @@ public class Sync extends IntentService {
         }
         try {
             tab = new JSONArray(answer);
-        } catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return tab;
     }
     private boolean downloadFile(String file) {
@@ -138,10 +136,7 @@ public class Sync extends IntentService {
             URL url = new URL(base_URL + file);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             connection.connect();
-            // this will be useful so that you can show a typical 0-100% progress bar
-            int fileLength = connection.getContentLength();
 
-            // download the file
             InputStream input = new BufferedInputStream(connection.getInputStream());
             FileOutputStream output = openFileOutput(file, MODE_PRIVATE);
 
@@ -151,6 +146,7 @@ public class Sync extends IntentService {
             while ((count = input.read(data)) != -1) {
                 output.write(data, 0, count);
             }
+
             output.flush();
             output.close();
             input.close();
