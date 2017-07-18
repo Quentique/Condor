@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 
 public class ProfsActivity extends AppCompatActivity
-implements LoaderManager.LoaderCallbacks<List<TeachersAbsence>>, SearchView.OnQueryTextListener {
+        implements LoaderManager.LoaderCallbacks<List<TeachersAbsence>>, SearchView.OnQueryTextListener {
 
     protected RecyclerViewAdapter adapter;
     protected RecyclerView recycler;
@@ -66,7 +66,7 @@ implements LoaderManager.LoaderCallbacks<List<TeachersAbsence>>, SearchView.OnQu
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        return false;
+        return onQueryTextChange(query);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.cvlcondorcet.condor;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -50,9 +52,10 @@ public class TeachersAbsence {
         try {
             Date begin = format.parse(beginning);
             Date ended = format.parse(end);
-            if (begin.getHours() == 12) { morning = false; afternoon = true; }
-            else if (ended.getHours() == 23) { morning = true; afternoon = true; }
-            else { morning = true; afternoon = false; }
+            Log.i("e", beginning.substring(11, 13));
+            if (beginning.substring(11, 13).contains("12")) { morning = false; afternoon = true; Log.i("e", "12 HOURS");}
+            else if (end.substring(11, 13).contains("23")) { morning = true; afternoon = true; Log.i("e", "23 HOURS");}
+            else { morning = true; afternoon = false; Log.i("e", "ELSE HOURS");}
             SimpleDateFormat format2 = new SimpleDateFormat("dd/MM");
             beginning = format2.format(begin);
             end = format2.format(ended);
