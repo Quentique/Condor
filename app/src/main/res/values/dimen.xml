@@ -2,4 +2,5 @@
 <resources>
     <dimen name="textSizeProfs">16sp</dimen>
     <dimen name="paddingProfs">6sp</dimen>
+    <dimen name="BigTitle">30sp</dimen>
 </resources>
