@@ -2,6 +2,7 @@ package com.cvlcondorcet.condor;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 
 public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Post> list, filteredList;
+    protected List<Post> list, filteredList;
     public Context ctx;
 
     public RecyclerViewAdapterPosts(Context ctx, List<Post> items, int item) {
@@ -97,8 +98,7 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
         }).start();
     }
 
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView name, content, date;
         public ImageView pic, expand;
         public LinearLayout lay;
@@ -129,8 +129,21 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
                     }
                 }
             });
+            itemView.setOnClickListener(this);
            // (CardView) itemView.findViewById(R.id.post_card).
             //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
+        }
+        @Override
+        public void onClick(View view) {
+            int pos = getAdapterPosition();
+            if (pos != RecyclerView.NO_POSITION) {
+                Post post = filteredList.get(pos);
+                if (post.getId() != "0") {
+                    Intent intent = new Intent(context, PostViewerActivity.class);
+                    intent.putExtra("id", post.getId());
+                    context.startActivity(intent);
+                }
+            }
         }
     }
 }

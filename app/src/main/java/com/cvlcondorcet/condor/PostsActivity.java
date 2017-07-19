@@ -28,6 +28,7 @@ public class PostsActivity extends AppCompatActivity
         adapter = new RecyclerViewAdapterPosts(this, null, R.layout.posts_layout);
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.setHasFixedSize(true);
 
         getSupportLoaderManager().initLoader(2, null, this);
     }

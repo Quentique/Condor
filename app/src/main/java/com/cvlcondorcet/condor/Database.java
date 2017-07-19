@@ -187,5 +187,27 @@ public class Database {
         }
         return results;
     }
+
+    public Post getPost(String id) {
+        Cursor cursor = database.query(DBOpenHelper.Posts.TABLE_NAME,
+                new String[] {DBOpenHelper.Posts.COLUMN_NAME, DBOpenHelper.Posts.COLUMN_CONTENT, DBOpenHelper.Posts.COLUMN_DATE, DBOpenHelper.Posts.COLUMN_PIC, DBOpenHelper.Posts.COLUMN_CAT},
+                DBOpenHelper.Posts.COLUMN_ID + " = " + id,
+                null, null, null, null);
+        if (cursor != null & cursor.getCount()>0) {
+            try {
+                cursor.moveToFirst();
+                Post post = new Post(id,
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_NAME)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_CONTENT)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_PIC)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_DATE)));
+                return post;
+            } finally {
+                cursor.close();
+            }
+        } else {
+            return null;
+        }
+    }
 }
 
