@@ -116,9 +116,13 @@ public class Database {
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[] {DBOpenHelper.General.COLUMN_VALUE}, DBOpenHelper.General.COLUMN_NAME + " = ?", new String[] {name}, null, null, null);
 
         if (cursor != null && cursor.getCount()>0) {
-            cursor.moveToFirst();
-            Log.i("DEBUGONCE", cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
-            return cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE));
+            try {
+                cursor.moveToFirst();
+                Log.i("DEBUGONCE", cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
+                return cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE));
+            } finally {
+                cursor.close();
+            }
 
         } else { return ""; }
     }
