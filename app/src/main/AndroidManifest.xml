@@ -25,7 +25,8 @@
 
         <activity android:name=".ProfsActivity" />
         <activity android:name=".CanteenActivity" />
-        <activity android:name=".PostsActivity"></activity>
+        <activity android:name=".PostsActivity" />
+        <activity android:name=".PostViewerActivity"></activity>
     </application>
 
 </manifest>

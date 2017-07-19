@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -82,6 +83,7 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
                     if (post.getName().toLowerCase().contains(qu)) {
                         filteredList.add(post);
                     }
+                    Collections.sort(filteredList, Collections.<Post>reverseOrder());
                 }
 
                 ((Activity) ctx).runOnUiThread(new Runnable() {
