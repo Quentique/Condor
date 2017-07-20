@@ -4,11 +4,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 public class PostViewerActivity extends AppCompatActivity {
 
     private WebView view;
     private Database db;
+    private TextView title, date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,6 +18,8 @@ public class PostViewerActivity extends AppCompatActivity {
         db = new Database(this);
         db.open();
         view = (WebView) findViewById(R.id.post_view);
+        title = (TextView) findViewById(R.id.post_display_title);
+        date = (TextView) findViewById(R.id.post_date_display);
         String id = getIntent().getStringExtra("id");
         if (id != "0") {
             new Loading().execute("id", id);
@@ -37,6 +41,8 @@ public class PostViewerActivity extends AppCompatActivity {
         protected void onPostExecute(Void nothing) {
             view.loadData(post.getContent(), "text/html", "utf-8");
             setTitle(post.getName());
+            title.setText(post.getName());
+            date.setText(post.getFormatedDate());
             db.close();
         }
     }
