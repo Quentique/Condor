@@ -188,6 +188,22 @@ public class Database {
         return results;
     }
 
+    public ArrayList<String> getCategories() {
+        ArrayList<String> results = new ArrayList<>();
+        Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[] {DBOpenHelper.General.COLUMN_VALUE}, DBOpenHelper.General.COLUMN_NAME + " = ?", new String[] {"categories"}, null, null, null);
+        if (cursor != null && cursor.getCount()>0) {
+            cursor.moveToFirst();
+            JSONArray array;
+            try {
+               array = new JSONArray(cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
+                for (int i = 0 ; i < array.length() ; i++) {
+                    results.add(array.getString(i));
+                }
+            } catch (JSONException e) { e.printStackTrace(); }
+        }
+        return results;
+    }
+
     public Post getPost(String id) {
         Cursor cursor = database.query(DBOpenHelper.Posts.TABLE_NAME,
                 new String[] {DBOpenHelper.Posts.COLUMN_NAME, DBOpenHelper.Posts.COLUMN_CONTENT, DBOpenHelper.Posts.COLUMN_DATE, DBOpenHelper.Posts.COLUMN_PIC, DBOpenHelper.Posts.COLUMN_CAT},

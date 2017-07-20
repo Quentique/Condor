@@ -8,14 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.List;
 
 public class PostsActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<List<Post>>, SearchView.OnQueryTextListener {
+        implements LoaderManager.LoaderCallbacks<List<Post>>, SearchView.OnQueryTextListener, MultiSelectionSpinner.OnMultipleItemsSelectedListener {
 
     private RecyclerView recycler;
     private RecyclerViewAdapterPosts adapter;
@@ -29,6 +31,11 @@ public class PostsActivity extends AppCompatActivity
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setHasFixedSize(true);
+        Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(bar);
+        MultiSelectionSpinner spinner = (MultiSelectionSpinner) findViewById(R.id.spinner_post);
+        spinner.setItems(new String[] {"Hello", "one", "two", "three"});
+        spinner.setListener(this);
 
         getSupportLoaderManager().initLoader(2, null, this);
     }
@@ -70,5 +77,14 @@ public class PostsActivity extends AppCompatActivity
         adapter.filter(query);
         recycler.scrollToPosition(0);
         return true;
+    }
+    @Override
+    public void selectedIndices(List<Integer> indices) {
+        Log.i("hey", "hello");
+    }
+
+    @Override
+    public void selectedStrings(List<String> strings) {
+        Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
     }
 }
