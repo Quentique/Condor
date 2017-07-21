@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cvlcondorcet.condor.ProfsActivity">
+    tools:context="com.cvlcondorcet.condor.ProfsActivity"
+    android:id="@+id/swipe_profs">
 
 
     <ScrollView
@@ -30,4 +31,4 @@
     </ScrollView>
 
 
-</android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

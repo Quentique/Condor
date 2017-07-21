@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent service = new Intent(getApplicationContext(), PostsActivity.class);
+                Intent service = new Intent(getApplicationContext(), ProfsActivity.class);
                 startActivity(service);
             }
         });

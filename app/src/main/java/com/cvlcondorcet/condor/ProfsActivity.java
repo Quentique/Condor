@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ public class ProfsActivity extends AppCompatActivity
 
     protected RecyclerViewAdapterProfs adapter;
     protected RecyclerView recycler;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,13 @@ public class ProfsActivity extends AppCompatActivity
         setTitle("Absences des profs");
         recycler = (RecyclerView) findViewById(R.id.recycler);
         adapter = new RecyclerViewAdapterProfs(this,null, R.layout.profs_one_day_layout);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipe_profs);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         LinearLayout layout = (LinearLayout) findViewById(R.id.header);
@@ -37,6 +46,11 @@ public class ProfsActivity extends AppCompatActivity
         ((TextView) layout.findViewById(R.id.morning)).setText("Matin");
         ((TextView) layout.findViewById(R.id.afternoon)).setText("Aprem");
         getSupportLoaderManager().initLoader(1, null, this);
+    }
+
+    private void refresh() {
+        getSupportLoaderManager().restartLoader(1, null, this);
+        swipeContainer.setRefreshing(false);
     }
 
     @Override

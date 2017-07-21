@@ -81,9 +81,12 @@ public class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    filteredList.clear();
-                }catch (NullPointerException e ) { filteredList = new ArrayList<>(); }
+                if (list != null) {
+                    try {
+                        filteredList.clear();
+                    } catch (NullPointerException e) {
+                        filteredList = new ArrayList<>();
+                    }
                     final String qu = query.toLowerCase();
                     Log.i("e", "Filter : " + qu);
                     for (TeachersAbsence absence : list) {
@@ -98,6 +101,7 @@ public class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.
                             notifyDataSetChanged();
                         }
                     });
+                }
 
             }
         }).start();
