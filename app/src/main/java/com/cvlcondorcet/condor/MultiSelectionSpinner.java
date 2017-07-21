@@ -24,6 +24,8 @@ public class MultiSelectionSpinner extends AppCompatSpinner implements
         void selectedStrings(List<String> strings);
     }
     private OnMultipleItemsSelectedListener listener;
+    private AlertDialog dialog;
+    private AlertDialog.Builder builder;
 
     String[] _items = null;
     boolean[] mSelection = null;
@@ -52,10 +54,24 @@ public class MultiSelectionSpinner extends AppCompatSpinner implements
         this.listener = listener;
     }
 
-    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+    public void onClick(DialogInterface dialogg, int which, boolean isChecked) {
         if (mSelection != null && which < mSelection.length) {
             mSelection[which] = isChecked;
             simple_adapter.clear();
+            if (mSelection[0] || which == 0) {
+                if (which == 0 && isChecked) {
+                    for (int i = 0; i < mSelection.length; i++) {
+                        mSelection[i] = false;
+                    }
+                    mSelection[0] = true;
+                } else {
+                    mSelection[0] = false;
+                }
+                builder.setMultiChoiceItems(_items, mSelection, this);
+                dialog = builder.create();
+                dialog.show();
+                dialogg.dismiss();
+            }
             simple_adapter.add(buildSelectedItemString());
         } else {
             throw new IllegalArgumentException(
@@ -65,7 +81,7 @@ public class MultiSelectionSpinner extends AppCompatSpinner implements
 
     @Override
     public boolean performClick() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Please select!!!");
         builder.setMultiChoiceItems(_items, mSelection, this);
         _itemsAtStart = getSelectedItemsAsString();
@@ -85,7 +101,8 @@ public class MultiSelectionSpinner extends AppCompatSpinner implements
                 System.arraycopy(mSelectionAtStart, 0, mSelection, 0, mSelectionAtStart.length);
             }
         });
-        builder.show();
+        dialog = builder.create();
+        dialog.show();
         return true;
     }
 

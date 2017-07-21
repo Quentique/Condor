@@ -43,9 +43,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/post_date"
-                    android:layout_alignParentBottom="true"
                     android:layout_below="@+id/post_title"
                     android:textSize="@dimen/textSizeProfs"/>
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/post_categories"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/post_date"/>
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

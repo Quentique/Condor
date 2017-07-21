@@ -1,5 +1,6 @@
 package com.cvlcondorcet.condor;
 
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -21,6 +22,8 @@ public class PostsActivity extends AppCompatActivity
 
     private RecyclerView recycler;
     private RecyclerViewAdapterPosts adapter;
+    private MultiSelectionSpinner spinner;
+    private Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +36,20 @@ public class PostsActivity extends AppCompatActivity
         recycler.setHasFixedSize(true);
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(bar);
-        MultiSelectionSpinner spinner = (MultiSelectionSpinner) findViewById(R.id.spinner_post);
-        spinner.setItems(new String[] {"Hello", "one", "two", "three"});
+        spinner = (MultiSelectionSpinner) findViewById(R.id.spinner_post);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    db = new Database(getApplicationContext());
+                    db.open();
+                    spinner.setItems(db.getCategories());
+                    db.close();
+                    spinner.setSelection(0);
+                } catch (ArrayIndexOutOfBoundsException e ) { }
+                catch (SQLException e) {}
+            }
+        }).start();
         spinner.setListener(this);
 
         getSupportLoaderManager().initLoader(2, null, this);

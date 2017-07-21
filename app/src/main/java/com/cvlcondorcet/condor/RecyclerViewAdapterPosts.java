@@ -55,6 +55,7 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
             ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setText(post.getName());
             ((RecyclerViewAdapterPosts.ViewHolder) holder).content.setText(post.getContent());
             ((RecyclerViewAdapterPosts.ViewHolder) holder).date.setText(post.getFormatedDate());
+        ((ViewHolder) holder).categories.setText(post.getFormatedCategories());
             try {
                 Picasso.with(ctx).load(post.getPicture()).into(((ViewHolder) holder).pic);
                 ((RecyclerViewAdapterPosts.ViewHolder) holder).pic.setVisibility(View.VISIBLE);
@@ -75,31 +76,35 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    filteredList.clear();
-                }catch (NullPointerException e ) { filteredList = new ArrayList<>(); }
-                final String qu = query.toLowerCase();
-                Log.i("e", "Filter : " + qu);
-                for (Post post : list) {
-                    if (post.getName().toLowerCase().contains(qu)) {
-                        filteredList.add(post);
+                if (list != null) {
+                    try {
+                        filteredList.clear();
+                    } catch (NullPointerException e) {
+                        filteredList = new ArrayList<>();
                     }
-                    Collections.sort(filteredList, Collections.<Post>reverseOrder());
+                    final String qu = query.toLowerCase();
+                    Log.i("e", "Filter : " + qu);
+                    for (Post post : list) {
+                        if (post.getName().toLowerCase().contains(qu)) {
+                            filteredList.add(post);
+                        }
+                        Collections.sort(filteredList, Collections.<Post>reverseOrder());
+                    }
+
+
+                    ((Activity) ctx).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyDataSetChanged();
+                        }
+                    });
                 }
-
-                ((Activity) ctx).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        notifyDataSetChanged();
-                    }
-                });
-
             }
         }).start();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView name, content, date;
+        public TextView name, content, date, categories;
         public ImageView pic, expand;
         public LinearLayout lay;
         private final Context context;
@@ -110,6 +115,7 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
             name = (TextView) itemView.findViewById(R.id.post_title);
             content = (TextView) itemView.findViewById(R.id.post_desc);
             date = (TextView) itemView.findViewById(R.id.post_date);
+            categories = (TextView) itemView.findViewById(R.id.post_categories);
             pic = (ImageView) itemView.findViewById(R.id.post_pic);
             lay = (LinearLayout) itemView.findViewById(R.id.post_lay);
             expand = (ImageView) itemView.findViewById(R.id.content_button);

@@ -168,7 +168,7 @@ public class Database {
 
     public ArrayList<Post> getPosts() {
         ArrayList<Post> results = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT _id, name, substr(content, 0, 101), date, picture FROM posts WHERE deleted != 1", null);
+        Cursor cursor = database.rawQuery("SELECT _id, name, substr(content, 0, 101), date, picture, categories FROM posts WHERE deleted != 1", null);
 
         if (cursor != null && cursor.getCount()>0) {
             try {
@@ -178,7 +178,8 @@ public class Database {
                             cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_NAME)),
                             cursor.getString(cursor.getColumnIndex("substr(content, 0, 101)")),
                             cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_PIC)),
-                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_DATE)));
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_DATE)),
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_CAT)));
                     results.add(post);
                 }
             } finally {
@@ -193,14 +194,9 @@ public class Database {
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[] {DBOpenHelper.General.COLUMN_VALUE}, DBOpenHelper.General.COLUMN_NAME + " = ?", new String[] {"categories"}, null, null, null);
         if (cursor != null && cursor.getCount()>0) {
             cursor.moveToFirst();
-            JSONArray array;
-            try {
-               array = new JSONArray(cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
-                for (int i = 0 ; i < array.length() ; i++) {
-                    results.add(array.getString(i));
-                }
-            } catch (JSONException e) { e.printStackTrace(); }
+            results = parseCategories(cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
         }
+        results.add(0, "Tout");
         return results;
     }
 
@@ -216,7 +212,8 @@ public class Database {
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_NAME)),
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_CONTENT)),
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_PIC)),
-                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_DATE)));
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_DATE)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_CAT)));
                 return post;
             } finally {
                 cursor.close();
@@ -224,6 +221,19 @@ public class Database {
         } else {
             return null;
         }
+    }
+
+    public static ArrayList<String> parseCategories(String categories) {
+        JSONArray array;
+        ArrayList<String> results = new ArrayList<>();
+        try {
+            array = new JSONArray(categories);
+            for (int i = 0 ; i < array.length() ; i++) {
+                results.add(array.getString(i));
+            }
+        } catch (JSONException e) { e.printStackTrace(); }
+
+        return results;
     }
 }
 
