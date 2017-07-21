@@ -127,9 +127,10 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
                             Log.i("e", array.get(i));
                             if (post.getCategories().contains(array.get(i))) {
                                 filteredList.add(post);
-                                copy.remove(post);
+
                             }
                         }
+                        copy.removeAll(filteredList);
                     }
                 } else {filteredList = list; }
                     Collections.sort(filteredList, Collections.reverseOrder());
