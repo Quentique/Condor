@@ -26,7 +26,8 @@
         <activity android:name=".ProfsActivity" />
         <activity android:name=".CanteenActivity" />
         <activity android:name=".PostsActivity" />
-        <activity android:name=".PostViewerActivity"></activity>
+        <activity android:name=".PostViewerActivity"
+            android:parentActivityName=".PostsActivity"> <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".PostsActivity"></meta-data></activity>
     </application>
 
 </manifest>

@@ -3,14 +3,21 @@ package com.cvlcondorcet.condor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import static android.view.View.GONE;
 
 public class PostViewerActivity extends AppCompatActivity {
 
     private WebView view;
     private Database db;
     private TextView title, date;
+    private Toolbar bar;
+    private ProgressBar progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,10 +27,16 @@ public class PostViewerActivity extends AppCompatActivity {
         view = (WebView) findViewById(R.id.post_view);
         title = (TextView) findViewById(R.id.post_display_title);
         date = (TextView) findViewById(R.id.post_date_display);
+        bar = (Toolbar) findViewById(R.id.toolbar_viewer_post);
+        progress = (ProgressBar) findViewById(R.id.loading_layout);
+        progress.setVisibility(View.VISIBLE);
+        setSupportActionBar(bar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String id = getIntent().getStringExtra("id");
         if (id != "0") {
             new Loading().execute("id", id);
         }
+
     }
 
     private class Loading extends AsyncTask<String, Void, Void> {
@@ -44,6 +57,7 @@ public class PostViewerActivity extends AppCompatActivity {
             title.setText(post.getName());
             date.setText(post.getFormatedDate());
             db.close();
+            progress.setVisibility(GONE);
         }
     }
 }

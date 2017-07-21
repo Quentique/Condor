@@ -1,7 +1,9 @@
 package com.cvlcondorcet.condor;
 
 /**
- * Created by Quentin DE MUYNCK on 20/07/2017.
+ * Created by Gunaseelan A in 2015
+ * Modified by Quentin DE MUYNCK in 2017
+ * Original licensed under Apache License 2.0.
  */
 
 import android.app.AlertDialog;
