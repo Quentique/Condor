@@ -88,8 +88,9 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
                         if (post.getName().toLowerCase().contains(qu)) {
                             filteredList.add(post);
                         }
-                        Collections.sort(filteredList, Collections.<Post>reverseOrder());
+
                     }
+                    Collections.sort(filteredList, Collections.<Post>reverseOrder());
 
 
                     ((Activity) ctx).runOnUiThread(new Runnable() {
@@ -99,6 +100,48 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
                         }
                     });
                 }
+            }
+        }).start();
+    }
+
+    public void filterByCategories(final List<String> array) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("NEED", "WE DONT SEE YOU");
+                if (array.get(0) != "Tout") {
+                    List<Post> copy;
+                    try {
+                        copy = new ArrayList<Post>(filteredList);
+                        filteredList.clear();
+                    } catch (NullPointerException e) {
+                        Log.i("NULL", "NullPointerException Thrown");
+                        return;
+                    }
+                    Log.i("BE", "Entering loop for");
+                    for (int i = 0; i < array.size(); i++) {
+                        Log.i("DE", "First loop");
+                        ArrayList<Integer> toRemove = new ArrayList<Integer>();
+                        for (int j = 0 ; j < copy.size() ; j++) {
+                            Post post = copy.get(j);
+                            Log.i("e", array.get(i));
+                            if (post.getCategories().contains(array.get(i))) {
+                                filteredList.add(post);
+                                copy.remove(post);
+                            }
+                        }
+                    }
+                } else {filteredList = list; }
+                    Collections.sort(filteredList, Collections.reverseOrder());
+
+                    ((Activity) ctx).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyDataSetChanged();
+                        }
+                    });
+
+
             }
         }).start();
     }

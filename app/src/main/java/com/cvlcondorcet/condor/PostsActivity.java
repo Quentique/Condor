@@ -101,5 +101,7 @@ public class PostsActivity extends AppCompatActivity
     @Override
     public void selectedStrings(List<String> strings) {
         Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
+        adapter.filterByCategories(strings);
+        recycler.scrollToPosition(0);
     }
 }
