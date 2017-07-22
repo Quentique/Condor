@@ -27,6 +27,7 @@ public class PostsActivity extends Fragment
     private RecyclerViewAdapterPosts adapter;
     private MultiSelectionSpinner spinner;
     private Database db;
+    private android.support.v7.app.ActionBar bar;
 
   /*  @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +68,14 @@ public class PostsActivity extends Fragment
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        android.support.v7.app.ActionBar bar = ((MainActivity) getActivity()).getSupportActionBar();
+        bar = ((MainActivity) getActivity()).getSupportActionBar();
         recycler = (RecyclerView) view.findViewById(R.id.recycler_posts);
         adapter = new RecyclerViewAdapterPosts(getActivity(), null, R.layout.posts_layout);
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setHasFixedSize(true);
         bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        bar.setDisplayHomeAsUpEnabled(true);
         bar.setCustomView(spinner);
         new Thread(new Runnable() {
             @Override
@@ -140,5 +142,12 @@ public class PostsActivity extends Fragment
         //Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
         adapter.filterByCategories(strings);
         recycler.scrollToPosition(0);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        spinner = null;
+        bar.setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_TITLE | android.support.v7.app.ActionBar.DISPLAY_HOME_AS_UP | android.support.v7.app.ActionBar.DISPLAY_SHOW_HOME);
     }
 }
