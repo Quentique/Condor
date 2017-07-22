@@ -26,9 +26,13 @@ public class MainActivity extends AppCompatActivity {
         bar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(bar);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.your_placeholder, new CanteenActivity());
+        ft.replace(R.id.your_placeholder, new PostsActivity());
         ft.commit();
 
         Log.i("Test2", getApplicationContext().getFilesDir().toString());
+    }
+
+    public Toolbar getSupportBar() {
+        return bar;
     }
 }
