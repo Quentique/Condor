@@ -103,6 +103,7 @@ public class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.
                     });
                 }
 
+
             }
         }).start();
     }

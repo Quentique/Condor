@@ -1,20 +1,22 @@
 package com.cvlcondorcet.condor;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.github.barteksc.pdfviewer.PDFView;
 
 import java.io.File;
 
-public class CanteenActivity extends AppCompatActivity {
+public class CanteenActivity extends Fragment {
 
     private PDFView view;
     private File file;
     private Context ctx;
-    @Override
+   /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -24,6 +26,23 @@ public class CanteenActivity extends AppCompatActivity {
         view = (PDFView) findViewById(R.id.pdfView);
         file = new File(getApplicationContext().getFilesDir().toString() + "/" + "menus-du-6-au-30-juin-2017.pdf");
         ctx = this;
+
+        loadPdf();
+    }*/
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_canteen, parent, false);
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        getActivity().setTitle("Menu de la cantine");
+
+        this.view = (PDFView) view.findViewById(R.id.pdfView);
+        file = new File(getActivity().getFilesDir().toString() + "/" + "menus-du-6-au-30-juin-2017.pdf");
+        /*ctx = this;*/
 
         loadPdf();
     }
@@ -43,7 +62,7 @@ public class CanteenActivity extends AppCompatActivity {
                     Thread.sleep(1000);
                 }catch (InterruptedException e) { e.printStackTrace(); }
 
-                ((Activity) ctx).runOnUiThread(new Runnable() {
+                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         view.zoomWithAnimation(20, 710, 2.3f);

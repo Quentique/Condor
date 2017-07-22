@@ -1,23 +1,27 @@
 package com.cvlcondorcet.condor;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class ProfsActivity extends AppCompatActivity
+public class ProfsActivity extends Fragment
         implements LoaderManager.LoaderCallbacks<List<TeachersAbsence>>, SearchView.OnQueryTextListener {
 
     protected RecyclerViewAdapterProfs adapter;
@@ -25,7 +29,37 @@ public class ProfsActivity extends AppCompatActivity
     private SwipeRefreshLayout swipeContainer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        // Defines the xml file for the fragment
+        return inflater.inflate(R.layout.activity_profs, parent, false);
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        // Setup any handles to view objects here
+        // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
+       // setTitle("Absences des profs");
+        getActivity().setTitle("Absence des profs");
+        recycler = (RecyclerView) view.findViewById(R.id.recycler);
+        adapter = new RecyclerViewAdapterProfs(getActivity(),null, R.layout.profs_one_day_layout);
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_profs);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
+        recycler.setAdapter(adapter);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayout layout = (LinearLayout) view.findViewById(R.id.header);
+        ((TextView) layout.findViewById(R.id.profs)).setText("Professeur");
+        ((TextView) layout.findViewById(R.id.date)).setText("Date");
+        ((TextView) layout.findViewById(R.id.morning)).setText("Matin");
+        ((TextView) layout.findViewById(R.id.afternoon)).setText("Aprem");
+        getLoaderManager().initLoader(1, null, this);
+    }
+   /* @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profs);
         setTitle("Absences des profs");
@@ -46,16 +80,17 @@ public class ProfsActivity extends AppCompatActivity
         ((TextView) layout.findViewById(R.id.morning)).setText("Matin");
         ((TextView) layout.findViewById(R.id.afternoon)).setText("Aprem");
         getSupportLoaderManager().initLoader(1, null, this);
-    }
+    }*/
 
     private void refresh() {
-        getSupportLoaderManager().restartLoader(1, null, this);
+       // getSupportLoaderManager().restartLoader(1, null, this);
+        getLoaderManager().restartLoader(1, null, this);
         swipeContainer.setRefreshing(false);
     }
 
     @Override
     public Loader<List<TeachersAbsence>> onCreateLoader(int id, Bundle args) {
-        return new TeachersLoader(this);
+        return new TeachersLoader(getActivity());
     }
 
     @Override
@@ -70,12 +105,12 @@ public class ProfsActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_activity_profs, menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_activity_profs, menu);
         final MenuItem item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setOnQueryTextListener(this);
-        return true;
     }
 
     @Override
