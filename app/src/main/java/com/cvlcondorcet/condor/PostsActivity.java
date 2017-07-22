@@ -1,7 +1,7 @@
 package com.cvlcondorcet.condor;
 
 import android.app.ActionBar;
-import android.database.SQLException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -28,6 +28,7 @@ public class PostsActivity extends Fragment
     private MultiSelectionSpinner spinner;
     private Database db;
     private android.support.v7.app.ActionBar bar;
+    private Task loader;
 
   /*  @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,19 +78,8 @@ public class PostsActivity extends Fragment
         bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         bar.setDisplayHomeAsUpEnabled(true);
         bar.setCustomView(spinner);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    db = new Database(getActivity());
-                    db.open();
-                    spinner.setItems(db.getCategories());
-                    db.close();
-                    spinner.setSelection(0);
-                } catch (ArrayIndexOutOfBoundsException e ) { }
-                catch (SQLException e) {}
-            }
-        }).start();
+        loader = new Task();
+        loader.execute();
         spinner.setListener(this);
 
         getLoaderManager().initLoader(2, null, this);
@@ -149,5 +139,25 @@ public class PostsActivity extends Fragment
         super.onDetach();
         spinner = null;
         bar.setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_TITLE | android.support.v7.app.ActionBar.DISPLAY_HOME_AS_UP | android.support.v7.app.ActionBar.DISPLAY_SHOW_HOME);
+        loader.cancel(true);
+    }
+
+    private class Task extends AsyncTask<Void, Void, Void> {
+        List<String> results;
+        @Override
+        protected Void doInBackground(Void... args) {
+            db = new Database(getActivity());
+            db.open();
+            results = db.getCategories();
+            db.close();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void nothing) {
+            spinner.setItems(results);
+            spinner.setSelection(0);
+        }
+
     }
 }
