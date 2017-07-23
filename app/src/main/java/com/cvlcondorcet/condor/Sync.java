@@ -89,7 +89,9 @@ public class Sync extends IntentService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        manager.cancel(1);
+        noti.setTimeoutAfter(5000);
+        manager.notify(1, noti.build());
+        //manager.cancel(1);
         stopSelf();
     }
 

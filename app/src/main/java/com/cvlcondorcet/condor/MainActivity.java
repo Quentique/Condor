@@ -1,5 +1,10 @@
 package com.cvlcondorcet.condor;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -8,9 +13,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+
+import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,11 +26,19 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
+    private Class fragmentClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (savedInstanceState != null){
+            try {
+                fragmentClass = (Class) savedInstanceState.getSerializable("class");
+                Fragment fg = (Fragment) fragmentClass.newInstance();
+                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fg).commit();
+            } catch (Exception e) {}
+        }
        /* final Button bouton = (Button) findViewById(R.id.button);
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,9 +46,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent service = new Intent(getApplicationContext(), ProfsActivity.class);
                 startActivity(service);
             }
-        });
-        Intent servicee = new Intent(getApplicationContext(), Sync.class);
-        startService(servicee);*/
+        });*/
+       if (allowConnect(this)) {
+           Intent servicee = new Intent(getApplicationContext(), Sync.class);
+           startService(servicee);
+       }
         bar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(bar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
@@ -45,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();*/
 
         Log.i("Test2", getApplicationContext().getFilesDir().toString());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("class", (Serializable) fragmentClass);
     }
 
     public Toolbar getSupportBar() {
@@ -75,7 +99,7 @@ selectDrawerItem(item);
 
     public void selectDrawerItem(MenuItem item) {
         Fragment fragment = null;
-        Class fragmentClass = null;
+        fragmentClass = null;
         switch(item.getItemId()) {
             case R.id.nav_posts:
                 fragmentClass = PostsActivity.class;
@@ -97,5 +121,20 @@ selectDrawerItem(item);
         getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
         item.setChecked(true);
         drawerLayout.closeDrawers();
+    }
+
+    public static boolean allowConnect(Context context) {
+        ConnectivityManager conn =  (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = conn.getActiveNetworkInfo();
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        if (!settings.getBoolean("mobile_data_usage", false) && networkInfo != null & networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        } else if (settings.getBoolean("mobile_data_usage", false) && networkInfo != null ) {
+            return true;
+        } else{
+            return false;
+        }
     }
 }
