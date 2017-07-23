@@ -34,5 +34,6 @@ dependencies {
     compile 'com.github.barteksc:android-pdf-viewer:2.6.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:design:26.+'
+    compile 'com.android.support:preference-v7:26.+'
     testCompile 'junit:junit:4.12'
 }

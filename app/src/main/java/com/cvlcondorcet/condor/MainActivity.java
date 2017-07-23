@@ -85,6 +85,10 @@ selectDrawerItem(item);
                 break;
             case R.id.nav_canteen:
                 fragmentClass = CanteenActivity.class;
+                break;
+            case R.id.nav_settings:
+                fragmentClass = PreferencesFragment.class;
+                break;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();

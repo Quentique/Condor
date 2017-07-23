@@ -6,10 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import static android.view.View.GONE;
 
 public class PostViewerActivity extends AppCompatActivity {
 
@@ -25,17 +24,25 @@ public class PostViewerActivity extends AppCompatActivity {
         db = new Database(this);
         db.open();
         view = (WebView) findViewById(R.id.post_view);
+
         title = (TextView) findViewById(R.id.post_display_title);
         date = (TextView) findViewById(R.id.post_date_display);
         bar = (Toolbar) findViewById(R.id.toolbar_viewer_post);
         progress = (ProgressBar) findViewById(R.id.loading_layout);
         progress.setVisibility(View.VISIBLE);
+        view.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView webview, String url) {
+                progress.setVisibility(View.GONE);
+            }
+        });
         setSupportActionBar(bar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String id = getIntent().getStringExtra("id");
         if (id != "0") {
             new Loading().execute("id", id);
         }
+
 
     }
 
@@ -57,7 +64,7 @@ public class PostViewerActivity extends AppCompatActivity {
             title.setText(post.getName());
             date.setText(post.getFormatedDate());
             db.close();
-            progress.setVisibility(GONE);
+            //progress.setVisibility(GONE);
         }
     }
 }
