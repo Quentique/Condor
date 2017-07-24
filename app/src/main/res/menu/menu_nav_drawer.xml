@@ -15,6 +15,8 @@
             android:title="Cantine">
 
         </item>
+        <item android:id="@+id/nav_train"
+            android:title="SNCF"></item>
 
         <item android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"

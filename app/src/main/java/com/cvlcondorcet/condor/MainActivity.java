@@ -123,6 +123,9 @@ selectDrawerItem(item);
             case R.id.nav_settings:
                 fragmentClass = PreferencesFragment.class;
                 break;
+            case R.id.nav_train:
+                fragmentClass = TrainFragment.class;
+                break;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
