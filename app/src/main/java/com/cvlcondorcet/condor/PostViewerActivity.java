@@ -1,9 +1,11 @@
 package com.cvlcondorcet.condor;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -44,6 +46,15 @@ public class PostViewerActivity extends AppCompatActivity {
         }
 
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Intent relaunch = new Intent(this, MainActivity.class);
+            relaunch.putExtra("HELLO","test");
+            startActivity(relaunch);
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private class Loading extends AsyncTask<String, Void, Void> {

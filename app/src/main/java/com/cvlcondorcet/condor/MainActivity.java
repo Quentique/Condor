@@ -32,25 +32,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState != null){
-            try {
-                fragmentClass = (Class) savedInstanceState.getSerializable("class");
-                Fragment fg = (Fragment) fragmentClass.newInstance();
-                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fg).commit();
-            } catch (Exception e) {}
-        }
+
+
        /* final Button bouton = (Button) findViewById(R.id.button);
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent service = new Intent(getApplicationContext(), ProfsActivity.class);
+                Intent service = new Intent(getApplicationContext(), TeachersFragment.class);
                 startActivity(service);
             }
         });*/
-       if (allowConnect(this)) {
-           Intent servicee = new Intent(getApplicationContext(), Sync.class);
-           startService(servicee);
-       }
+
         bar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(bar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
@@ -59,9 +51,27 @@ public class MainActivity extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
         /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.your_placeholder, new PostsActivity());
+        ft.replace(R.id.your_placeholder, new PostsFragment());
         ft.commit();*/
 
+        if (savedInstanceState != null){
+            try {
+                fragmentClass = (Class) savedInstanceState.getSerializable("class");
+                Fragment fg = (Fragment) fragmentClass.newInstance();
+                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fg).commit();
+            } catch (Exception e) {}
+        } else {
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_app_start", true) && allowConnect(this)) {
+                Intent servicee = new Intent(getApplicationContext(), Sync.class);
+                startService(servicee);
+            }
+            if (getIntent().getExtras() != null) {
+                try {
+                    // getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new PostsFragment()).commit();
+                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
+                } catch (Exception e) {}
+            }
+        }
         Log.i("Test2", getApplicationContext().getFilesDir().toString());
     }
 
@@ -102,13 +112,13 @@ selectDrawerItem(item);
         fragmentClass = null;
         switch(item.getItemId()) {
             case R.id.nav_posts:
-                fragmentClass = PostsActivity.class;
+                fragmentClass = PostsFragment.class;
                 break;
             case R.id.nav_teachers:
-                fragmentClass = ProfsActivity.class;
+                fragmentClass = TeachersFragment.class;
                 break;
             case R.id.nav_canteen:
-                fragmentClass = CanteenActivity.class;
+                fragmentClass = CanteenFragment.class;
                 break;
             case R.id.nav_settings:
                 fragmentClass = PreferencesFragment.class;

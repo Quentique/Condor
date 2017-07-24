@@ -23,9 +23,8 @@
         <service
             android:name=".Sync"
             android:label="Synchronisation - Condor" />
-        
-        <activity android:name=".PostViewerActivity"
-            android:parentActivityName=".PostsActivity"> <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".PostsActivity"></meta-data></activity>
+
+        <activity android:name=".PostViewerActivity"/>
     </application>
 
 </manifest>
