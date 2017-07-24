@@ -18,6 +18,9 @@
         <item android:id="@+id/nav_train"
             android:title="SNCF"></item>
 
+        <item android:id="@+id/nav_bus"
+            android:title="Optymo"></item>
+
         <item android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="Paramètres"></item>

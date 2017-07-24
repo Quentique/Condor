@@ -126,6 +126,9 @@ selectDrawerItem(item);
             case R.id.nav_train:
                 fragmentClass = TrainFragment.class;
                 break;
+            case R.id.nav_bus:
+                fragmentClass = BusFragment.class;
+                break;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -134,6 +137,15 @@ selectDrawerItem(item);
         getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
         item.setChecked(true);
         drawerLayout.closeDrawers();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fg = getSupportFragmentManager().getFragments().get(0);
+        if (fg.getClass() == BusFragment.class)
+        {
+            ((BusFragment) fg).backPressed();
+        }
     }
 
     public static boolean allowConnect(Context context) {
