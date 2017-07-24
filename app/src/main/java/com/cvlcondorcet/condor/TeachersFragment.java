@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ProfsActivity extends Fragment
+public class TeachersFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<TeachersAbsence>>, SearchView.OnQueryTextListener {
 
     protected RecyclerViewAdapterProfs adapter;
@@ -32,7 +32,7 @@ public class ProfsActivity extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         // Defines the xml file for the fragment
-        return inflater.inflate(R.layout.activity_profs, parent, false);
+        return inflater.inflate(R.layout.fragment_teachers, parent, false);
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class ProfsActivity extends Fragment
    /* @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profs);
+        setContentView(R.layout.fragment_teachers);
         setTitle("Absences des profs");
         recycler = (RecyclerView) findViewById(R.id.recycler);
         adapter = new RecyclerViewAdapterProfs(this,null, R.layout.profs_one_day_layout);
