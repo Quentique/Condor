@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,6 +21,8 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+
+import static android.view.View.GONE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +34,7 @@ public class TrainFragment extends Fragment {
     private static final String url = "http://www.sncf.com/sncf/gare?libelleGare=Belfort";
     private WebView web_view;
     private String user;
+    private ProgressBar bar;
   /*  // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -78,12 +82,18 @@ public class TrainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         web_view = view.findViewById(R.id.web_view_train);
+        bar = (ProgressBar) view.findViewById(R.id.loading_layout);
         web_view.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(browser);
                 return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                bar.setVisibility(GONE);
             }
         });
         user = web_view.getSettings().getUserAgentString();
@@ -93,6 +103,7 @@ public class TrainFragment extends Fragment {
         web_view.getSettings().setUseWideViewPort(true);
 
         Log.i("g", "FRAMGNET STARTED");
+        bar.setVisibility(View.VISIBLE);
         new Loading().execute(url);
     }
 

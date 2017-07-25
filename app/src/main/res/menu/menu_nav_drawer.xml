@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
+        <item android:title="Lycée">
+            <menu>
         <item android:id="@+id/nav_posts"
             android:icon="@drawable/ic_announcement_black_24dp"
             android:title="Actualités">
@@ -15,14 +17,25 @@
             android:title="Cantine">
 
         </item>
+        </menu>
+        </item>
+        <item android:title="Infos transports">
+            <menu>
         <item android:id="@+id/nav_train"
+            android:icon="@drawable/ic_train_black_24dp"
             android:title="SNCF"></item>
 
         <item android:id="@+id/nav_bus"
+            android:icon="@drawable/ic_directions_bus_black_24dp"
             android:title="Optymo"></item>
-
+            </menu>
+        </item>
+        <item android:title="Autres">
+            <menu>
         <item android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="Paramètres"></item>
+            </menu>
+        </item>
     </group>
     </menu>

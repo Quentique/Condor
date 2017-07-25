@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,6 +25,7 @@ import java.io.IOException;
 public class BusFragment extends Fragment {
     private static final String url = "http://www.optymo.fr/infos_trafic/";
     private WebView web_view;
+    private ProgressBar progress;
     private String user;
 
     @Override
@@ -40,15 +42,22 @@ public class BusFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
+        progress = (ProgressBar) view.findViewById(R.id.loading_layout);
         web_view = view.findViewById(R.id.web_view_bus);
         web_view.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.i("E", "OVERRIDE");
                 if (url.contains("optymo")) {
+                    Log.i("E", "INSIDE");
                     new Loading().execute(url);
                     return true;
                 } else { return false; }
 
+            }
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                progress.setVisibility(View.GONE);
             }
         });
         user = web_view.getSettings().getUserAgentString();
@@ -64,18 +73,27 @@ public class BusFragment extends Fragment {
 
     public void backPressed() {
         web_view.goBack();
+        progress.setVisibility(View.VISIBLE);
+        Log.i("E", "BACK PRESSED");
     }
 
     private class Loading extends AsyncTask<String, Void, Void> {
         private Elements element;
+        private String url;
+
+        @Override
+        public void onPreExecute() {
+            progress.setVisibility(View.VISIBLE);
+        }
         @Override
         public Void doInBackground(String... args) {
             Log.i("DO", "BACKGROUND");
             if (MainActivity.allowConnect(getActivity())) {
                 try {
+                    url = args[0];
                     element = new Elements();
                     Log.i("e", user);
-                    Document doc = Jsoup.connect(args[0]).userAgent(user).header("Accept-Language", "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").get();
+                    Document doc = Jsoup.connect(url).userAgent(user).header("Accept-Language", "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").get();
                     //doc.charset(Charset.forName("UTF-8"));
                     Element el = doc.select("head").first();
                     Element el2 = doc.select("#go-to-main").first();
@@ -94,7 +112,7 @@ public class BusFragment extends Fragment {
         @Override
         public void onPostExecute(Void result) {
             Log.i("START", "LOADING");
-            web_view.loadDataWithBaseURL(null, element.toString(), "text/html", "UTF-8", "");
+            web_view.loadDataWithBaseURL(null, element.toString(), "text/html", "UTF-8", url);
             //  web_view.loadUrl(url);
 
             // web_view.loadUrl(url);

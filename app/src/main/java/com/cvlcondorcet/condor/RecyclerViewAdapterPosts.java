@@ -43,8 +43,8 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
 
     public void setData(List<Post> list) {
         this.list = list;
-        filter("");
-        notifyDataSetChanged();
+        filter(null, null);
+        //notifyDataSetChanged();
         Log.i("Hello", "Data has changed");
     }
 
@@ -72,7 +72,7 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
         } else { Log.i("de", "SINGLE"); return SINGLE; }
     }*/
 
-    public void filter(final String query) {
+    public void filter(final String query, final List<String> array) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -82,23 +82,30 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
                     } catch (NullPointerException e) {
                         filteredList = new ArrayList<>();
                     }
-                    final String qu = query.toLowerCase();
+                    String qu;
+                    try {
+                        qu = query.toLowerCase();
+                    } catch (NullPointerException e) { qu = ""; }
                     Log.i("e", "Filter : " + qu);
                     for (Post post : list) {
                         if (post.getName().toLowerCase().contains(qu)) {
                             filteredList.add(post);
                         }
-
                     }
-                    Collections.sort(filteredList, Collections.<Post>reverseOrder());
+                    Log.i("EEE", String.valueOf(filteredList.size()));
 
 
-                    ((Activity) ctx).runOnUiThread(new Runnable() {
+                    filterByCategories(array);
+
+
+
+
+                    /*((Activity) ctx).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             notifyDataSetChanged();
                         }
-                    });
+                    });*/
                 }
             }
         }).start();
@@ -109,31 +116,39 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
             @Override
             public void run() {
                 Log.i("NEED", "WE DONT SEE YOU");
-                if (array.get(0) != "Tout") {
-                    List<Post> copy;
-                    try {
-                        copy = new ArrayList<Post>(filteredList);
-                        filteredList.clear();
-                    } catch (NullPointerException e) {
-                        Log.i("NULL", "NullPointerException Thrown");
-                        return;
-                    }
-                    Log.i("BE", "Entering loop for");
-                    for (int i = 0; i < array.size(); i++) {
-                        Log.i("DE", "First loop");
-                        ArrayList<Integer> toRemove = new ArrayList<Integer>();
-                        for (int j = 0 ; j < copy.size() ; j++) {
-                            Post post = copy.get(j);
-                            Log.i("e", array.get(i));
-                            if (post.getCategories().contains(array.get(i))) {
-                                filteredList.add(post);
-
-                            }
+                if (array != null) {
+                    Log.i("HELLO", array.get(0));
+                    if (array.get(0) != "Tout") {
+                        List<Post> copy;
+                        try {
+                            copy = new ArrayList<Post>(filteredList);
+                            filteredList.clear();
+                        } catch (NullPointerException e) {
+                            Log.i("NULL", "NullPointerException Thrown");
+                            return;
                         }
-                        copy.removeAll(filteredList);
+                        Log.i("BE", "Entering loop for");
+                        for (int i = 0; i < array.size(); i++) {
+                            Log.i("DE", "First loop");
+                            ArrayList<Integer> toRemove = new ArrayList<Integer>();
+                            for (int j = 0; j < copy.size(); j++) {
+                                Post post = copy.get(j);
+                                Log.i("e", array.get(i));
+                                if (post.getCategories().contains(array.get(i))) {
+                                    filteredList.add(post);
+
+                                }
+                            }
+                            copy.removeAll(filteredList);
+                        }
+                    } else {
+                        filteredList = list;
                     }
-                } else {filteredList = list; }
-                    Collections.sort(filteredList, Collections.reverseOrder());
+                }
+                   // Collections.sort(filteredList, Collections.reverseOrder());
+                try {
+                    Collections.sort(filteredList, Collections.<Post>reverseOrder());
+                } catch (NullPointerException e) {}
 
                     ((Activity) ctx).runOnUiThread(new Runnable() {
                         @Override

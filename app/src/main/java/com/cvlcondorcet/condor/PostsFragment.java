@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import java.util.List;
 
@@ -29,6 +30,11 @@ public class PostsFragment extends Fragment
     private Database db;
     private android.support.v7.app.ActionBar bar;
     private Task loader;
+    private String query;
+    private List<String> cat;
+    private RelativeLayout lay;
+    private SearchView search;
+    private MenuItem item;
 
   /*  @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +70,8 @@ public class PostsFragment extends Fragment
         setHasOptionsMenu(true);
         //setRetainInstance(true);
         // Defines the xml file for the fragment
-        spinner = (MultiSelectionSpinner) inflater.inflate(R.layout.multispinner, null);
+        lay = (RelativeLayout) inflater.inflate(R.layout.multispinner, null);
+        spinner = lay.findViewById(R.id.spinner_post);
         return inflater.inflate(R.layout.fragment_posts, parent, false);
     }
 
@@ -78,7 +85,7 @@ public class PostsFragment extends Fragment
         recycler.setHasFixedSize(true);
         bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         bar.setDisplayHomeAsUpEnabled(true);
-        bar.setCustomView(spinner);
+        bar.setCustomView(lay);
         loader = new Task();
         loader.execute();
         spinner.setListener(this);
@@ -105,13 +112,16 @@ public class PostsFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_activity_profs, menu);
-        final MenuItem item = menu.findItem(R.id.action_search);
+        search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        item = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setOnQueryTextListener(this);
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        search.clearFocus();
+        search.setIconified(true);
         return onQueryTextChange(query);
     }
 
@@ -119,9 +129,11 @@ public class PostsFragment extends Fragment
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
         Log.i("e", "Query");
-        adapter.filter(query);
+        this.query = query;
+        recycler.getRecycledViewPool().clear();
+        adapter.filter(query, cat);
         recycler.scrollToPosition(0);
-        return true;
+        return false;
     }
     @Override
     public void selectedIndices(List<Integer> indices) {
@@ -131,7 +143,9 @@ public class PostsFragment extends Fragment
     @Override
     public void selectedStrings(List<String> strings) {
         //Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
-        adapter.filterByCategories(strings);
+        this.cat = strings;
+        recycler.getRecycledViewPool().clear();
+        adapter.filter(query, cat);
         recycler.scrollToPosition(0);
     }
 
