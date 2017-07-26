@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -113,15 +112,34 @@ public class PostsFragment extends Fragment
         inflater.inflate(R.menu.menu_activity_profs, menu);
         search = (SearchView) menu.findItem(R.id.action_search).getActionView();
         item = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-        searchView.setOnQueryTextListener(this);
+        //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        search.setOnQueryTextListener(this);
+        search.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                query = "";
+                return false;
+            }
+        });
+        /*item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                // TODO Auto-generated method stub
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                query = search.getQuery().toString();
+                return true;
+            }
+        });*/
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        search.clearFocus();
-        search.setIconified(true);
-        return onQueryTextChange(query);
+        return false;
     }
 
     @Override
