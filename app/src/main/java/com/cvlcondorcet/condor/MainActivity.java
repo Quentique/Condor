@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-selectDrawerItem(item);
+                        selectDrawerItem(item);
                         return true;
                     }
                 }

@@ -115,15 +115,13 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
             @Override
             public void run() {
                 Log.i("NEED", "WE DONT SEE YOU");
+                try {
                     if (array != null && array.get(0) != "Tout") {
                         List<Post> copy;
                         copy = new ArrayList<Post>();
-                        Log.i("VALUE LIST1", String.valueOf(list.size()));
                         copy.addAll(list);
-                        Log.i("VALUE LIST2", String.valueOf(list.size()));
                         try {
                             catList.clear();
-                            Log.i("VALUE CATLIST1", String.valueOf(catList.size()));
                         } catch (NullPointerException e) {
                             Log.i("NULL", "NullPointerException Thrown");
                             catList = new ArrayList<Post>();
@@ -138,21 +136,19 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
                                 if (post.getCategories().contains(array.get(i))) {
                                     catList.add(post);
                                 }
-                                Log.i("VALUE CATLIST2", String.valueOf(catList.size()));
                             }
-                            Log.i("VALUE CATLIST3", String.valueOf(catList.size()));
                             copy.removeAll(catList);
                         }
                     } else {
-                        Log.i("VALUE LIST3", String.valueOf(list.size()));
-                       catList = new ArrayList<Post>();
+
+                        catList = new ArrayList<Post>();
                         catList.addAll(list);
-                        Log.i("VALUE LIST", String.valueOf(list.size()));
                         Log.i("EE", "ARRAY NULL / SET LIST TO CATLIST");
                     }
 
-                   // Collections.sort(filteredList, Collections.reverseOrder());
-                filter(queryy);
+                    // Collections.sort(filteredList, Collections.reverseOrder());
+                    filter(queryy);
+                } catch (Exception e ) {e.printStackTrace();}
 
                    /* ((Activity) ctx).runOnUiThread(new Runnable() {
                         @Override
