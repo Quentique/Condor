@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Condor</string>
+    <string name="absences">Absences</string>
+    <string name="afternoon">Après-midi</string>
+    <string name="cancel">Annuler</string>
+    <string name="canteen">Cantine</string>
+    <string name="canteen_menu">Menu de la cantine</string>
+    <string name="cat_select">Sélectionnez</string>
+    <string name="date">Date</string>
+    <string name="high_school">Lycée</string>
+    <string name="morning">Matin</string>
+    <string name="news">Actualités</string>
+    <string name="search">Recherche</string>
+    <string name="others">Autres</string>
+    <string name="settings">Paramètres</string>
+    <string name="submit">Soumettre</string>
+    <string name="sync_app_start">Synchroniser la base de données au démarrage.</string>
+    <string name="sync_app_start_title">Synchronisation au démarrage</string>
+    <string name="sync_end">Synchronisation terminée</string>
+    <string name="sync_mobile_data">Utiliser les données mobile pour la synchronisation.</string>
+    <string name="sync_mobile_data_title">Utilisation des données mobiles</string>
+    <string name="sync_notif_name">Synchronisation de Condor</string>
+    <string name="teacher">Professeur</string>
+    <string name="teachers_absences">Absences de profs</string>
+    <string name="transport_info">Infos transport</string>
+    <string name="hello_blank_fragment">Bonjour fragment blanc</string>
+    <string name="select_language_title">Sélectionnez la langue</string>
+    <string name="language">Langue</string>
+
+    <string-array
+        name="language_choose">
+        <item>Langue du système</item>
+        <item>Français</item>
+        <item>Anglais</item>
+    </string-array>
+
+    <string-array
+        name="language_choose_values">
+        <item>default</item>
+        <item>fr</item>
+        <item>en</item>
+    </string-array>
+</resources>

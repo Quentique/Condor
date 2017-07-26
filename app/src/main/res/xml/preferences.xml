@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-<CheckBoxPreference
-    android:key="mobile_data_usage"
-    android:title="@string/sync_mobile_data_title"
-    android:summary="@string/sync_mobile_data"/>
+    <CheckBoxPreference
+        android:key="mobile_data_usage"
+        android:title="@string/sync_mobile_data_title"
+        android:summary="@string/sync_mobile_data"/>
     <CheckBoxPreference
         android:key="sync_app_start"
         android:title="@string/sync_app_start_title"
         android:summary="@string/sync_app_start"/>
+    
     <ListPreference
         android:key="language"
         android:title="@string/language"
@@ -15,5 +16,4 @@
         android:entries="@array/language_choose"
         android:entryValues="@array/language_choose_values"
         android:defaultValue="default"/>
-
 </PreferenceScreen>
