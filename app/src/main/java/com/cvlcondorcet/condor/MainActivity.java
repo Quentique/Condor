@@ -3,6 +3,7 @@ package com.cvlcondorcet.condor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -15,10 +16,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Resources res = getResources();
+// Change locale settings in the app.
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("language", "default"))); // API 17+ only.
+// Use conf.locale = new Locale(...) if targeting lower versions
+        res.updateConfiguration(conf, dm);
         setContentView(R.layout.activity_main);
 
 
@@ -72,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {}
             }
         }
+        /*Locale locale = new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("language", "default"));
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config,getResources().getDisplayMetrics());*/
+
         Log.i("Test2", getApplicationContext().getFilesDir().toString());
     }
 
