@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    protected List<Post> list, filteredList;
+    protected List<Post> list, filteredList, catList;
     public Context ctx;
 
     public RecyclerViewAdapterPosts(Context ctx, List<Post> items, int item) {
@@ -43,7 +43,8 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
 
     public void setData(List<Post> list) {
         this.list = list;
-        filter(null, null);
+        filterByCategories(null, "");
+        //filter("");
         //notifyDataSetChanged();
         Log.i("Hello", "Data has changed");
     }
@@ -72,11 +73,11 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
         } else { Log.i("de", "SINGLE"); return SINGLE; }
     }*/
 
-    public void filter(final String query, final List<String> array) {
+    public void filter(final String query) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (list != null) {
+                if (catList != null) {
                     try {
                         filteredList.clear();
                     } catch (NullPointerException e) {
@@ -85,47 +86,47 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
                     String qu;
                     try {
                         qu = query.toLowerCase();
-                    } catch (NullPointerException e) { qu = ""; }
+
+                    Log.i("E", "\""+ qu+"\"");
                     Log.i("e", "Filter : " + qu);
-                    for (Post post : list) {
+                    for (Post post : catList) {
                         if (post.getName().toLowerCase().contains(qu)) {
                             filteredList.add(post);
                         }
                     }
+                    } catch (NullPointerException e) { filteredList = new ArrayList<Post>(); filteredList.addAll(catList); }
                     Log.i("EEE", String.valueOf(filteredList.size()));
-
-
-                    filterByCategories(array);
-
-
-
-
-                    /*((Activity) ctx).runOnUiThread(new Runnable() {
+                    try {
+                        Collections.sort(filteredList, Collections.<Post>reverseOrder());
+                    } catch (NullPointerException e) {}
+                    ((Activity) ctx).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             notifyDataSetChanged();
                         }
-                    });*/
+                    });
                 }
             }
         }).start();
     }
 
-    public void filterByCategories(final List<String> array) {
+    public void filterByCategories(final List<String> array, final String queryy) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Log.i("NEED", "WE DONT SEE YOU");
-                if (array != null) {
-                    Log.i("HELLO", array.get(0));
-                    if (array.get(0) != "Tout") {
+                    if (array != null && array.get(0) != "Tout") {
                         List<Post> copy;
+                        copy = new ArrayList<Post>();
+                        Log.i("VALUE LIST1", String.valueOf(list.size()));
+                        copy.addAll(list);
+                        Log.i("VALUE LIST2", String.valueOf(list.size()));
                         try {
-                            copy = new ArrayList<Post>(filteredList);
-                            filteredList.clear();
+                            catList.clear();
+                            Log.i("VALUE CATLIST1", String.valueOf(catList.size()));
                         } catch (NullPointerException e) {
                             Log.i("NULL", "NullPointerException Thrown");
-                            return;
+                            catList = new ArrayList<Post>();
                         }
                         Log.i("BE", "Entering loop for");
                         for (int i = 0; i < array.size(); i++) {
@@ -135,27 +136,30 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
                                 Post post = copy.get(j);
                                 Log.i("e", array.get(i));
                                 if (post.getCategories().contains(array.get(i))) {
-                                    filteredList.add(post);
-
+                                    catList.add(post);
                                 }
+                                Log.i("VALUE CATLIST2", String.valueOf(catList.size()));
                             }
-                            copy.removeAll(filteredList);
+                            Log.i("VALUE CATLIST3", String.valueOf(catList.size()));
+                            copy.removeAll(catList);
                         }
                     } else {
-                        filteredList = list;
+                        Log.i("VALUE LIST3", String.valueOf(list.size()));
+                       catList = new ArrayList<Post>();
+                        catList.addAll(list);
+                        Log.i("VALUE LIST", String.valueOf(list.size()));
+                        Log.i("EE", "ARRAY NULL / SET LIST TO CATLIST");
                     }
-                }
-                   // Collections.sort(filteredList, Collections.reverseOrder());
-                try {
-                    Collections.sort(filteredList, Collections.<Post>reverseOrder());
-                } catch (NullPointerException e) {}
 
-                    ((Activity) ctx).runOnUiThread(new Runnable() {
+                   // Collections.sort(filteredList, Collections.reverseOrder());
+                filter(queryy);
+
+                   /* ((Activity) ctx).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             notifyDataSetChanged();
                         }
-                    });
+                    });*/
 
 
             }

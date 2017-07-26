@@ -31,7 +31,6 @@ public class PostsFragment extends Fragment
     private android.support.v7.app.ActionBar bar;
     private Task loader;
     private String query;
-    private List<String> cat;
     private RelativeLayout lay;
     private SearchView search;
     private MenuItem item;
@@ -128,24 +127,24 @@ public class PostsFragment extends Fragment
     @Override
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
-        Log.i("e", "Query");
         this.query = query;
+        Log.i("e", "Query");
         recycler.getRecycledViewPool().clear();
-        adapter.filter(query, cat);
+        adapter.filter(query);
         recycler.scrollToPosition(0);
         return false;
     }
     @Override
     public void selectedIndices(List<Integer> indices) {
-        Log.i("hey", "hello");
+        //Log.i("hey", "hello");
     }
 
     @Override
     public void selectedStrings(List<String> strings) {
         //Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
-        this.cat = strings;
         recycler.getRecycledViewPool().clear();
-        adapter.filter(query, cat);
+       // Log.i("EEEE", query);
+        adapter.filterByCategories(strings, query);
         recycler.scrollToPosition(0);
     }
 
