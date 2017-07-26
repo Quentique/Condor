@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Condor</string>
+    <string name="high_school">Gymnasium</string>
+    <string name="language">Sprache</string>
+    <string name="morning">Morgen</string>
+    <string name="news">Nachrichten</string>
+    <string name="search">Suche</string>
+    <string name="select_language_title">Wählen Sie die Sprache aus</string>
+    <string name="teacher">Lehrer</string>
+    <string name="teachers_absences">Abwesenheitens Lehrer</string>
+    <string name="transport_info">Verkehrsinfo</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="absences">Abwesenheiten</string>
+    <string name="afternoon">Nachmittag</string>
+    <string name="canteen">Mensa</string>
+    <string name="canteen_menu">Mensa-Speiseplan</string>
+    <string name="cat_select">Wählen Sie Kategorien aus</string>
+    <string name="date">Datum</string>
+    <string name="hello_blank_fragment">"Hallo weißes Fragment "</string>
+    <string name="settings">Einstellungen</string>
+    <string name="submit">Absenden</string>
+    <string name="sync_end">Synchronisierung beendet</string>
+    <string name="sync_app_start_title">Am Start synchronisieren</string>
+    <string name="sync_app_start">Die Datenbank synchronisieren, indem das App startet.</string>
+    <string name="sync_mobile_data">Mobile Daten nutzen, um zu synchronisieren.</string>
+    <string name="sync_mobile_data_title">Nutzung mobilen Daten</string>
+    <string name="sync_notif_name">Condor\'s Synchronisierung</string>
+    <string name="others">Anders</string>
+
+    <string-array
+        name="language_choose">
+        <item>Sprache Systems</item>
+        <item>Französisch</item>
+        <item>Englisch</item>
+        <item>Deutsch</item>
+    </string-array>
+
+    <string-array
+        name="language_choose_values">
+        <item>default</item>
+        <item>fr</item>
+        <item>en</item>
+    </string-array>
+</resources>

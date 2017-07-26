@@ -8,7 +8,7 @@
         android:key="sync_app_start"
         android:title="@string/sync_app_start_title"
         android:summary="@string/sync_app_start"/>
-    
+
     <ListPreference
         android:key="language"
         android:title="@string/language"
