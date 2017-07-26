@@ -2,10 +2,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 <CheckBoxPreference
     android:key="mobile_data_usage"
-    android:title="Mobile data use"
-    android:summary="Use mobile data to sync"></CheckBoxPreference>
+    android:title="@string/sync_mobile_data_title"
+    android:summary="@string/sync_mobile_data"></CheckBoxPreference>
     <CheckBoxPreference
         android:key="sync_app_start"
-        android:title="Sync at start"
-        android:summary="Sync the database when Condor opens"></CheckBoxPreference>
+        android:title="@string/sync_app_start_title"
+        android:summary="@string/sync_app_start"/>
 </PreferenceScreen>

@@ -75,6 +75,7 @@ public class PostsFragment extends Fragment
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        getActivity().setTitle(R.string.news);
         bar = ((MainActivity) getActivity()).getSupportActionBar();
         recycler = (RecyclerView) view.findViewById(R.id.recycler_posts);
         adapter = new RecyclerViewAdapterPosts(getActivity(), null, R.layout.posts_layout);

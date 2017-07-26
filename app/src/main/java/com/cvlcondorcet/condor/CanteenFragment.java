@@ -38,7 +38,7 @@ public class CanteenFragment extends Fragment {
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        getActivity().setTitle("Menu de la cantine");
+        getActivity().setTitle(getString(R.string.canteen_menu));
 
         this.view = (PDFView) view.findViewById(R.id.pdfView);
         file = new File(getActivity().getFilesDir().toString() + "/" + "menus-du-6-au-30-juin-2017.pdf");

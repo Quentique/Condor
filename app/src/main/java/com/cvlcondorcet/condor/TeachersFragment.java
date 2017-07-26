@@ -39,7 +39,7 @@ public class TeachersFragment extends Fragment
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
        // setTitle("Absences des profs");
-        getActivity().setTitle("Absence des profs");
+        getActivity().setTitle(getString(R.string.teachers_absences));
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
         adapter = new RecyclerViewAdapterProfs(getActivity(),null, R.layout.profs_one_day_layout);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_profs);
@@ -52,10 +52,10 @@ public class TeachersFragment extends Fragment
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.header);
-        ((TextView) layout.findViewById(R.id.profs)).setText("Professeur");
-        ((TextView) layout.findViewById(R.id.date)).setText("Date");
-        ((TextView) layout.findViewById(R.id.morning)).setText("Matin");
-        ((TextView) layout.findViewById(R.id.afternoon)).setText("Aprem");
+        ((TextView) layout.findViewById(R.id.profs)).setText(R.string.teacher);
+        ((TextView) layout.findViewById(R.id.date)).setText(R.string.date);
+        ((TextView) layout.findViewById(R.id.morning)).setText(R.string.morning);
+        ((TextView) layout.findViewById(R.id.afternoon)).setText(R.string.afternoon);
         getLoaderManager().initLoader(1, null, this);
     }
    /* @Override

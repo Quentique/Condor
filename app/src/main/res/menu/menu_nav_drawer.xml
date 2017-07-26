@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item android:title="Lycée">
+        <item android:title="@string/high_school">
             <menu>
                 <group android:checkableBehavior="single">
         <item android:id="@+id/nav_posts"
             android:icon="@drawable/ic_announcement_black_24dp"
-            android:title="Actualités">
+            android:title="@string/news">
         </item>
 
         <item android:id="@+id/nav_teachers"
             android:icon="@drawable/ic_person_outline_24px"
-            android:title="Absences"></item>
+            android:title="@string/absences"></item>
 
         <item android:id="@+id/nav_canteen"
             android:icon="@drawable/ic_restaurant_black_24dp"
-            android:title="Cantine">
+            android:title="@string/canteen">
 
         </item>
                 </group>
         </menu>
         </item>
-        <item android:title="Infos transports">
+        <item android:title="@string/transport_info">
             <menu>
                 <group android:checkableBehavior="single">
         <item android:id="@+id/nav_train"
             android:icon="@drawable/ic_train_black_24dp"
-            android:title="SNCF"></item>
+            android:title="@string/sncf"></item>
 
         <item android:id="@+id/nav_bus"
             android:icon="@drawable/ic_directions_bus_black_24dp"
-            android:title="Optymo"></item>
+            android:title="@string/optymo"></item>
                 </group>
             </menu>
         </item>
-        <item android:title="Autres">
+        <item android:title="@string/others">
             <menu>
                 <group android:checkableBehavior="single">
         <item android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Paramètres"></item>
+            android:title="@string/settings"></item>
     </group>
             </menu>
         </item>

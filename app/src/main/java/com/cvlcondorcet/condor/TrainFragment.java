@@ -81,6 +81,7 @@ public class TrainFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
+        getActivity().setTitle(R.string.sncf);
         web_view = view.findViewById(R.id.web_view_train);
         bar = (ProgressBar) view.findViewById(R.id.loading_layout);
         web_view.setWebViewClient(new WebViewClient() {

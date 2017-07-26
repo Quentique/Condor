@@ -46,7 +46,7 @@ public class Sync extends IntentService {
     public void onHandleIntent(Intent i)
     {
         int icon = R.mipmap.ic_launcher;
-        CharSequence tickerText = "Condor's synchronization";
+        CharSequence tickerText = getString(R.string.sync_notif_name);
         long when = System.currentTimeMillis();
         NotificationManager manager;
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -83,7 +83,7 @@ public class Sync extends IntentService {
             db.updateProfs(profs);
             db.beginSync();
                 noti.setProgress(100, 100, false);
-                noti.setContentText("Synchronization ended");
+                noti.setContentText(getString(R.string.sync_end));
                 manager.notify(1, noti.build());
             db.close();
         } catch (SQLException e) {
