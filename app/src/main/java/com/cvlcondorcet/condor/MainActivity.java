@@ -145,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_bus:
                 fragmentClass = BusFragment.class;
                 break;
+            case R.id.nav_sync:
+                fragmentClass = SyncingFragment.class;
+                break;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();

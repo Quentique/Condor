@@ -3,7 +3,7 @@
     package="com.cvlcondorcet.condor">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -22,9 +22,9 @@
 
         <service
             android:name=".Sync"
-            android:label="Synchronisation - Condor" />
+            android:label="Condor sync" />
 
-        <activity android:name=".PostViewerActivity"/>
+        <activity android:name=".PostViewerActivity" />
     </application>
 
 </manifest>

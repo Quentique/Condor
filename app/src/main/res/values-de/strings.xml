@@ -29,6 +29,8 @@
     <string name="others">Andere</string>
     <string name="end_sync_ticker">Synchronisierung beendet</string>
     <string name="sync_start_ticker">Anfang der Synchronisierung</string>
+    <string name="sync_forbidden">Your settings don\'t allow syncing.</string>
+    <string name="sync_ready">Click to begin syncing</string>
 
     <string-array
         name="language_choose">

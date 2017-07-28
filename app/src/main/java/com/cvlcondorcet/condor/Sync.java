@@ -129,6 +129,7 @@ public class Sync extends IntentService {
                 manager.notify(1, noti.build());
             db.close();
         } catch (SQLException e) {
+            progress = -2;
             e.printStackTrace();
         }
 
@@ -161,6 +162,8 @@ public class Sync extends IntentService {
              hello = connection.getResponseMessage();
             Log.i("NETWORK ERROR", hello);
         } catch (IOException e) {
+            progress = -1;
+            handler.post(sendProgress);
             e.printStackTrace();
         }
         try {

@@ -32,17 +32,17 @@
     <string name="language">Language</string>
     <string name="end_sync_ticker">Sync ended</string>
     <string name="sync_start_ticker">Sync started</string>
+    <string name="sync_forbidden">Your settings don\'t allow syncing.</string>
+    <string name="sync_ready">Click to begin syncing</string>
 
-    <string-array
-        name="language_choose">
+    <string-array name="language_choose">
         <item>System language</item>
         <item>French</item>
         <item>English</item>
         <item>German</item>
     </string-array>
 
-    <string-array
-        name="language_choose_values">
+    <string-array name="language_choose_values">
         <item>default</item>
         <item>fr</item>
         <item>en</item>

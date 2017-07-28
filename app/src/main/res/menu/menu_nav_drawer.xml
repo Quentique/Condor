@@ -40,6 +40,9 @@
         <item android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black_24dp"
             android:title="@string/settings"></item>
+                    <item android:id="@+id/nav_sync"
+                        android:icon="@drawable/ic_sync_black_24dp"
+                        android:title="Sync"></item>
     </group>
             </menu>
         </item>
