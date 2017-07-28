@@ -27,6 +27,8 @@
     <string name="hello_blank_fragment">Bonjour fragment blanc</string>
     <string name="select_language_title">Sélectionnez la langue</string>
     <string name="language">Langue</string>
+    <string name="end_sync_ticker">Synchronisation terminée</string>
+    <string name="sync_start_ticker">Début de la synchronisation</string>
 
     <string-array
         name="language_choose">

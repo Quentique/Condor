@@ -16,8 +16,8 @@
     <string name="canteen_menu">Canteen menu</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
-    <string name="cat_select">Select catogories</string>
-    <string name="sync_notif_name">Condor\'s synchronization</string>
+    <string name="cat_select">Select categories</string>
+    <string name="sync_notif_name">Condor synchronization</string>
     <string name="sync_end">Synchronization ended</string>
     <string name="teachers_absences">Teacher absences</string>
     <string name="teacher">Teacher</string>
@@ -30,6 +30,8 @@
     <string name="sync_mobile_data_title">Mobile data use</string>
     <string name="select_language_title">Select language</string>
     <string name="language">Language</string>
+    <string name="end_sync_ticker">Sync ended</string>
+    <string name="sync_start_ticker">Sync started</string>
 
     <string-array
         name="language_choose">

@@ -8,7 +8,7 @@
     <string name="search">Suche</string>
     <string name="select_language_title">Wählen Sie die Sprache aus</string>
     <string name="teacher">Lehrer</string>
-    <string name="teachers_absences">Abwesenheitens Lehrer</string>
+    <string name="teachers_absences">Abwesenheiten Lehrer</string>
     <string name="transport_info">Verkehrsinfo</string>
     <string name="cancel">Abbrechen</string>
     <string name="absences">Abwesenheiten</string>
@@ -27,6 +27,8 @@
     <string name="sync_mobile_data_title">Nutzung mobilen Daten</string>
     <string name="sync_notif_name">Condor\'s Synchronisierung</string>
     <string name="others">Andere</string>
+    <string name="end_sync_ticker">Synchronisierung beendet</string>
+    <string name="sync_start_ticker">Anfang der Synchronisierung</string>
 
     <string-array
         name="language_choose">

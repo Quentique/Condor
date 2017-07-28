@@ -1,6 +1,5 @@
 package com.cvlcondorcet.condor;
 
-import android.annotation.TargetApi;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -8,6 +7,7 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -32,18 +32,20 @@ import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 
 public class Sync extends IntentService {
 
+    public  static String broadcast_URI = "com.cvlcondorcet.condor.broadcast.progress";
+
     private static String base_URL = "http://10.0.2.2:81/";
     private static String GEN_URL = "read.php";
     private static String POSTS_URL = "posts.php";
     private static String PROFS_URL = "profs.php";
 
     private Database db = new Database(this);
+    private final Handler handler = new Handler();
 
     public Sync() {
         super("Sync");
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
     @Override
     public void onHandleIntent(Intent i)
     {
@@ -65,9 +67,9 @@ public class Sync extends IntentService {
                 noti.setContentTitle("Synchronization")
                 .setContentText(tickerText)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setVisibility(VISIBILITY_PUBLIC)
                 .setOngoing(true)
-                .setTicker("Condor sync started");
+                .setTicker(getString(R.string.sync_start_ticker));
+        if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(VISIBILITY_PUBLIC); }
 
         noti.setProgress(0, 0, true);
 
@@ -105,9 +107,11 @@ public class Sync extends IntentService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        noti.setTimeoutAfter(20000);
+        
+        if (Build.VERSION.SDK_INT >= 26) { noti.setTimeoutAfter(20000); }
         noti.setOngoing(false);
         noti.setAutoCancel(true);
+        noti.setTicker(getString(R.string.end_sync_ticker));
         manager.notify(2, noti.build());
         //manager.cancel(1);
         stopSelf();
@@ -119,7 +123,7 @@ public class Sync extends IntentService {
         JSONArray tab = new JSONArray();
 
         try{
-            String machin = "";
+            String machin;
             if (content == GEN_URL) {machin = db.timestamp("timestamp"); } else { machin = db.timestamp("last_sync"); }
             url = new URL(base_URL + content + "?timestamp=" + machin);
         } catch (MalformedURLException e) {
@@ -127,8 +131,11 @@ public class Sync extends IntentService {
         }
 
         HttpURLConnection connection = null;
+        String hello ="";
         try {
             connection = (HttpURLConnection) url.openConnection();
+             hello = connection.getResponseMessage();
+            Log.i("NETWORK ERROR", hello);
         } catch (IOException e) {
             e.printStackTrace();
         }
