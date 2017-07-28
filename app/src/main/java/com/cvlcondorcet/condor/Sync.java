@@ -41,20 +41,42 @@ public class Sync extends IntentService {
 
     private Database db = new Database(this);
     private final Handler handler = new Handler();
+    private NotificationManager manager;
+    private Notification.Builder noti;
+
+    Intent intent;
+
+    private int progress;
+
+    private Runnable sendProgress = new Runnable() {
+        @Override
+        public void run() {
+            displayProgress();
+            handler.postDelayed(this, 5000);
+        }
+    };
 
     public Sync() {
         super("Sync");
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        intent = new Intent(broadcast_URI);
+    }
+    @Override
+    public void onStart(Intent intent, int startId) {
+        handler.removeCallbacks(sendProgress);
+        handler.postDelayed(sendProgress, 500);
+    }
+    @Override
     public void onHandleIntent(Intent i)
     {
         int icon = R.mipmap.ic_launcher;
         CharSequence tickerText = getString(R.string.sync_notif_name);
         long when = System.currentTimeMillis();
-        NotificationManager manager;
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Notification.Builder noti;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", 1);
             manager.createNotificationChannel(chanell);
@@ -77,29 +99,31 @@ public class Sync extends IntentService {
 
         try {
             db.open();
-                noti.setProgress(100, 5, false);
-                manager.notify(1, noti.build());
-
             JSONArray gen = get(GEN_URL);
             Log.i("SYNC", "GENERAL SYNC");
             ArrayList liste;
             liste = db.updateGen(gen);
+            changeProgress(20);
+            progress = 20;
             for (int j = 0 ; j < liste.size() ; j++ ) {
+                progress += 20/liste.size();
+                changeProgress(progress);
                 downloadFile(liste.get(j).toString());
                 Log.i("SYNC", "DOWNLOADING FILE");
             }
-                noti.setProgress(100, 30, false);
-                manager.notify(1, noti.build());
             JSONArray posts = get(POSTS_URL);
             Log.i("SYNC", "POSTS SYNC");
             db.updatePosts(posts);
-                noti.setProgress(100, 75, false);
-                manager.notify(1, noti.build());
+            progress = 60;
+            changeProgress(progress);
             JSONArray profs = get(PROFS_URL);
             Log.i("SYNC", "PROFS SYNC");
+            progress = 80;
+            changeProgress(progress);
             db.updateProfs(profs);
             db.beginSync();
             Log.i("SYNC", "END SYNC");
+            progress = 100;
                 noti.setProgress(100, 100, false);
                 noti.setContentText(getString(R.string.sync_end));
                 manager.notify(1, noti.build());
@@ -107,7 +131,7 @@ public class Sync extends IntentService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         if (Build.VERSION.SDK_INT >= 26) { noti.setTimeoutAfter(20000); }
         noti.setOngoing(false);
         noti.setAutoCancel(true);
@@ -184,5 +208,15 @@ public class Sync extends IntentService {
             return false;
         }
         return true;
+    }
+
+    private void changeProgress(int newProgress) {
+        noti.setProgress(100, newProgress, false);
+        manager.notify(1, noti.build());
+    }
+
+    private void displayProgress() {
+        intent.putExtra("progress", progress);
+        sendBroadcast(intent);
     }
 }
