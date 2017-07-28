@@ -24,6 +24,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
+
 /**
  * Created by Quentin DE MUYNCK on 12/07/2017.
  */
@@ -50,13 +52,22 @@ public class Sync extends IntentService {
         long when = System.currentTimeMillis();
         NotificationManager manager;
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", 1);
-        manager.createNotificationChannel(chanell);
+        Notification.Builder noti;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", 1);
+            manager.createNotificationChannel(chanell);
+            noti = new Notification.Builder(this, "channel1");
+        } else {
+            noti = new Notification.Builder(this);
+        }
 
-        Notification.Builder noti = new Notification.Builder(this, "channel1")
-                .setContentTitle("Synchronization")
+
+                noti.setContentTitle("Synchronization")
                 .setContentText(tickerText)
-                .setSmallIcon(R.mipmap.ic_launcher);
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setVisibility(VISIBILITY_PUBLIC)
+                .setOngoing(true)
+                .setTicker("Condor sync started");
 
         noti.setProgress(0, 0, true);
 
@@ -68,20 +79,25 @@ public class Sync extends IntentService {
                 manager.notify(1, noti.build());
 
             JSONArray gen = get(GEN_URL);
+            Log.i("SYNC", "GENERAL SYNC");
             ArrayList liste;
             liste = db.updateGen(gen);
             for (int j = 0 ; j < liste.size() ; j++ ) {
                 downloadFile(liste.get(j).toString());
+                Log.i("SYNC", "DOWNLOADING FILE");
             }
                 noti.setProgress(100, 30, false);
                 manager.notify(1, noti.build());
             JSONArray posts = get(POSTS_URL);
+            Log.i("SYNC", "POSTS SYNC");
             db.updatePosts(posts);
                 noti.setProgress(100, 75, false);
                 manager.notify(1, noti.build());
             JSONArray profs = get(PROFS_URL);
+            Log.i("SYNC", "PROFS SYNC");
             db.updateProfs(profs);
             db.beginSync();
+            Log.i("SYNC", "END SYNC");
                 noti.setProgress(100, 100, false);
                 noti.setContentText(getString(R.string.sync_end));
                 manager.notify(1, noti.build());
@@ -89,8 +105,10 @@ public class Sync extends IntentService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        noti.setTimeoutAfter(5000);
-        manager.notify(1, noti.build());
+        noti.setTimeoutAfter(20000);
+        noti.setOngoing(false);
+        noti.setAutoCancel(true);
+        manager.notify(2, noti.build());
         //manager.cancel(1);
         stopSelf();
     }
@@ -125,6 +143,7 @@ public class Sync extends IntentService {
         } finally {
             connection.disconnect();
         }
+        Log.i("E", answer);
         try {
             tab = new JSONArray(answer);
         } catch (JSONException e) {

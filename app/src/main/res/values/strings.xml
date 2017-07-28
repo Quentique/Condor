@@ -5,7 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sncf" translatable="false">SNCF</string>
     <string name="optymo" translatable="false">Optymo</string>
-    <string name="others">Others</string>
+    <string name="others">Other</string>
     <string name="settings">Settings</string>
     <string name="transport_info">Transport info</string>
     <string name="canteen">Canteen</string>

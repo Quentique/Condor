@@ -26,7 +26,7 @@
     <string name="sync_mobile_data">Mobile Daten nutzen, um zu synchronisieren.</string>
     <string name="sync_mobile_data_title">Nutzung mobilen Daten</string>
     <string name="sync_notif_name">Condor\'s Synchronisierung</string>
-    <string name="others">Anders</string>
+    <string name="others">Andere</string>
 
     <string-array
         name="language_choose">
