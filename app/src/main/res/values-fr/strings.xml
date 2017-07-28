@@ -29,8 +29,8 @@
     <string name="language">Langue</string>
     <string name="end_sync_ticker">Synchronisation terminée</string>
     <string name="sync_start_ticker">Début de la synchronisation</string>
-    <string name="sync_forbidden">Your settings don\'t allow syncing.</string>
-    <string name="sync_ready">Click to begin syncing</string>
+    <string name="sync_forbidden">Vos paramètres ne permettent pas de synchroniser.</string>
+    <string name="sync_ready">Cliquez pour commencer la synchronisation</string>
 
     <string-array
         name="language_choose">
