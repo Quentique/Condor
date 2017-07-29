@@ -1,5 +1,6 @@
 package com.cvlcondorcet.condor;
 
+import android.annotation.TargetApi;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -39,6 +40,8 @@ public class Sync extends IntentService {
     private static String POSTS_URL = "posts.php";
     private static String PROFS_URL = "profs.php";
 
+    private boolean networkError = false;
+
     private Database db = new Database(this);
     private final Handler handler = new Handler();
     private NotificationManager manager;
@@ -52,27 +55,42 @@ public class Sync extends IntentService {
         @Override
         public void run() {
             displayProgress();
-            handler.postDelayed(this, 5000);
+            handler.postDelayed(this, 2000);
         }
     };
 
     public Sync() {
         super("Sync");
+        Log.i("EEEE", "SERVICE CONSTRUCTED");
     }
 
-    @Override
+   @Override
     public void onCreate() {
         super.onCreate();
         intent = new Intent(broadcast_URI);
+        Log.i("EEEE", "SERVICE CONSTRUCTED");
     }
     @Override
     public void onStart(Intent intent, int startId) {
         handler.removeCallbacks(sendProgress);
         handler.postDelayed(sendProgress, 500);
+        Log.i("EEEE", "SERVICE CONSTRUCTED");
+        super.onStart(intent, startId);
     }
+    @Override
+    public void onDestroy() {
+        progress = -4;
+        handler.post(sendProgress);
+
+        stopForeground(true);
+        //super.onDestroy();
+
+    }
+    @TargetApi(Build.VERSION_CODES.O)
     @Override
     public void onHandleIntent(Intent i)
     {
+        Log.i("NOTI", "DDDDDONE");
         int icon = R.mipmap.ic_launcher;
         CharSequence tickerText = getString(R.string.sync_notif_name);
         long when = System.currentTimeMillis();
@@ -94,51 +112,60 @@ public class Sync extends IntentService {
         if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(VISIBILITY_PUBLIC); }
 
         noti.setProgress(0, 0, true);
+        Log.i("NOTI", "DONE");
 
         startForeground(1, noti.build());
-
         try {
             db.open();
+        } catch( SQLException e) { stopSelf(); return; }
+
             JSONArray gen = get(GEN_URL);
-            Log.i("SYNC", "GENERAL SYNC");
-            ArrayList liste;
-            liste = db.updateGen(gen);
-            changeProgress(20);
-            progress = 20;
-            for (int j = 0 ; j < liste.size() ; j++ ) {
-                progress += 20/liste.size();
+            if (!networkError) {
+                try {
+
+                Log.i("SYNC", "GENERAL SYNC");
+                ArrayList liste;
+                liste = db.updateGen(gen);
+                changeProgress(20);
+                progress = 20;
+                for (int j = 0; j < liste.size(); j++) {
+                    progress += 20 / liste.size();
+                    changeProgress(progress);
+                    downloadFile(liste.get(j).toString());
+                    Log.i("SYNC", "DOWNLOADING FILE");
+                }
+                JSONArray posts = get(POSTS_URL);
+                Log.i("SYNC", "POSTS SYNC");
+                db.updatePosts(posts);
+                progress = 60;
                 changeProgress(progress);
-                downloadFile(liste.get(j).toString());
-                Log.i("SYNC", "DOWNLOADING FILE");
-            }
-            JSONArray posts = get(POSTS_URL);
-            Log.i("SYNC", "POSTS SYNC");
-            db.updatePosts(posts);
-            progress = 60;
-            changeProgress(progress);
-            JSONArray profs = get(PROFS_URL);
-            Log.i("SYNC", "PROFS SYNC");
-            progress = 80;
-            changeProgress(progress);
-            db.updateProfs(profs);
-            db.beginSync();
-            Log.i("SYNC", "END SYNC");
-            progress = 100;
+                JSONArray profs = get(PROFS_URL);
+                Log.i("SYNC", "PROFS SYNC");
+                progress = 80;
+                changeProgress(progress);
+                db.updateProfs(profs);
+                db.beginSync();
+                Log.i("SYNC", "END SYNC");
+                progress = 100;
                 noti.setProgress(100, 100, false);
                 noti.setContentText(getString(R.string.sync_end));
                 manager.notify(1, noti.build());
-            db.close();
-        } catch (SQLException e) {
-            progress = -2;
-            e.printStackTrace();
-        }
+                db.close();
+            } catch(SQLException e){
+                progress = -2;
+                e.printStackTrace();
+            }
 
-        if (Build.VERSION.SDK_INT >= 26) { noti.setTimeoutAfter(20000); }
-        noti.setOngoing(false);
-        noti.setAutoCancel(true);
-        noti.setTicker(getString(R.string.end_sync_ticker));
-        manager.notify(2, noti.build());
-        //manager.cancel(1);
+            if (Build.VERSION.SDK_INT >= 26) {
+                noti.setTimeoutAfter(20000);
+            }
+            noti.setOngoing(false);
+            noti.setAutoCancel(true);
+            noti.setTicker(getString(R.string.end_sync_ticker));
+            manager.notify(2, noti.build());
+            //manager.cancel(1);
+
+        }
         stopSelf();
     }
 
@@ -164,6 +191,8 @@ public class Sync extends IntentService {
         } catch (IOException e) {
             progress = -1;
             handler.post(sendProgress);
+            stopForeground(true);
+            networkError = true;
             e.printStackTrace();
         }
         try {
@@ -218,7 +247,7 @@ public class Sync extends IntentService {
         manager.notify(1, noti.build());
     }
 
-    private void displayProgress() {
+   private void displayProgress() {
         intent.putExtra("progress", progress);
         sendBroadcast(intent);
     }
