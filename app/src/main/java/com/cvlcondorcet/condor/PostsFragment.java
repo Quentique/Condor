@@ -72,7 +72,7 @@ public class PostsFragment extends Fragment
         spinner = lay.findViewById(R.id.spinner_post);
         return inflater.inflate(R.layout.fragment_posts, parent, false);
     }
-
+// Pattern for RSS date "EEE, d MMM yyyy HH:mm:ss Z"
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.news);
@@ -124,7 +124,7 @@ public class PostsFragment extends Fragment
         });
         /*item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
 
-            @Override
+            @Override-&é+a
             public boolean onMenuItemActionExpand(MenuItem item) {
                 // TODO Auto-generated method stub
                 return true;

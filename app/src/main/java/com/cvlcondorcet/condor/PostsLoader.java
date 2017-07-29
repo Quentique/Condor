@@ -5,6 +5,13 @@ import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +32,21 @@ public class PostsLoader extends AsyncTaskLoader<List<Post>> {
         db.open();
         List<Post> data = db.getPosts();
         db.close();
+        String answer = "";
+        List<Post> rssFeed = new ArrayList<>();
+        try {
+            Document doc = Jsoup.connect(Sync.rssURL).get();
+            Elements rss_articles = doc.select("item");
+            for (Element element : rss_articles) {
+                Post post = new Post(0,
+                        element.select("title").first().text(),
+                        element.select("")
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Log.i("HELLO", "Background done2");
         return data;
     }

@@ -40,6 +40,8 @@ public class Sync extends IntentService {
     private static String POSTS_URL = "posts.php";
     private static String PROFS_URL = "profs.php";
 
+    public static String rssURL = "http://www.lyc-condorcet.ac-besancon.fr/feed/";
+
     private boolean networkError = false;
 
     private Database db = new Database(this);
