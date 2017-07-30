@@ -8,6 +8,9 @@ import android.util.Log;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Entities;
+import org.jsoup.parser.Parser;
+import org.jsoup.safety.Whitelist;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -35,14 +38,25 @@ public class PostsLoader extends AsyncTaskLoader<List<Post>> {
         String answer = "";
         List<Post> rssFeed = new ArrayList<>();
         try {
-            Document doc = Jsoup.connect(Sync.rssURL).get();
+            Document doc = Jsoup.connect(Sync.rssURL).postDataCharset("UTF-8").get();
+            doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml).prettyPrint(true);
             Elements rss_articles = doc.select("item");
             for (Element element : rss_articles) {
-                Post post = new Post(0,
+                //Date date = Post.getDateObject(element.select("pubDate").first().text(), "EEE, d MMM yyyy HH:mm:ss Z");
+                Post post = new Post("0",
                         element.select("title").first().text(),
-                        element.select("")
+                        Parser.unescapeEntities(Jsoup.clean(element.select("description").first().text(), Whitelist.simpleText()), false),
+                        "",
+                        Post.formatDate(element.select("pubDate").first().text(), "EEE, d MMM yyyy HH:mm:ss Z", "yyyy-MM-dd hh:mm:ss"),
+                        "[\"RSS\"]");
+                rssFeed.add(post);
+                //Log.i("EEEE", element.select("description").first().html());
+                Log.i("EEEE", Jsoup.clean(element.select("description").first().text(), Whitelist.none()));
+               // Log.i("EEEE", element.select("description").first().data());
+
 
             }
+            data.addAll(rssFeed);
         } catch (IOException e) {
             e.printStackTrace();
         }

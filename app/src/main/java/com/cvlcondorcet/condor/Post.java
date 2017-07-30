@@ -4,13 +4,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Quentin DE MUYNCK on 18/07/2017.
  */
 
 public class Post implements Comparable<Post> {
-    private String name, content, id, picture, date, formatedDate, formatedCategories;
+    private String name, content, id, picture, date, formatedDate, formatedCategories, link;
     private ArrayList<String> categories;
 
     public Post(String id, String name, String content, String picture, String date, String categories) {
@@ -22,6 +23,7 @@ public class Post implements Comparable<Post> {
         this.formatedDate = formatDate(date, "yyyy-MM-dd hh:mm:ss", "dd/MM/yyyy");
         this.categories = Database.parseCategories(categories);
         this.formatedCategories = formatCategories();
+        this.link = "";
     }
 
     public String getId() { return id; }
@@ -32,6 +34,9 @@ public class Post implements Comparable<Post> {
     public String getFormatedDate() { return formatedDate; }
     public ArrayList<String> getCategories() { return categories;}
     public String getFormatedCategories() { return formatedCategories; }
+    public String getLink() { return link; }
+
+    public void setLink(String link) { this.link = link; }
 
     @Override
     public int compareTo(Post postToCompare) {
@@ -40,16 +45,16 @@ public class Post implements Comparable<Post> {
         return actualDate.compareTo(newDate);
     }
 
-    public String formatDate(String toParse, String oldFormat, String toFormat) {
+    public static String formatDate(String toParse, String oldFormat, String toFormat) {
         try {
             SimpleDateFormat format1 = new SimpleDateFormat(oldFormat);
             Date pdate = format1.parse(toParse);
-            SimpleDateFormat format2 = new SimpleDateFormat(toFormat);
+            SimpleDateFormat format2 = new SimpleDateFormat(toFormat, Locale.getDefault());
             return format2.format(pdate);
         } catch (ParseException e ) { e.printStackTrace(); return ""; }
     }
 
-    public Date getDateObject(String obj, String format) {
+    public static Date getDateObject(String obj, String format) {
         try {
             return new SimpleDateFormat(format).parse(obj);
         } catch (ParseException e) { e.printStackTrace(); return null; }
