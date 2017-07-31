@@ -49,6 +49,7 @@ public class PostsLoader extends AsyncTaskLoader<List<Post>> {
                         "",
                         Post.formatDate(element.select("pubDate").first().text(), "EEE, d MMM yyyy HH:mm:ss Z", "yyyy-MM-dd hh:mm:ss"),
                         "[\"RSS\"]");
+                post.setLink(element.select("link").first().text());
                 rssFeed.add(post);
                 //Log.i("EEEE", element.select("description").first().html());
                 Log.i("EEEE", Jsoup.clean(element.select("description").first().text(), Whitelist.none()));

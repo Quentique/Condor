@@ -203,11 +203,13 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
             int pos = getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION) {
                 Post post = filteredList.get(pos);
-                if (post.getId() != "0") {
                     Intent intent = new Intent(context, PostViewerActivity.class);
                     intent.putExtra("id", post.getId());
-                    context.startActivity(intent);
+                if (post.getId() == "0") {
+                    intent.putExtra("link", post.getLink());
                 }
+                    context.startActivity(intent);
+
             }
         }
     }

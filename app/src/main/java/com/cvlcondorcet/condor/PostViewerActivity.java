@@ -5,12 +5,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
 
 public class PostViewerActivity extends AppCompatActivity {
 
@@ -32,6 +38,12 @@ public class PostViewerActivity extends AppCompatActivity {
         bar = (Toolbar) findViewById(R.id.toolbar_viewer_post);
         progress = (ProgressBar) findViewById(R.id.loading_layout);
         progress.setVisibility(View.VISIBLE);
+        view.getSettings().setSupportZoom(true);
+        view.getSettings().setJavaScriptEnabled(true);
+        view.getSettings().setLoadWithOverviewMode(true);
+        view.getSettings().setUseWideViewPort(true);
+       // view.getSettings().setDefaultFontSize(30);
+        view.getSettings().setTextZoom(250);
         view.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView webview, String url) {
@@ -41,8 +53,11 @@ public class PostViewerActivity extends AppCompatActivity {
         setSupportActionBar(bar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String id = getIntent().getStringExtra("id");
-        if (id != "0") {
+        Log.i("ID", "'" + id +"'");
+        if (!id.equals("0")) {
             new Loading().execute("id", id);
+        } else {
+            new LoadingWeb().execute(getIntent().getStringExtra("link"));
         }
 
 
@@ -55,6 +70,30 @@ public class PostViewerActivity extends AppCompatActivity {
             startActivity(relaunch);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class LoadingWeb extends AsyncTask<String, Void, Void> {
+        String toDisplay = "";
+        protected Void doInBackground(String... args) {
+            try {
+                Document doc = Jsoup.connect(args[0]).postDataCharset("UTF-8").get();
+               // toDisplay = doc.select(".post").first().html();
+               /* Elements elements = new Elements();
+                Element el = doc.select("head").first();
+                Element el2 = doc.select(".post").first();
+                elements.add(el);
+                elements.add(el2);*/
+               //toDisplay = doc.select("head").first().html();
+                toDisplay = "<link rel=\"stylesheet\" href=\"style.css\"/>";
+                toDisplay += doc.select(".post").first().html();
+
+            } catch (IOException e) {}
+            return null;
+        }
+
+        protected void onPostExecute(Void nothing) {
+            view.loadDataWithBaseURL("file:///android_asset/", toDisplay, "text/html", "utf-8", "");
+        }
     }
 
     private class Loading extends AsyncTask<String, Void, Void> {
