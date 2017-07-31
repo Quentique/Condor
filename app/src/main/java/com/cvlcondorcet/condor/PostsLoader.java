@@ -25,11 +25,13 @@ public class PostsLoader extends AsyncTaskLoader<List<Post>> {
     private List<Post> list;
     private Database db;
     private boolean rssAllowed;
+    private boolean connection;
 
     public PostsLoader(Context ctx, boolean rssAllowed) {
         super(ctx);
         db = new Database(ctx);
         this.rssAllowed = rssAllowed;
+        this.connection = MainActivity.allowConnect(ctx);
     }
 
     @Override
@@ -38,7 +40,7 @@ public class PostsLoader extends AsyncTaskLoader<List<Post>> {
         List<Post> data = db.getPosts();
         db.close();
         String answer = "";
-        if (rssAllowed) {
+        if (rssAllowed && connection) {
             List<Post> rssFeed = new ArrayList<>();
             try {
                 Document doc = Jsoup.connect(Sync.rssURL).postDataCharset("UTF-8").get();

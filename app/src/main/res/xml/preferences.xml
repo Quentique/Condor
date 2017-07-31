@@ -20,7 +20,7 @@
         android:defaultValue="default"/>
     <CheckBoxPreference
         android:key="rss_display"
-        android:title="Show RSS"
-        android:summary="Display RSS feed from the high-school's official website."
+        android:title="@string/rss_display_title"
+        android:summary="@string/rss_display_summary"
         android:defaultValue="true"/>
 </PreferenceScreen>

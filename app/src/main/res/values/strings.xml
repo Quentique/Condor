@@ -32,9 +32,11 @@
     <string name="language">Language</string>
     <string name="end_sync_ticker">Sync ended</string>
     <string name="sync_start_ticker">Sync started</string>
-    <string name="sync_forbidden">Your settings don\'t allow syncing.</string>
+    <string name="sync_forbidden">Your settings don\'t allow syncing or you don\'t have internet connection.</string>
     <string name="sync_ready">Click to begin syncing</string>
     <string name="all_category">All</string>
+    <string name="rss_display_summary">Display RSS feed from the high-school\'s official website.</string>
+    <string name="rss_display_title">Show RSS</string>
 
     <string-array name="language_choose">
         <item>System language</item>

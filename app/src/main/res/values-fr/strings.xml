@@ -29,7 +29,7 @@
     <string name="language">Langue</string>
     <string name="end_sync_ticker">Synchronisation terminée</string>
     <string name="sync_start_ticker">Début de la synchronisation</string>
-    <string name="sync_forbidden">Vos paramètres ne permettent pas de synchroniser.</string>
+    <string name="sync_forbidden">Vos paramètres ne permettent pas la synchronisation, ou vous n\'avez pas de connection.</string>
     <string name="sync_ready">Cliquez pour commencer la synchronisation</string>
     <string name="all_category">Tout</string>
 
@@ -47,4 +47,6 @@
         <item>fr</item>
         <item>en</item>
     </string-array>
+    <string name="rss_display_title">Afficher RSS</string>
+    <string name="rss_display_summary">Afficher le flux RSS du site officiel du lycée.</string>
 </resources>
