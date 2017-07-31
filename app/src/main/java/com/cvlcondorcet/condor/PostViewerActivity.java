@@ -1,6 +1,7 @@
 package com.cvlcondorcet.condor;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+
+import static android.view.View.GONE;
 
 public class PostViewerActivity extends AppCompatActivity {
 
@@ -47,7 +50,13 @@ public class PostViewerActivity extends AppCompatActivity {
         view.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView webview, String url) {
-                progress.setVisibility(View.GONE);
+                progress.setVisibility(GONE);
+            }
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(browser);
+                return true;
             }
         });
         setSupportActionBar(bar);
@@ -93,6 +102,8 @@ public class PostViewerActivity extends AppCompatActivity {
 
         protected void onPostExecute(Void nothing) {
             view.loadDataWithBaseURL("file:///android_asset/", toDisplay, "text/html", "utf-8", "");
+            title.setVisibility(GONE);
+            date.setVisibility(GONE);
         }
     }
 

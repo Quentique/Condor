@@ -16,9 +16,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import java.util.List;
+
+import static android.view.View.GONE;
 
 public class PostsFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Post>>, SearchView.OnQueryTextListener, MultiSelectionSpinner.OnMultipleItemsSelectedListener {
@@ -26,6 +29,7 @@ public class PostsFragment extends Fragment
     private RecyclerView recycler;
     private RecyclerViewAdapterPosts adapter;
     private MultiSelectionSpinner spinner;
+    private ProgressBar progress;
     private Database db;
     private android.support.v7.app.ActionBar bar;
     private Task loader;
@@ -77,6 +81,8 @@ public class PostsFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.news);
         bar = ((MainActivity) getActivity()).getSupportActionBar();
+        progress = view.findViewById(R.id.loading_layout);
+        progress.setVisibility(View.VISIBLE);
         recycler = (RecyclerView) view.findViewById(R.id.recycler_posts);
         adapter = new RecyclerViewAdapterPosts(getActivity(), null, R.layout.posts_layout);
         recycler.setAdapter(adapter);
@@ -100,6 +106,7 @@ public class PostsFragment extends Fragment
     public void onLoadFinished(Loader<List<Post>> loader, List<Post> data) {
         adapter.setData(data);
         Log.i("HELLO", "LOAD FINISHED");
+        progress.setVisibility(GONE);
     }
 
     @Override
