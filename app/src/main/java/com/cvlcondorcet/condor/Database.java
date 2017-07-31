@@ -196,7 +196,6 @@ public class Database {
             cursor.moveToFirst();
             results = parseCategories(cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
         }
-        results.add(0, "Tout");
         return results;
     }
 

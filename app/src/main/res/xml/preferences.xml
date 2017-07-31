@@ -3,11 +3,13 @@
     <CheckBoxPreference
         android:key="mobile_data_usage"
         android:title="@string/sync_mobile_data_title"
-        android:summary="@string/sync_mobile_data"/>
+        android:summary="@string/sync_mobile_data"
+        android:defaultValue="false"/>
     <CheckBoxPreference
         android:key="sync_app_start"
         android:title="@string/sync_app_start_title"
-        android:summary="@string/sync_app_start"/>
+        android:summary="@string/sync_app_start"
+        android:defaultValue="true"/>
 
     <ListPreference
         android:key="language"
@@ -16,4 +18,9 @@
         android:entries="@array/language_choose"
         android:entryValues="@array/language_choose_values"
         android:defaultValue="default"/>
+    <CheckBoxPreference
+        android:key="rss_display"
+        android:title="Show RSS"
+        android:summary="Display RSS feed from the high-school's official website."
+        android:defaultValue="true"/>
 </PreferenceScreen>

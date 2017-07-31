@@ -57,7 +57,6 @@ public class SyncingFragment extends Fragment {
                     message.setText("Syncing general settings...");
                     servicee = new Intent(getActivity(), Sync.class);
                     getActivity().startService(servicee);
-
                 }
             }
         });
@@ -89,14 +88,15 @@ public class SyncingFragment extends Fragment {
         String text ="";
         switch (progress) {
             case -1:
-                getActivity().stopService(servicee);
-                break;
-            case -4:
+               // getActivity().stopService(servicee);
                 text = "Network error: server is unreachable";
                 button.setImageResource(R.drawable.ic_sync_problem_black_300dp);
-                button.setVisibility(VISIBLE);
                 bar.setVisibility(GONE);
+                button.setVisibility(VISIBLE);
                 sync = false;
+                break;
+            case -4:
+
                 break;
             case 20:
                 text = "Downloading files...";

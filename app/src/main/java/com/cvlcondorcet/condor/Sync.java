@@ -81,11 +81,9 @@ public class Sync extends IntentService {
     }
     @Override
     public void onDestroy() {
-        progress = -4;
-        handler.post(sendProgress);
-
+        handler.removeCallbacks(sendProgress);
         stopForeground(true);
-        //super.onDestroy();
+        super.onDestroy();
 
     }
     @TargetApi(Build.VERSION_CODES.O)

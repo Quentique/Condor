@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -37,6 +38,7 @@ public class PostsFragment extends Fragment
     private RelativeLayout lay;
     private SearchView search;
     private MenuItem item;
+    private boolean rssAllowed;
 
   /*  @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +96,13 @@ public class PostsFragment extends Fragment
         loader = new Task();
         loader.execute();
         spinner.setListener(this);
+        rssAllowed = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("rss_display", true);
 
         getLoaderManager().initLoader(2, null, this);
     }
     @Override
     public Loader<List<Post>> onCreateLoader(int id, Bundle args) {
-        return new PostsLoader(getActivity());
+        return new PostsLoader(getActivity(), rssAllowed);
     }
 
     @Override
@@ -191,6 +194,9 @@ public class PostsFragment extends Fragment
             db.open();
             results = db.getCategories();
             db.close();
+            results.add(0, getString(R.string.all_category));
+            if (rssAllowed)
+                results.add("RSS");
             return null;
         }
 

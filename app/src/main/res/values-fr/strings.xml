@@ -18,8 +18,8 @@
     <string name="sync_app_start">Synchroniser la base de données au démarrage.</string>
     <string name="sync_app_start_title">Synchronisation au démarrage</string>
     <string name="sync_end">Synchronisation terminée</string>
-    <string name="sync_mobile_data">Utiliser les données mobile pour la synchronisation.</string>
-    <string name="sync_mobile_data_title">Utilisation des données mobiles</string>
+    <string name="sync_mobile_data">Utiliser les données mobile pour le contenu.</string>
+    <string name="sync_mobile_data_title">Données mobiles</string>
     <string name="sync_notif_name">Synchronisation de Condor</string>
     <string name="teacher">Professeur</string>
     <string name="teachers_absences">Absences de profs</string>
@@ -31,6 +31,7 @@
     <string name="sync_start_ticker">Début de la synchronisation</string>
     <string name="sync_forbidden">Vos paramètres ne permettent pas de synchroniser.</string>
     <string name="sync_ready">Cliquez pour commencer la synchronisation</string>
+    <string name="all_category">Tout</string>
 
     <string-array
         name="language_choose">

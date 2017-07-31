@@ -20,17 +20,18 @@
     <string name="hello_blank_fragment">"Hallo weißes Fragment "</string>
     <string name="settings">Einstellungen</string>
     <string name="submit">Absenden</string>
-    <string name="sync_end">Synchronisierung beendet</string>
+    <string name="sync_end">Synchronisation beendet</string>
     <string name="sync_app_start_title">Am Start synchronisieren</string>
     <string name="sync_app_start">Die Datenbank synchronisieren, indem das App startet.</string>
-    <string name="sync_mobile_data">Mobile Daten nutzen, um zu synchronisieren.</string>
-    <string name="sync_mobile_data_title">Nutzung mobilen Daten</string>
-    <string name="sync_notif_name">Condor\'s Synchronisierung</string>
+    <string name="sync_mobile_data">Mobile Daten nutzen, um Inhalt zu bekommen.</string>
+    <string name="sync_mobile_data_title">Mobile Daten</string>
+    <string name="sync_notif_name">Condor\'s Synchronisation</string>
     <string name="others">Andere</string>
-    <string name="end_sync_ticker">Synchronisierung beendet</string>
-    <string name="sync_start_ticker">Anfang der Synchronisierung</string>
-    <string name="sync_forbidden">Ihre Einstellungen verbieten die Synchronisierung.</string>
+    <string name="end_sync_ticker">Synchronisation beendet</string>
+    <string name="sync_start_ticker">Anfang der Synchronisation</string>
+    <string name="sync_forbidden">Ihre Einstellungen verbieten die Synchronisation.</string>
     <string name="sync_ready">Drücken Sie um zu synchronisieren</string>
+    <string name="all_category">Alle</string>
 
     <string-array
         name="language_choose">
