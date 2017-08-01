@@ -18,21 +18,21 @@ import java.util.ArrayList;
  * Created by Quentin DE MUYNCK on 12/07/2017.
  */
 
-public class Database {
+class Database {
 
     private SQLiteDatabase database;
     private DBOpenHelper helper;
 
-    public Database(Context context) {
+    Database(Context context) {
         helper = new DBOpenHelper(context);
     }
 
-    public void open() throws SQLException { database = helper.getWritableDatabase(); }
-    public void close() {
+    void open() throws SQLException { database = helper.getWritableDatabase(); }
+    void close() {
         database.close();
     }
 
-    public ArrayList updateGen(JSONArray array) {
+    ArrayList updateGen(JSONArray array) {
         ArrayList toBeDownloaded = new ArrayList();
         boolean logo = false;
         boolean cover = false;
@@ -72,7 +72,7 @@ public class Database {
         return toBeDownloaded;
     }
 
-    public void updatePosts(JSONArray array) {
+    void updatePosts(JSONArray array) {
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject element = array.getJSONObject(i);
@@ -94,12 +94,13 @@ public class Database {
         }
     }
 
-    public void updateProfs(JSONArray array) {
+    void updateProfs(JSONArray array) {
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject element = array.getJSONObject(i);
                 ContentValues values = new ContentValues();
                 values.put(DBOpenHelper.Profs.COLUMN_ID, element.getInt("id"));
+                values.put(DBOpenHelper.Profs.COLUMN_TITLE, element.getString("title"));
                 values.put(DBOpenHelper.Profs.COLUMN_NAME, element.getString("name"));
                 values.put(DBOpenHelper.Profs.COLUMN_BEGIN, element.getString("begin_date"));
                 values.put(DBOpenHelper.Profs.COLUMN_END, element.getString("end_date"));
@@ -111,7 +112,7 @@ public class Database {
         }
     }
 
-    public String timestamp(String name) {
+    String timestamp(String name) {
         String result;
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[] {DBOpenHelper.General.COLUMN_VALUE}, DBOpenHelper.General.COLUMN_NAME + " = ?", new String[] {name}, null, null, null);
 
@@ -127,7 +128,7 @@ public class Database {
         } else { return ""; }
     }
 
-    public void beginSync() {
+    void beginSync() {
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[]{DBOpenHelper.General.COLUMN_ID}, DBOpenHelper.General.COLUMN_NAME + " = 'last_sync'", null, null, null, null);
         String id ="";
 
@@ -141,12 +142,13 @@ public class Database {
         } else {
             database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_ID + ", " + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + "VALUES (" + id + ",'last_sync', datetime('now', 'localtime'))");
         }
+        cursor.close();
     }
 
-    public ArrayList<TeachersAbsence> getTeachersAbsence() {
+    ArrayList<TeachersAbsence> getTeachersAbsence() {
         ArrayList<TeachersAbsence> results = new ArrayList<>();
         Cursor cursor = database.query(DBOpenHelper.Profs.TABLE_NAME,
-                        new String[] {DBOpenHelper.Profs.COLUMN_NAME, DBOpenHelper.Profs.COLUMN_BEGIN, DBOpenHelper.Profs.COLUMN_END},
+                        new String[] {DBOpenHelper.Profs.COLUMN_TITLE, DBOpenHelper.Profs.COLUMN_NAME, DBOpenHelper.Profs.COLUMN_BEGIN, DBOpenHelper.Profs.COLUMN_END},
                         DBOpenHelper.Profs.COLUMN_DELETED + " != 1",
                         null, null, null, null);
 
@@ -154,6 +156,7 @@ public class Database {
             try {
                 while(cursor.moveToNext()) {
                     TeachersAbsence absence = new TeachersAbsence(
+                                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_TITLE)),
                                     cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_NAME)),
                                     cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_BEGIN)),
                                     cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_END)));
@@ -166,7 +169,7 @@ public class Database {
         return results;
     }
 
-    public ArrayList<Post> getPosts() {
+    ArrayList<Post> getPosts() {
         ArrayList<Post> results = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT _id, name, substr(content, 0, 101), date, picture, categories FROM posts WHERE deleted != 1", null);
 
@@ -189,7 +192,7 @@ public class Database {
         return results;
     }
 
-    public ArrayList<String> getCategories() {
+    ArrayList<String> getCategories() {
         ArrayList<String> results = new ArrayList<>();
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[] {DBOpenHelper.General.COLUMN_VALUE}, DBOpenHelper.General.COLUMN_NAME + " = ?", new String[] {"categories"}, null, null, null);
         if (cursor != null && cursor.getCount()>0) {
@@ -199,7 +202,7 @@ public class Database {
         return results;
     }
 
-    public Post getPost(String id) {
+    Post getPost(String id) {
         Cursor cursor = database.query(DBOpenHelper.Posts.TABLE_NAME,
                 new String[] {DBOpenHelper.Posts.COLUMN_NAME, DBOpenHelper.Posts.COLUMN_CONTENT, DBOpenHelper.Posts.COLUMN_DATE, DBOpenHelper.Posts.COLUMN_PIC, DBOpenHelper.Posts.COLUMN_CAT},
                 DBOpenHelper.Posts.COLUMN_ID + " = " + id,
@@ -222,7 +225,7 @@ public class Database {
         }
     }
 
-    public static ArrayList<String> parseCategories(String categories) {
+    static ArrayList<String> parseCategories(String categories) {
         JSONArray array;
         ArrayList<String> results = new ArrayList<>();
         try {

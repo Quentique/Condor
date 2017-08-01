@@ -4,12 +4,13 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 /**
  * Created by Quentin DE MUYNCK on 12/07/2017.
  */
 
-public class DBOpenHelper extends SQLiteOpenHelper {
+class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String POSTS_TABLE = "CREATE TABLE " + Posts.TABLE_NAME + "(" +
             Posts.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -27,17 +28,20 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String PROFS_TABLE = "CREATE TABLE " + Profs.TABLE_NAME + "(" +
             Profs.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            Profs.COLUMN_TITLE + " TEXT, " +
             Profs.COLUMN_NAME + " TEXT, " +
             Profs.COLUMN_BEGIN + " TEXT, " +
             Profs.COLUMN_END + " TEXT, " +
             Profs.COLUMN_DELETED + " TEXT)";
 
-    public DBOpenHelper(Context context) {
+    DBOpenHelper(Context context) {
         super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+        Log.i("UPGRADE", "WANT TO UPDATE DB3");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.i("UPGRADE", "WANT TO UPDATE DB2");
         db.execSQL(POSTS_TABLE);
         db.execSQL(PROFS_TABLE);
         db.execSQL(GEN_TABLE);
@@ -45,41 +49,43 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.i("UPGRADE", "WANT TO UPDATE DB");
         db.execSQL("DROP TABLE IF EXISTS " + Posts.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Profs.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + General.TABLE_NAME);
         onCreate(db);
     }
 
-    public static class Constants implements BaseColumns {
-        public static final String DATABASE_NAME = "database.db";
-        public static final int DATABASE_VERSION = 8;
+    private static class Constants implements BaseColumns {
+        static final String DATABASE_NAME = "database.db";
+        static final int DATABASE_VERSION = 17;
     }
 
-    public static class Posts implements BaseColumns {
-        public static final String TABLE_NAME = "posts";
-        public static final String COLUMN_ID = "_id";
-        public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_CONTENT = "content";
-        public static final String COLUMN_STATE = "deleted";
-        public static final String COLUMN_DATE = "date";
-        public static final String COLUMN_CAT = "categories";
-        public static final String COLUMN_PIC = "picture";
+    static class Posts implements BaseColumns {
+        static final String TABLE_NAME = "posts";
+        static final String COLUMN_ID = "_id";
+        static final String COLUMN_NAME = "name";
+        static final String COLUMN_CONTENT = "content";
+        static final String COLUMN_STATE = "deleted";
+        static final String COLUMN_DATE = "date";
+        static final String COLUMN_CAT = "categories";
+        static final String COLUMN_PIC = "picture";
     }
 
-    public static class General implements BaseColumns {
-        public static final String TABLE_NAME = "gen";
-        public static final String COLUMN_ID = "_id";
-        public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_VALUE = "value";
+    static class General implements BaseColumns {
+        static final String TABLE_NAME = "gen";
+        static final String COLUMN_ID = "_id";
+        static final String COLUMN_NAME = "name";
+        static final String COLUMN_VALUE = "value";
     }
 
-    public static class Profs implements BaseColumns {
-        public static final String TABLE_NAME = "profs";
-        public static final String COLUMN_ID = "_id";
-        public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_BEGIN = "date_begin";
-        public static final String COLUMN_END = "date_end";
-        public static final String COLUMN_DELETED = "deleted";
+    static class Profs implements BaseColumns {
+        static final String TABLE_NAME = "profs";
+        static final String COLUMN_ID = "_id";
+        static final String COLUMN_TITLE = "title";
+        static final String COLUMN_NAME = "name";
+        static final String COLUMN_BEGIN = "date_begin";
+        static final String COLUMN_END = "date_end";
+        static final String COLUMN_DELETED = "deleted";
     }
 }

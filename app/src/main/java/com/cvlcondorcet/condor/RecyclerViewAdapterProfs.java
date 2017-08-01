@@ -16,14 +16,14 @@ import java.util.List;
  * Created by Quentin DE MUYNCK on 16/07/2017.
  */
 
-public class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<TeachersAbsence> list, filteredList;
     private int itemsLayout;
-    private int SINGLE = 0, SEVERAL = 1;
-    public Context ctx;
+    private int SINGLE = 0, SEVERAL = 1, SINGLE_SPE = 2;
+    private Context ctx;
 
-    public RecyclerViewAdapterProfs(Context ctx, List<TeachersAbsence> items, int item) {
+    RecyclerViewAdapterProfs(Context ctx, List<TeachersAbsence> items, int item) {
         this.ctx = ctx;
         this.list = items;
         this.filteredList = items;
@@ -34,9 +34,13 @@ public class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.
         if (viewtype == SINGLE) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_one_day_layout, parent, false);
             return new ViewHolder(v);
-        } else {
+        } else if (viewtype == SEVERAL){
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_several_days_layout, parent, false);
             return new ViewHolder2(v);
+        } else {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_one_day_spe_hours_layout, parent, false);
+            Log.i("HELLO", "VIEWHOLDER3");
+            return new ViewHolder3(v);
         }
 
     }
@@ -49,21 +53,38 @@ public class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.
         this.list = list;
         filter("");
         notifyDataSetChanged();
-        Log.i("Hello", "Data has changed");
+        //Log.i("Hello", String.valueOf(list.size()));
     }
 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         TeachersAbsence absence = filteredList.get(position);
+        String result;
+        switch (absence.getTitle()) {
+            case "F":
+                result = ctx.getString(R.string.female_title);
+                break;
+            case "M":
+                result = ctx.getString(R.string.male_title);
+                break;
+            default:
+                result = ctx.getString(R.string.neutral_title);
+                break;
+        }
         Log.i("DEBUGGGGG", "ICH BIN DA");
         if (absence.getMultipleDays()) {
-            ((ViewHolder2) holder).name.setText(absence.getName());
-            ((ViewHolder2) holder).date.setText("Du " + absence.getBeginning() + " au " + absence.getEnd());
-        } else
+            Log.i("EEE", absence.getTitle());
+            ((ViewHolder2) holder).name.setText(result + " " + absence.getName());
+            ((ViewHolder2) holder).date.setText(ctx.getString(R.string.from) + absence.getBeginning() + ctx.getString(R.string.to) + absence.getEnd());
+        } else if (absence.getDate() == null)
         {
-            ((ViewHolder) holder).name.setText(absence.getName());
+            ((ViewHolder) holder).name.setText(result + " " + absence.getName());
             ((ViewHolder) holder).date.setText(absence.getBeginning());
             ((ViewHolder) holder).morning.setText((absence.getMorning()) ? "X" : "");
             ((ViewHolder) holder).afternoon.setText((absence.getAfternoon()) ? "X" : "");
+        } else {
+            ((ViewHolder3) holder).name.setText(result + " " + absence.getName());
+            ((ViewHolder3) holder).date.setText(absence.getDate());
+            ((ViewHolder3) holder).hours.setText(ctx.getString(R.string.from_single_day) + absence.getBeginning() + ctx.getString(R.string.to_single_day) + absence.getEnd());
         }
        // holder.secondaryText.setText("no matter");
     }
@@ -74,10 +95,10 @@ public class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.
         {
             Log.i("DE", "SEVERAL");
             return SEVERAL;
-        } else { Log.i("de", "SINGLE"); return SINGLE; }
+        } else if (filteredList.get(position).getDate() == null){ Log.i("de", "SINGLE"); return SINGLE; } else { Log.i("DE", "SINGLE SPE"); return SINGLE_SPE; }
     }
 
-    public void filter(final String query) {
+    void filter(final String query) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -109,10 +130,10 @@ public class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, date, morning, afternoon;
+    private static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView name, date, morning, afternoon;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.profs);
             date = (TextView) itemView.findViewById(R.id.date);
@@ -122,14 +143,25 @@ public class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.
         }
     }
 
-    public static class ViewHolder2 extends RecyclerView.ViewHolder {
-        public TextView name, date;
+    private static class ViewHolder2 extends RecyclerView.ViewHolder {
+        TextView name, date;
 
-        public ViewHolder2(View itemView) {
+        ViewHolder2(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.prof_name1);
             date = (TextView) itemView.findViewById(R.id.date2);
             //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
+        }
+    }
+
+    private static class ViewHolder3 extends RecyclerView.ViewHolder {
+        TextView name, date, hours;
+
+        ViewHolder3(View itemView) {
+            super(itemView);
+            name = (TextView) itemView.findViewById(R.id.profs);
+            date = (TextView) itemView.findViewById(R.id.date);
+            hours = (TextView) itemView.findViewById(R.id.weirdHours);
         }
     }
 

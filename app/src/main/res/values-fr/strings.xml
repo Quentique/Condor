@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Condor</string>
     <string name="absences">Absences</string>
-    <string name="afternoon">Après-midi</string>
+    <string name="afternoon">Aprem</string>
     <string name="cancel">Annuler</string>
     <string name="canteen">Cantine</string>
     <string name="canteen_menu">Menu de la cantine</string>
@@ -32,7 +32,9 @@
     <string name="sync_forbidden">Vos paramètres ne permettent pas la synchronisation, ou vous n\'avez pas de connection.</string>
     <string name="sync_ready">Cliquez pour commencer la synchronisation</string>
     <string name="all_category">Tout</string>
-
+    <string name="female_title">Mme</string>
+    <string name="male_title">M.</string>
+    <string name="neutral_title">Mx</string>
     <string-array
         name="language_choose">
         <item>Langue du système</item>
@@ -46,7 +48,13 @@
         <item>default</item>
         <item>fr</item>
         <item>en</item>
+        <item>de</item>
     </string-array>
     <string name="rss_display_title">Afficher RSS</string>
     <string name="rss_display_summary">Afficher le flux RSS du site officiel du lycée.</string>
+    <string name="sync">Synchronisation</string>
+    <string name="from">"Du "</string>
+    <string name="to">" au "</string>
+    <string name="from_single_day">"De "</string>
+    <string name="to_single_day">" à "</string>
 </resources>

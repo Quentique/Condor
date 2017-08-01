@@ -30,17 +30,23 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
     private Class fragmentClass;
+    public static String locale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Resources res = getResources();
 // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
-        conf.setLocale(new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("language", "default"))); // API 17+ only.
+       // Locale localeChosen = new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("language", "fr"));
+        Locale localeChosen = new Locale("fr");
+        conf.setLocale(localeChosen); // API 17+ only.
 // Use conf.locale = new Locale(...) if targeting lower versions
         res.updateConfiguration(conf, dm);
+        locale = localeChosen.getISO3Language();
+        Log.i("E", locale);
         setContentView(R.layout.activity_main);
 
 

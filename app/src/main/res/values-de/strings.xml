@@ -12,7 +12,7 @@
     <string name="transport_info">Verkehrsinfo</string>
     <string name="cancel">Abbrechen</string>
     <string name="absences">Abwesenheiten</string>
-    <string name="afternoon">Nachmittag</string>
+    <string name="afternoon">Nachm.</string>
     <string name="canteen">Mensa</string>
     <string name="canteen_menu">Mensa-Speiseplan</string>
     <string name="cat_select">Wählen Sie Kategorien aus</string>
@@ -32,7 +32,9 @@
     <string name="sync_forbidden">Ihre Einstellungen verbieten die Synchronisation oder Sie haben keinen Internetzugang.</string>
     <string name="sync_ready">Drücken Sie um zu synchronisieren</string>
     <string name="all_category">Alle</string>
-
+    <string name="female_title">Fr.</string>
+    <string name="male_title">Hr.</string>
+    <string name="neutral_title">Mx</string>
     <string-array
         name="language_choose">
         <item>Sprache Systems</item>
@@ -46,7 +48,13 @@
         <item>default</item>
         <item>fr</item>
         <item>en</item>
+        <item>de</item>
     </string-array>
     <string name="rss_display_title">RSS zeigen</string>
     <string name="rss_display_summary">RSS-Einzug der offiziellen Website des Gymnasiums anzeigen.</string>
+    <string name="sync">Synchronisation</string>
+    <string name="from">"Von "</string>
+    <string name="to">" bis "</string>
+    <string name="from_single_day">"Von "</string>
+    <string name="to_single_day">" bis "</string>
 </resources>

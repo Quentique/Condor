@@ -35,6 +35,7 @@ public class SyncingFragment extends Fragment {
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        getActivity().setTitle(getString(R.string.sync));
         button = view.findViewById(R.id.button_sync);
         displayPercent = view.findViewById(R.id.sync_display_percent);
         message = view.findViewById(R.id.sync_display_step);
