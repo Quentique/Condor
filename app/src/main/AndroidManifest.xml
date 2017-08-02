@@ -25,6 +25,8 @@
             android:label="Condor sync" />
 
         <activity android:name=".PostViewerActivity" />
+        <activity android:name=".LicensesActivity"
+            android:parentActivityName=".MainActivity"><meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.cvlcondorcet.condor.MainActivity"></meta-data> </activity>
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -35,16 +36,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Resources res = getResources();
-// Change locale settings in the app.
-        DisplayMetrics dm = res.getDisplayMetrics();
-        android.content.res.Configuration conf = res.getConfiguration();
-       // Locale localeChosen = new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("language", "fr"));
-        Locale localeChosen = new Locale("fr");
-        conf.setLocale(localeChosen); // API 17+ only.
-// Use conf.locale = new Locale(...) if targeting lower versions
-        res.updateConfiguration(conf, dm);
+        Locale localeChosen;
+        if (PreferenceManager.getDefaultSharedPreferences(this).getString("language", "default").equals("default")) {
+            if (Build.VERSION.SDK_INT >= 24) {
+                localeChosen = res.getConfiguration().getLocales().get(0);
+            } else {
+                localeChosen = res.getConfiguration().locale;
+            }
+        } else {
+            DisplayMetrics dm = res.getDisplayMetrics();
+            android.content.res.Configuration conf = res.getConfiguration();
+            localeChosen = new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("language", "fr"));
+            conf.setLocale(localeChosen); // API 17+ only.
+            res.updateConfiguration(conf, dm);
+        }
         locale = localeChosen.getISO3Language();
         Log.i("E", locale);
         setContentView(R.layout.activity_main);
@@ -154,12 +160,16 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_sync:
                 fragmentClass = SyncingFragment.class;
                 break;
+            case R.id.nav_help:
+                Intent intent = new Intent(this, LicensesActivity.class);
+                startActivity(intent);
+                break;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {}
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
         item.setChecked(true);
         drawerLayout.closeDrawers();
     }
