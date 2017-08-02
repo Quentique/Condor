@@ -109,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
         outState.putSerializable("class", (Serializable) fragmentClass);
     }
 
-    public Toolbar getSupportBar() {
+   /* public Toolbar getSupportBar() {
         return bar;
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -161,15 +161,14 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = SyncingFragment.class;
                 break;
             case R.id.nav_help:
-                Intent intent = new Intent(this, LicensesActivity.class);
-                startActivity(intent);
+                fragmentClass = HelpFragment.class;
                 break;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {}
 
-        //getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
         item.setChecked(true);
         drawerLayout.closeDrawers();
     }

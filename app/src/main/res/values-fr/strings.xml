@@ -57,4 +57,7 @@
     <string name="to">" au "</string>
     <string name="from_single_day">"De "</string>
     <string name="to_single_day">" à "</string>
+    <string name="client_default">There are no email clients installed.</string>
+    <string name="licenses">LICENCES</string>
+    <string name="bug_send_feedback_here">Bug ? Envoyez un rapport !</string>
 </resources>

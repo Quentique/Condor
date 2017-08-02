@@ -45,6 +45,9 @@
     <string name="neutral_title">Mx</string>
     <string name="from_single_day">"From "</string>
     <string name="to_single_day">" to "</string>
+    <string name="client_default">There are no email clients installed.</string>
+    <string name="licenses">LICENSES</string>
+    <string name="bug_send_feedback_here">Bug ? Send feedback here!</string>
 
     <string-array name="language_choose">
         <item>System language</item>
