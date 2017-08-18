@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -197,7 +198,17 @@ class Database {
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[] {DBOpenHelper.General.COLUMN_VALUE}, DBOpenHelper.General.COLUMN_NAME + " = ?", new String[] {"categories"}, null, null, null);
         if (cursor != null && cursor.getCount()>0) {
             cursor.moveToFirst();
-            results = parseCategories(cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
+            try {
+                JSONObject jObject = new JSONObject(cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
+                Iterator<?> keys = jObject.keys();
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    if (jObject.get(key) instanceof String) {
+                        results.add(jObject.getString(key));
+                    }
+                }
+            } catch (JSONException e) {
+            }
         }
         return results;
     }

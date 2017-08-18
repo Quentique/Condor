@@ -116,7 +116,7 @@ public class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.
             public void run() {
                 Log.i("NEED", "WE DONT SEE YOU");
                 try {
-                    if (array != null && array.get(0) != "Tout") {
+                    if (array != null && array.get(0) !=  ctx.getResources().getString(R.string.all_category)) {
                         List<Post> copy;
                         copy = new ArrayList<Post>();
                         copy.addAll(list);

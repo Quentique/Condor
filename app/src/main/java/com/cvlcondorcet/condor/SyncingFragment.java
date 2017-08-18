@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,37 +90,17 @@ public class SyncingFragment extends Fragment {
         String text ="";
         switch (progress) {
             case -1:
-               // getActivity().stopService(servicee);
-                text = "Network error: server is unreachable";
                 button.setImageResource(R.drawable.ic_sync_problem_black_300dp);
                 bar.setVisibility(GONE);
                 button.setVisibility(VISIBLE);
                 sync = false;
                 break;
-            case -4:
-
-                break;
-            case 20:
-                text = "Downloading files...";
-                break;
-            case 40:
-                text = "Teacher absences...";
-                break;
-            case 60:
-                text = "News...";
-                break;
-            case 80:
-                text = "Ending sync...";
-                break;
             case 100:
-                text = "Sync ended.";
                 button.setVisibility(VISIBLE);
                 bar.setVisibility(GONE);
-                break;
-            default:
-                text = "Syncing...";
+                sync = false;
                 break;
         }
-        message.setText(text);
+        message.setText(Html.fromHtml(intent.getStringExtra("progressMessage")));
     }
 }
