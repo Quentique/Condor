@@ -47,7 +47,7 @@ public class Post implements Comparable<Post> {
 
     public static String formatDate(String toParse, String oldFormat, String toFormat) {
         try {
-            SimpleDateFormat format1 = new SimpleDateFormat(oldFormat);
+            SimpleDateFormat format1 = new SimpleDateFormat(oldFormat, Locale.US);
             Date pdate = format1.parse(toParse);
             SimpleDateFormat format2 = new SimpleDateFormat(toFormat, Locale.getDefault());
             return format2.format(pdate);
@@ -65,6 +65,10 @@ public class Post implements Comparable<Post> {
         for (String item : categories) {
             result += item + ", ";
         }
-        return result.substring(0, result.length()-2);
+        try {
+            return result.substring(0, result.length()-2);
+        } catch (Exception e ) {
+            return "";
+        }
     }
 }

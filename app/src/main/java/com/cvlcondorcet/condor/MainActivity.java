@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
+
        /* final Button bouton = (Button) findViewById(R.id.button);
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,8 +94,16 @@ public class MainActivity extends AppCompatActivity {
                     // getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new PostsFragment()).commit();
                     selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
                 } catch (Exception e) {}
+            } else {
+                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new MainFragment()).commit();
             }
         }
+        Database db = new Database(this);
+        db.open();
+        if (db.timestamp("name").equals("")) {
+            selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_sync));
+        }
+        db.close();
         /*Locale locale = new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("language", "default"));
         Locale.setDefault(locale);
         Configuration config = new Configuration();
