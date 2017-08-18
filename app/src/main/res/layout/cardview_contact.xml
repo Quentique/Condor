@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1">
+
+    <android.support.v7.widget.CardView xmlns:cardview="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardview_contact"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        cardview:cardPreventCornerOverlap="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        cardview:cardCornerRadius="6dp"
+        android:foreground="?attr/selectableItemBackground">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="12dp">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_contact"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_contact"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/image_contact"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/contact"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/value_contact"
+        android:layout_toRightOf="@+id/title_contact"
+        android:layout_centerVertical="true"
+        android:textSize="@dimen/contact"/>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
+</LinearLayout>
