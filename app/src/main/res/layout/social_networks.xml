@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="3"
+    android:layout_marginTop="20dp">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/facebook_logo"
+        android:src="@mipmap/facebook"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:minHeight="90dip"
+        android:foreground="?attr/selectableItemBackground"/>
+
+    <ImageButton
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/highschool_logo"
+        android:src="@mipmap/highschool"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:minHeight="90dip"/>
+
+    <ImageButton
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/twitter_logo"
+        android:src="@mipmap/twitter"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:minHeight="90dip"/>
+</LinearLayout>
