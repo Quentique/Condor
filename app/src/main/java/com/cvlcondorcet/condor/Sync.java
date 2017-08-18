@@ -35,12 +35,15 @@ public class Sync extends IntentService {
 
     public  static String broadcast_URI = "com.cvlcondorcet.condor.broadcast.progress";
 
-    private static String base_URL = "http://10.0.2.2:81/";
-    private static String GEN_URL = "read.php";
-    private static String POSTS_URL = "posts.php";
-    private static String PROFS_URL = "profs.php";
+    private static String base_URL = "http://10.0.2.2:81/condor/";
+    private static String uploads = "uploads/";
+    private static String check_URL = "check.php";
+    private static String GEN_URL = "gen_deliver.php";
+    private static String POSTS_URL = "pos_deliver.php";
+    private static String PROFS_URL = "tea_deliver.php";
+    private static String KEY = "?q=196eede6266723aee37f390e79de9e0e";
 
-    public static String rssURL = "http://www.lyc-condorcet.ac-besancon.fr/feed/";
+    public static String rssURL;
 
     private boolean networkError = false;
 
@@ -52,6 +55,7 @@ public class Sync extends IntentService {
     Intent intent;
 
     private int progress;
+    private String progressMessage;
 
     private Runnable sendProgress = new Runnable() {
         @Override
@@ -90,6 +94,7 @@ public class Sync extends IntentService {
     @Override
     public void onHandleIntent(Intent i)
     {
+        progressMessage = "Syncing...";
         Log.i("NOTI", "DDDDDONE");
         int icon = R.mipmap.ic_launcher;
         CharSequence tickerText = getString(R.string.sync_notif_name);
@@ -102,9 +107,7 @@ public class Sync extends IntentService {
         } else {
             noti = new Notification.Builder(this);
         }
-
-
-                noti.setContentTitle("Synchronization")
+        noti.setContentTitle("Synchronization")
                 .setContentText(tickerText)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setOngoing(true)
@@ -117,36 +120,52 @@ public class Sync extends IntentService {
         startForeground(1, noti.build());
         try {
             db.open();
+            rssURL = db.timestamp("website") + "feed";
         } catch( SQLException e) { stopSelf(); return; }
 
-            JSONArray gen = get(GEN_URL);
+            String continueSync = serverState();
+            if (continueSync.contains("200")) {
+                networkError = false;
+            } else {
+                progress = -1;
+                progressMessage = continueSync;
+                displayProgress();
+                handler.removeCallbacks(sendProgress);
+                networkError = true;
+                displayProgress();
+            }
             if (!networkError) {
                 try {
-
+                JSONArray gen = get(GEN_URL);
                 Log.i("SYNC", "GENERAL SYNC");
                 ArrayList liste;
                 liste = db.updateGen(gen);
-                changeProgress(20);
                 progress = 20;
+                progressMessage = "Downloading files...";
+                changeProgress(20);
                 for (int j = 0; j < liste.size(); j++) {
                     progress += 20 / liste.size();
                     changeProgress(progress);
                     downloadFile(liste.get(j).toString());
                     Log.i("SYNC", "DOWNLOADING FILE");
                 }
-                JSONArray posts = get(POSTS_URL);
+                    progressMessage = "News...";
+                    JSONArray posts = get(POSTS_URL);
                 Log.i("SYNC", "POSTS SYNC");
                 db.updatePosts(posts);
                 progress = 60;
-                changeProgress(progress);
+                    progressMessage = "Teacher absences...";
+                    changeProgress(progress);
                 JSONArray profs = get(PROFS_URL);
                 Log.i("SYNC", "PROFS SYNC");
                 progress = 80;
+                    progressMessage = "Ending sync...";
                 changeProgress(progress);
                 db.updateProfs(profs);
                 db.beginSync();
                 Log.i("SYNC", "END SYNC");
-                progress = 100;
+                    progressMessage = "Sync ended.";
+                    progress = 100;
                 noti.setProgress(100, 100, false);
                 noti.setContentText(getString(R.string.sync_end));
                 manager.notify(1, noti.build());
@@ -164,8 +183,10 @@ public class Sync extends IntentService {
             noti.setTicker(getString(R.string.end_sync_ticker));
             manager.notify(2, noti.build());
             //manager.cancel(1);
-
+                handler.removeCallbacks(sendProgress);
+                displayProgress();
         }
+
         stopSelf();
     }
 
@@ -177,7 +198,7 @@ public class Sync extends IntentService {
         try{
             String machin;
             if (content == GEN_URL) {machin = db.timestamp("timestamp"); } else { machin = db.timestamp("last_sync"); }
-            url = new URL(base_URL + content + "?timestamp=" + machin);
+            url = new URL(base_URL + content + KEY + "&timestamp=" + machin);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -190,10 +211,10 @@ public class Sync extends IntentService {
             Log.i("NETWORK ERROR", hello);
         } catch (IOException e) {
             progress = -1;
+            progressMessage = "An network error has occurred while syncing. Please try again later.";
             handler.post(sendProgress);
             stopForeground(true);
             networkError = true;
-            e.printStackTrace();
         }
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -217,7 +238,7 @@ public class Sync extends IntentService {
     }
     private boolean downloadFile(String file) {
         try {
-            URL url = new URL(base_URL + file);
+            URL url = new URL(base_URL + uploads + file);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
             connection.connect();
 
@@ -241,6 +262,41 @@ public class Sync extends IntentService {
         }
         return true;
     }
+    private String serverState() {
+        URL url = null;
+        String answer = "";
+        try{
+            url = new URL(base_URL + check_URL + KEY);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        HttpURLConnection connection = null;
+        String hello ="";
+        try {
+            connection = (HttpURLConnection) url.openConnection();
+            hello = connection.getResponseMessage();
+        } catch (IOException e) {
+            progress = -1;
+            handler.post(sendProgress);
+            stopForeground(true);
+            networkError = true;
+            e.printStackTrace();
+            answer = "505";
+        }
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null)
+                answer += inputLine;
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            connection.disconnect();
+        }
+        return answer;
+    }
 
     private void changeProgress(int newProgress) {
         noti.setProgress(100, newProgress, false);
@@ -249,6 +305,7 @@ public class Sync extends IntentService {
 
    private void displayProgress() {
         intent.putExtra("progress", progress);
+        intent.putExtra("progressMessage", progressMessage);
         sendBroadcast(intent);
     }
 }
