@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
                 } catch (Exception e) {}
             } else {
-                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new MainFragment()).commit();
+                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
             }
         }
         Database db = new Database(this);
@@ -173,6 +173,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_help:
                 fragmentClass = HelpFragment.class;
                 break;
+            case R.id.nav_home:
+                fragmentClass = MainFragment.class;
+                break;
+            default:
+                Log.i("PATATE", "CHAUDE");
+                break;
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -182,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
         item.setChecked(true);
         drawerLayout.closeDrawers();
     }
+
 
     @Override
     public void onBackPressed() {
