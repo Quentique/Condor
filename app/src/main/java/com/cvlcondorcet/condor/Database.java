@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -23,9 +24,11 @@ class Database {
 
     private SQLiteDatabase database;
     private DBOpenHelper helper;
+    private Context ctx;
 
     Database(Context context) {
         helper = new DBOpenHelper(context);
+        ctx = context;
     }
 
     void open() throws SQLException { database = helper.getWritableDatabase(); }
@@ -51,19 +54,19 @@ class Database {
                         if (element.getString("value") != timestamp("logo_updated")) { logo = true; }
                         break;
                     case "logo":
-                        if (logo) { toBeDownloaded.add(element.getString("value")); }
+                        if (logo) { toBeDownloaded.add(element.getString("value")); File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+timestamp("logo")); file.delete();  }
                         break;
                     case "cover_updated":
                         if (element.getString("value") != timestamp("cover_updated")) { cover= true; }
                         break;
                     case "cover":
-                        if (cover) toBeDownloaded.add(element.getString("value"));
+                        if (cover) { toBeDownloaded.add(element.getString("value")); File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+timestamp("cover")); file.delete(); }
                         break;
                     case "canteen_updated":
                         if (element.getString("value") != timestamp("canteen_updated")) { canteen = true; }
                         break;
                     case "canteen":
-                        if (canteen) toBeDownloaded.add(element.getString("value"));
+                        if (canteen) { toBeDownloaded.add(element.getString("value")); File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+timestamp("canteen")); file.delete(); }
                 }
                 database.replace(DBOpenHelper.General.TABLE_NAME, null, values);
             } catch (JSONException e) {
