@@ -48,6 +48,7 @@
     <string name="client_default">There are no email clients installed.</string>
     <string name="licenses">LICENSES</string>
     <string name="bug_send_feedback_here">Bug ? Send feedback here!</string>
+    <string name="home">Home</string>
 
     <string-array name="language_choose">
         <item>System language</item>
