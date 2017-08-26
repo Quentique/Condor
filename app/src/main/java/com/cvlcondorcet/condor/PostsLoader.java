@@ -18,14 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Quentin DE MUYNCK on 18/07/2017.
+ * Loader class to retrieve posts from Database and Internet
+ * @author Quentin DE MUYNCK
  */
 
-public class PostsLoader extends AsyncTaskLoader<List<Post>> {
+class PostsLoader extends AsyncTaskLoader<List<Post>> {
     private List<Post> list;
-    private Database db;
-    private boolean rssAllowed;
-    private boolean connection;
+    private final Database db;
+    private final boolean rssAllowed;
+    private final boolean connection;
 
     public PostsLoader(Context ctx, boolean rssAllowed) {
         super(ctx);
@@ -34,12 +35,16 @@ public class PostsLoader extends AsyncTaskLoader<List<Post>> {
         this.connection = MainActivity.allowConnect(ctx);
     }
 
+    /**
+     * Makes requests : RSS if authorised and database
+     * @return  the posts list
+     * @see Database#getPosts()
+     */
     @Override
     public List<Post> loadInBackground() {
         db.open();
         List<Post> data = db.getPosts();
         db.close();
-        String answer = "";
         if (rssAllowed && connection) {
             List<Post> rssFeed = new ArrayList<>();
             try {
@@ -78,8 +83,6 @@ public class PostsLoader extends AsyncTaskLoader<List<Post>> {
             releaseResources(data);
             return;
         }*/
-
-        List<Post> oldData = list;
         list = data;
 
         if (isStarted()) { super.deliverResult(data); }

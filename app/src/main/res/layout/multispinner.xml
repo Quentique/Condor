@@ -4,10 +4,9 @@
     android:layout_height="match_parent"
     android:layout_gravity="fill_horizontal">
     <com.cvlcondorcet.condor.MultiSelectionSpinner
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinner_post"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Dark"></com.cvlcondorcet.condor.MultiSelectionSpinner>
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 </RelativeLayout>
 

@@ -7,10 +7,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Quentin DE MUYNCK on 16/07/2017.
+ * Class representing a teacher absence
  */
 
-public class TeachersAbsence {
+class TeachersAbsence {
     private String name, title, date;
     private boolean multipleDays;
     private boolean morning;
@@ -48,6 +48,10 @@ public class TeachersAbsence {
     boolean getMorning() { return morning; }
     boolean getAfternoon() { return afternoon; }
 
+    /**
+     * Determines what kind of absence it is according to given date information, then
+     * formats date in string, according to which kind of absence it is and locale settings.
+     */
     private void analyseDate() {
         try {
             multipleDays = (beginning.startsWith(end.substring(0, 10))) ? false : true;

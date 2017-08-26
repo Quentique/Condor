@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -24,6 +23,13 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
+/**
+ * Displays a RecyclerView (showing posts), a spinner (to select categories) and a search field (to filter posts).
+ * @author Quentin DE MUYNCK
+ * @see RecyclerViewAdapterPosts
+ * @see MultiSelectionSpinner
+ * @see PostsLoader
+ */
 public class PostsFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Post>>, SearchView.OnQueryTextListener, MultiSelectionSpinner.OnMultipleItemsSelectedListener {
 
@@ -31,44 +37,42 @@ public class PostsFragment extends Fragment
     private RecyclerViewAdapterPosts adapter;
     private MultiSelectionSpinner spinner;
     private ProgressBar progress;
-    private Database db;
     private android.support.v7.app.ActionBar bar;
     private Task loader;
     private String query;
     private RelativeLayout lay;
-    private SearchView search;
-    private MenuItem item;
+    // private MenuItem item;
     private boolean rssAllowed;
 
-  /*  @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_posts);
-        recycler = (RecyclerView) findViewById(R.id.recycler_posts);
-        adapter = new RecyclerViewAdapterPosts(this, null, R.layout.posts_layout);
-        recycler.setAdapter(adapter);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
-        recycler.setHasFixedSize(true);
-        Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(bar);
-        spinner = (MultiSelectionSpinner) findViewById(R.id.spinner_post);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    db = new Database(getApplicationContext());
-                    db.open();
-                    spinner.setItems(db.getCategories());
-                    db.close();
-                    spinner.setSelection(0);
-                } catch (ArrayIndexOutOfBoundsException e ) { }
-                catch (SQLException e) {}
-            }
-        }).start();
-        spinner.setListener(this);
+    /*  @Override
+      protected void onCreate(Bundle savedInstanceState) {
+          super.onCreate(savedInstanceState);
+          setContentView(R.layout.fragment_posts);
+          recycler = (RecyclerView) findViewById(R.id.recycler_posts);
+          adapter = new RecyclerViewAdapterPosts(this, null, R.layout.posts_layout);
+          recycler.setAdapter(adapter);
+          recycler.setLayoutManager(new LinearLayoutManager(this));
+          recycler.setHasFixedSize(true);
+          Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
+          setSupportActionBar(bar);
+          spinner = (MultiSelectionSpinner) findViewById(R.id.spinner_post);
+          new Thread(new Runnable() {
+              @Override
+              public void run() {
+                  try {
+                      db = new Database(getApplicationContext());
+                      db.open();
+                      spinner.setItems(db.getCategories());
+                      db.close();
+                      spinner.setSelection(0);
+                  } catch (ArrayIndexOutOfBoundsException e ) { }
+                  catch (SQLException e) {}
+              }
+          }).start();
+          spinner.setListener(this);
 
-        getSupportLoaderManager().initLoader(2, null, this);
-    }*/
+          getSupportLoaderManager().initLoader(2, null, this);
+      }*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -78,14 +82,20 @@ public class PostsFragment extends Fragment
         spinner = lay.findViewById(R.id.spinner_post);
         return inflater.inflate(R.layout.fragment_posts, parent, false);
     }
-// Pattern for RSS date "EEE, d MMM yyyy HH:mm:ss Z"
+    // Pattern for RSS date "EEE, d MMM yyyy HH:mm:ss Z"
+
+    /**
+     * Sets view up, starts loading posts.
+     * @param view  view
+     * @param savedInstanceState oldState
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.news);
         bar = ((MainActivity) getActivity()).getSupportActionBar();
         progress = view.findViewById(R.id.loading_layout);
         progress.setVisibility(View.VISIBLE);
-        recycler = (RecyclerView) view.findViewById(R.id.recycler_posts);
+        recycler = view.findViewById(R.id.recycler_posts);
         adapter = new RecyclerViewAdapterPosts(getActivity(), null, R.layout.posts_layout);
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -100,11 +110,25 @@ public class PostsFragment extends Fragment
 
         getLoaderManager().initLoader(2, null, this);
     }
+
+    /**
+     * Create a loader and starts it to retrieve posts.
+     * @param id    the id of the loader
+     * @param args  bundle of arguments (not used)
+     * @return  a PostLoader object
+     * @see PostsLoader
+     */
     @Override
     public Loader<List<Post>> onCreateLoader(int id, Bundle args) {
         return new PostsLoader(getActivity(), rssAllowed);
     }
 
+    /**
+     * Gets the data and sets them to the RecyclerViewAdapter
+     * @param loader    the loader that retrieved the data
+     * @param data  the awaited data
+     * @see RecyclerViewAdapterPosts#setData(List)
+     */
     @Override
     public void onLoadFinished(Loader<List<Post>> loader, List<Post> data) {
         adapter.setData(data);
@@ -117,12 +141,17 @@ public class PostsFragment extends Fragment
         adapter.setData(null);
     }
 
+    /**
+     * Sets up the menu & search field.
+     * @param menu  menu
+     * @param inflater  inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_activity_profs, menu);
-        search = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        item = menu.findItem(R.id.action_search);
+        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+       // item = menu.findItem(R.id.action_search);
         //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         search.setOnQueryTextListener(this);
         search.setOnCloseListener(new SearchView.OnCloseListener() {
@@ -153,6 +182,12 @@ public class PostsFragment extends Fragment
         return false;
     }
 
+    /**
+     * Event listeners to search field text changes, gets query and filters the RecyclerView according to it
+     * @param query the text query
+     * @return  False
+     * @see RecyclerViewAdapterPosts#filter(String)
+     */
     @Override
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
@@ -168,11 +203,17 @@ public class PostsFragment extends Fragment
         //Log.i("hey", "hello");
     }
 
+    /**
+     * Interface implementation, gets the selected categories and filter the RecyclerView
+     * @param strings   the selected categories
+     * @see RecyclerViewAdapterPosts#filterByCategories(List, String)
+     * @see MultiSelectionSpinner#getSelectedStrings()
+     */
     @Override
     public void selectedStrings(List<String> strings) {
         //Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
         recycler.getRecycledViewPool().clear();
-       // Log.i("EEEE", query);
+        // Log.i("EEEE", query);
         adapter.filterByCategories(strings, query);
         recycler.scrollToPosition(0);
     }
@@ -183,14 +224,24 @@ public class PostsFragment extends Fragment
         spinner = null;
         bar.setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_TITLE | android.support.v7.app.ActionBar.DISPLAY_HOME_AS_UP | android.support.v7.app.ActionBar.DISPLAY_SHOW_HOME);
         loader.cancel(true);
-
     }
 
+    /**
+     * AsyncTask to get categories and displays them to the spinner
+     * @author Quentin DE MUYNCK
+     * @see Database#getCategories()
+     */
     private class Task extends AsyncTask<Void, Void, Void> {
         List<String> results;
+
+        /**
+         * Out of the UI Thread
+         * @param args not used
+         * @return  null
+         */
         @Override
         protected Void doInBackground(Void... args) {
-            db = new Database(getActivity());
+            Database db = new Database(getActivity());
             db.open();
             results = db.getCategories();
             db.close();
@@ -200,6 +251,10 @@ public class PostsFragment extends Fragment
             return null;
         }
 
+        /**
+         * On the UI Thread
+         * @param nothing as the name, nothing
+         */
         @Override
         protected void onPostExecute(Void nothing) {
             spinner.setItems(results);

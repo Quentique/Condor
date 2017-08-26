@@ -19,7 +19,8 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 
 /**
- * Created by Quentin DE MUYNCK on 24/07/2017.
+ * WebView that displays a restricted part of web page and handling some navigation.
+ * @author Quentin DE MUYNCK
  */
 
 public class BusFragment extends Fragment {
@@ -28,23 +29,29 @@ public class BusFragment extends Fragment {
     private ProgressBar progress;
     private String user;
 
-    @Override
+    /*@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+    }*/
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bus, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
-        progress = (ProgressBar) view.findViewById(R.id.loading_layout);
+        getActivity().setTitle(R.string.optymo);
+        progress = view.findViewById(R.id.loading_layout);
         web_view = view.findViewById(R.id.web_view_bus);
         web_view.setWebViewClient(new WebViewClient() {
+            /**
+             * Avoids default method and loads the page inside the current WebView if it corresponds to the genuine website.
+             * @param view  the WebView
+             * @param url   the URL that must be loaded
+             * @return  True if we handle, False otherwise
+             */
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.i("E", "OVERRIDE");
@@ -55,6 +62,12 @@ public class BusFragment extends Fragment {
                 } else { return false; }
 
             }
+
+            /**
+             * Hides loader spinner
+             * @param view  No use
+             * @param url   nn use
+             */
             @Override
             public void onPageFinished(WebView view, String url) {
                 progress.setVisibility(View.GONE);
@@ -71,12 +84,19 @@ public class BusFragment extends Fragment {
         new Loading().execute(url);
     }
 
+    /**
+     * Handles back pressed button and redirects it to WebView to go back.
+     * @see MainActivity#onBackPressed()
+     */
     public void backPressed() {
         web_view.goBack();
         progress.setVisibility(View.VISIBLE);
         Log.i("E", "BACK PRESSED");
     }
 
+    /**
+     * Loads the website, cleans it and removes useless parts
+     */
     private class Loading extends AsyncTask<String, Void, Void> {
         private Elements element;
         private String url;

@@ -21,13 +21,24 @@ import java.io.IOException;
 
 import static android.view.View.GONE;
 
+/**
+ *  Activity that displays the content of a post. Determines whether post is from RSS
+ *  (therefore should be downloaded from internet) or from {@link Database DB} (which must be
+ *  retrieved from db).
+ *
+ *  @author Quentin DE MUYNCK
+ */
 public class PostViewerActivity extends AppCompatActivity {
 
     private WebView view;
     private Database db;
     private TextView title, date;
-    private Toolbar bar;
     private ProgressBar progress;
+
+    /**
+     * Sets up activity, starts loading post.
+     * @param savedInstanceState    old state of activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +49,7 @@ public class PostViewerActivity extends AppCompatActivity {
 
         title = (TextView) findViewById(R.id.post_display_title);
         date = (TextView) findViewById(R.id.post_date_display);
-        bar = (Toolbar) findViewById(R.id.toolbar_viewer_post);
+        Toolbar bar = (Toolbar) findViewById(R.id.toolbar_viewer_post);
         progress = (ProgressBar) findViewById(R.id.loading_layout);
         progress.setVisibility(View.VISIBLE);
         view.getSettings().setSupportZoom(true);
@@ -60,7 +71,9 @@ public class PostViewerActivity extends AppCompatActivity {
             }
         });
         setSupportActionBar(bar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {}
         String id = getIntent().getStringExtra("id");
         Log.i("ID", "'" + id +"'");
         if (!id.equals("0")) {
@@ -71,6 +84,12 @@ public class PostViewerActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * Comes back to main activity (when home button pressed).
+     * @param item  Item clicked by menu (home only)
+     * @return  Nothing important
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -81,6 +100,10 @@ public class PostViewerActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Loads post from web (high-school website) (comes from RSS feed).
+     * Uses the supplied stylesheet.
+     */
     private class LoadingWeb extends AsyncTask<String, Void, Void> {
         String toDisplay = "";
         protected Void doInBackground(String... args) {
@@ -107,12 +130,17 @@ public class PostViewerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets post from database.
+     * @see Database#getPost(String)
+     * @see Post
+     */
     private class Loading extends AsyncTask<String, Void, Void> {
         String type;
         Post post;
         protected Void doInBackground(String... args) {
             type = args[0];
-            if (type == "id") {
+            if (type.equals("id")) {
                 post = db.getPost(args[1]);
             }
 

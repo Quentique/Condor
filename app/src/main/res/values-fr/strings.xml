@@ -60,5 +60,6 @@
     <string name="client_default">There are no email clients installed.</string>
     <string name="licenses">LICENCES</string>
     <string name="bug_send_feedback_here">Bug ? Envoyez un rapport !</string>
-    <string name="home">Home</string>
+    <string name="home">Accueil</string>
+    <string name="help">Aide</string>
 </resources>

@@ -1,16 +1,16 @@
 package com.cvlcondorcet.condor;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,14 +20,18 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 /**
- * Created by Quentin DE MUYNCK on 02/08/2017.
+ * Home page of the application, displays some pictures and information:
+ * links to social networks & telephone numbers and mail.
+ * @author Quentin DE MUYNCK
  */
 
 public class MainFragment extends Fragment {
-    TextView title, adress;
-    ImageView cover, logo;
+    private TextView title;
+    private TextView adress;
+    private ImageView cover;
+    private ImageView logo;
     private Database db;
-    Button bouton;
+    //Button bouton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,7 @@ public class MainFragment extends Fragment {
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        getActivity().setTitle(R.string.app_name);
         title = view.findViewById(R.id.cover_title);
         adress = view.findViewById(R.id.adress_highschool);
         cover = view.findViewById(R.id.cover_image);
@@ -64,7 +69,7 @@ public class MainFragment extends Fragment {
         Picasso.with(getActivity()).load(file).into(cover);
         Picasso.with(getActivity()).load(file2).into(logo);
         Log.i("EEEE", getActivity().getFilesDir().toString() + "/" + db.timestamp("cover"));
-        LinearLayout layout1 = (LinearLayout) view.findViewById(R.id.tel1);
+        LinearLayout layout1 = view.findViewById(R.id.tel1);
         ImageView image1 = layout1.findViewById(R.id.image_contact);
         TextView contactTitle1 = layout1.findViewById(R.id.title_contact);
         TextView contactValue1 = layout1.findViewById(R.id.value_contact);
@@ -72,7 +77,7 @@ public class MainFragment extends Fragment {
         contactTitle1.setText("Loge : ");
         contactValue1.setText(db.timestamp("tel1"));
 
-        LinearLayout layout2 = (LinearLayout) view.findViewById(R.id.tel2);
+        LinearLayout layout2 = view.findViewById(R.id.tel2);
         ImageView image2 = layout2.findViewById(R.id.image_contact);
         TextView contactTitle2 = layout2.findViewById(R.id.title_contact);
         TextView contactValue2 = layout2.findViewById(R.id.value_contact);
@@ -80,7 +85,7 @@ public class MainFragment extends Fragment {
         contactTitle2.setText("BVS : ");
         contactValue2.setText(db.timestamp("tel2"));
 
-        LinearLayout layout3 = (LinearLayout) view.findViewById(R.id.mail);
+        LinearLayout layout3 = view.findViewById(R.id.mail);
         ImageView image3 = layout3.findViewById(R.id.image_contact);
         TextView contactTitle3 = layout3.findViewById(R.id.title_contact);
         TextView contactValue3 = layout3.findViewById(R.id.value_contact);
@@ -92,15 +97,7 @@ public class MainFragment extends Fragment {
         final String high = db.timestamp("website");
         db.close();
 
-        ((CardView) layout1.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-                  String phone = String.valueOf(((TextView)view.findViewById(R.id.value_contact)).getText());
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-              startActivity(intent);
-          }
-       });
-        ((CardView) layout2.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
+        (layout1.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String phone = String.valueOf(((TextView)view.findViewById(R.id.value_contact)).getText());
@@ -108,24 +105,43 @@ public class MainFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        ((CardView) layout3.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
+        (layout2.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phone = String.valueOf(((TextView)view.findViewById(R.id.value_contact)).getText());
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                startActivity(intent);
+            }
+        });
+        (layout3.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String mail = String.valueOf(((TextView)view.findViewById(R.id.value_contact)).getText());
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setType("*/*");
+                intent.setData(Uri.parse("mailto:"));
                 intent.putExtra(Intent.EXTRA_EMAIL, mail);
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-
+                    startActivity(intent);
                 }
-                startActivity(intent);
+
             }
         });
 
         view.findViewById(R.id.facebook_logo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebook));
+
+                Uri uri = Uri.parse("https://www.facebook.com/pg/"+facebook);
+                try {
+                    ApplicationInfo appInfo = getActivity().getPackageManager().getApplicationInfo("com.facebook.katana", 0);
+                    if (appInfo.enabled) {
+                        uri = Uri.parse("fb://page/"+ facebook);
+                        Log.i("TEST", "work");
+                    }
+                    Log.i("FACEBOOK", "TRY");
+                } catch (PackageManager.NameNotFoundException ignored) {}
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
         });
@@ -146,17 +162,5 @@ public class MainFragment extends Fragment {
             }
         });
 
-
-
-        /*bouton = view.findViewById(R.id.button);
-        bouton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String YourPageURL = "https://www.facebook.com/condobelfort/";
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(YourPageURL));
-
-                startActivity(browserIntent);
-            }
-        });*/
     }
 }

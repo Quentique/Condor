@@ -2,6 +2,7 @@ package com.cvlcondorcet.condor;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,23 +14,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Quentin DE MUYNCK on 16/07/2017.
+ * Adapter for RecyclerView that displays teacher absences. Uses different ViewHolder.
+ * @author Quentin DE MUYNCK
  */
 
 class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<TeachersAbsence> list, filteredList;
-    private int itemsLayout;
-    private int SINGLE = 0, SEVERAL = 1, SINGLE_SPE = 2;
-    private Context ctx;
+    private final int SINGLE = 0, SEVERAL = 1, SINGLE_SPE = 2;
+    private final Context ctx;
 
     RecyclerViewAdapterProfs(Context ctx, List<TeachersAbsence> items, int item) {
         this.ctx = ctx;
         this.list = items;
         this.filteredList = items;
-        this.itemsLayout = item;
+        int itemsLayout = item;
     }
 
+    /**
+     * Creates ViewHolder according to the needed type.
+     * @param parent parent
+     * @param viewtype  int (0, 1, 2) defining the type of view
+     * @return  a ViewHolder
+     */
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewtype){
         if (viewtype == SINGLE) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_one_day_layout, parent, false);
@@ -49,6 +56,11 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
         return (filteredList != null) ? filteredList.size() : 0;
     }
 
+    /**
+     * Transfers the data into the object
+     * @param list  the given data
+     * @see TeachersFragment#onLoadFinished(Loader, List)
+     */
     public void setData(List<TeachersAbsence> list) {
         this.list = list;
         filter("");
@@ -56,6 +68,14 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
         //Log.i("Hello", String.valueOf(list.size()));
     }
 
+    /**
+     * Gets the Holder, displaying the absence into the view.
+     * @param holder    the view
+     * @param position  the position inside the RecyclerView
+     * @see RecyclerViewAdapterProfs.ViewHolder
+     * @see RecyclerViewAdapterProfs.ViewHolder2
+     * @see RecyclerViewAdapterProfs.ViewHolder3
+     */
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         TeachersAbsence absence = filteredList.get(position);
         String result;
@@ -86,7 +106,7 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((ViewHolder3) holder).date.setText(absence.getDate());
             ((ViewHolder3) holder).hours.setText(ctx.getString(R.string.from_single_day) + absence.getBeginning() + ctx.getString(R.string.to_single_day) + absence.getEnd());
         }
-       // holder.secondaryText.setText("no matter");
+        // holder.secondaryText.setText("no matter");
     }
 
     @Override
@@ -98,6 +118,11 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
         } else if (filteredList.get(position).getDate() == null){ Log.i("de", "SINGLE"); return SINGLE; } else { Log.i("DE", "SINGLE SPE"); return SINGLE_SPE; }
     }
 
+    /**
+     * Filters absences by name
+     * @param query the request name
+     * @see TeachersFragment#onQueryTextChange(String)
+     */
     void filter(final String query) {
         new Thread(new Runnable() {
             @Override
@@ -129,39 +154,47 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
         }).start();
     }
 
-
+    /**
+     * Absence for a single day and defined hours (am & pm)
+     */
     private static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name, date, morning, afternoon;
+        final TextView name, date, morning, afternoon;
 
         ViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.profs);
-            date = (TextView) itemView.findViewById(R.id.date);
-            morning = (TextView) itemView.findViewById(R.id.morning);
-            afternoon = (TextView) itemView.findViewById(R.id.afternoon);
+            name = itemView.findViewById(R.id.profs);
+            date = itemView.findViewById(R.id.date);
+            morning = itemView.findViewById(R.id.morning);
+            afternoon = itemView.findViewById(R.id.afternoon);
             //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
         }
     }
 
+    /**
+     * Absence for several days
+     */
     private static class ViewHolder2 extends RecyclerView.ViewHolder {
-        TextView name, date;
+        final TextView name, date;
 
         ViewHolder2(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.prof_name1);
-            date = (TextView) itemView.findViewById(R.id.date2);
+            name = itemView.findViewById(R.id.prof_name1);
+            date = itemView.findViewById(R.id.date2);
             //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
         }
     }
 
+    /**
+     * Absence for a single day but specific hours
+     */
     private static class ViewHolder3 extends RecyclerView.ViewHolder {
-        TextView name, date, hours;
+        final TextView name, date, hours;
 
         ViewHolder3(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.profs);
-            date = (TextView) itemView.findViewById(R.id.date);
-            hours = (TextView) itemView.findViewById(R.id.weirdHours);
+            name = itemView.findViewById(R.id.profs);
+            date = itemView.findViewById(R.id.date);
+            hours = itemView.findViewById(R.id.weirdHours);
         }
     }
 

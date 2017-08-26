@@ -4,7 +4,8 @@ import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 /**
- * Created by Quentin DE MUYNCK on 23/07/2017.
+ * Implementation of {@link PreferenceFragmentCompat}
+ * @author Quentin DE MUYNCK
  */
 
 public class PreferencesFragment extends PreferenceFragmentCompat {

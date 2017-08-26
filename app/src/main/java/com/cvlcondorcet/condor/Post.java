@@ -1,5 +1,7 @@
 package com.cvlcondorcet.condor;
 
+import android.support.annotation.NonNull;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,12 +9,18 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Quentin DE MUYNCK on 18/07/2017.
+ * Class representing and gathering information about a single post.
+ * @author Quentin DE MUYNCK
+ * @see Database#getPost(String)
+ * @see Database#getPosts()
+ * @see RecyclerViewAdapterPosts
+ * @see PostsLoader#loadInBackground()
  */
 
-public class Post implements Comparable<Post> {
-    private String name, content, id, picture, date, formatedDate, formatedCategories, link;
-    private ArrayList<String> categories;
+class Post implements Comparable<Post> {
+    private final String name, content, id, picture, date, formatedDate, formatedCategories;
+    private String link;
+    private final ArrayList<String> categories;
 
     public Post(String id, String name, String content, String picture, String date, String categories) {
         this.id = id;
@@ -30,7 +38,7 @@ public class Post implements Comparable<Post> {
     public String getName() { return name; }
     public String getContent() { return content; }
     public String getPicture() { return picture; }
-    public String getDate() { return date; }
+    private String getDate() { return date; }
     public String getFormatedDate() { return formatedDate; }
     public ArrayList<String> getCategories() { return categories;}
     public String getFormatedCategories() { return formatedCategories; }
@@ -38,13 +46,29 @@ public class Post implements Comparable<Post> {
 
     public void setLink(String link) { this.link = link; }
 
+    /**
+     * Compares the post by date (to classifies them by descending date).
+     * @param postToCompare the post compared with this one
+     * @return  int which represents which one is older than the other one
+     */
     @Override
-    public int compareTo(Post postToCompare) {
-        Date newDate = getDateObject(postToCompare.getDate(), "yyyy-MM-dd hh:mm:ss");
-        Date actualDate = getDateObject(getDate(), "yyyy-MM-dd hh:mm:ss");
-        return actualDate.compareTo(newDate);
+    public int compareTo(@NonNull Post postToCompare) {
+        Date newDate = getDateObject(postToCompare.getDate());
+        Date actualDate = getDateObject(getDate());
+        try {
+            return actualDate.compareTo(newDate);
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 
+    /**
+     * Static method to format a string date into another format.
+     * @param toParse   date in String format
+     * @param oldFormat format of the given date
+     * @param toFormat  desired format
+     * @return  the desired formatted date in string or "" if error occured
+     */
     public static String formatDate(String toParse, String oldFormat, String toFormat) {
         try {
             SimpleDateFormat format1 = new SimpleDateFormat(oldFormat, Locale.US);
@@ -54,13 +78,23 @@ public class Post implements Comparable<Post> {
         } catch (ParseException e ) { e.printStackTrace(); return ""; }
     }
 
-    public static Date getDateObject(String obj, String format) {
+    /**
+     * Parses a date and return the date format.
+     * @param obj   date in string
+     * @return  date object
+     * @see Post#compareTo(Post)
+     */
+    private static Date getDateObject(String obj) {
         try {
-            return new SimpleDateFormat(format).parse(obj);
+            return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(obj);
         } catch (ParseException e) { e.printStackTrace(); return null; }
     }
 
-    public String formatCategories() {
+    /**
+     * Displays categories into a single string, cut by commas.
+     * @return  categories in String format
+     */
+    private String formatCategories() {
         String result = "";
         for (String item : categories) {
             result += item + ", ";

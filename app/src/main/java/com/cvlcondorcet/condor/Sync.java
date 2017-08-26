@@ -1,6 +1,5 @@
 package com.cvlcondorcet.condor;
 
-import android.annotation.TargetApi;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -28,36 +27,39 @@ import java.util.ArrayList;
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 
 /**
- * Created by Quentin DE MUYNCK on 12/07/2017.
+ * Background service, used for syncing internal database of the application.
+ *
+ * @author Quentin DE MUYNCK
+ *
  */
 
 public class Sync extends IntentService {
 
-    public  static String broadcast_URI = "com.cvlcondorcet.condor.broadcast.progress";
+    public final static String broadcast_URI = "com.cvlcondorcet.condor.broadcast.progress";
 
-    private static String base_URL = "http://10.0.2.2:81/condor/";
-    private static String uploads = "***REMOVED***";
-    private static String check_URL = "***REMOVED***";
-    private static String GEN_URL = "***REMOVED***";
-    private static String POSTS_URL = "***REMOVED***";
-    private static String PROFS_URL = "***REMOVED***";
-    private static String KEY = "?q=***REMOVED***";
+    private static final String base_URL = "http://77.195.184.62:81/condor/";
+    private static final String uploads = "***REMOVED***";
+    private static final String check_URL = "***REMOVED***";
+    private static final String GEN_URL = "***REMOVED***";
+    private static final String POSTS_URL = "***REMOVED***";
+    private static final String PROFS_URL = "***REMOVED***";
+    private static final String KEY = "?q=***REMOVED***";
 
     public static String rssURL;
 
     private boolean networkError = false;
 
-    private Database db = new Database(this);
+    private final Database db = new Database(this);
     private final Handler handler = new Handler();
     private NotificationManager manager;
     private Notification.Builder noti;
 
-    Intent intent;
+    private Intent intent;
 
     private int progress;
     private String progressMessage;
 
-    private Runnable sendProgress = new Runnable() {
+    private final Runnable sendProgress = new Runnable() {
         @Override
         public void run() {
             displayProgress();
@@ -65,17 +67,29 @@ public class Sync extends IntentService {
         }
     };
 
+    /**
+     * Default constructor.
+     */
     public Sync() {
         super("Sync");
         Log.i("EEEE", "SERVICE CONSTRUCTED");
     }
 
-   @Override
+    /**
+     * Creating service, making it operational, affecting variables values.
+     */
+    @Override
     public void onCreate() {
         super.onCreate();
         intent = new Intent(broadcast_URI);
         Log.i("EEEE", "SERVICE CONSTRUCTED");
     }
+
+    /**
+     * Starting service, setting broadcaster up.
+     * @param intent    the intent containing the broadcaster Uri
+     * @param startId   useless id
+     */
     @Override
     public void onStart(Intent intent, int startId) {
         handler.removeCallbacks(sendProgress);
@@ -83,6 +97,10 @@ public class Sync extends IntentService {
         Log.i("EEEE", "SERVICE CONSTRUCTED");
         super.onStart(intent, startId);
     }
+
+    /**
+     * Destroying service, removing priorities and callbacks.
+     */
     @Override
     public void onDestroy() {
         handler.removeCallbacks(sendProgress);
@@ -90,15 +108,18 @@ public class Sync extends IntentService {
         super.onDestroy();
 
     }
-    @TargetApi(Build.VERSION_CODES.O)
+
+    /**
+     * Making synchronization, building notification, checking if the server is okay, then
+     * downloading JSON data and passing them to {@link Database Database} for handling.
+     * @param i not used
+     */
     @Override
     public void onHandleIntent(Intent i)
     {
         progressMessage = "Syncing...";
         Log.i("NOTI", "DDDDDONE");
-        int icon = R.mipmap.ic_launcher;
         CharSequence tickerText = getString(R.string.sync_notif_name);
-        long when = System.currentTimeMillis();
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", 1);
@@ -123,19 +144,19 @@ public class Sync extends IntentService {
             rssURL = db.timestamp("website") + "feed";
         } catch( SQLException e) { stopSelf(); return; }
 
-            String continueSync = serverState();
-            if (continueSync.contains("200")) {
-                networkError = false;
-            } else {
-                progress = -1;
-                progressMessage = continueSync;
-                displayProgress();
-                handler.removeCallbacks(sendProgress);
-                networkError = true;
-                displayProgress();
-            }
-            if (!networkError) {
-                try {
+        String continueSync = serverState();
+        if (continueSync.contains("200")) {
+            networkError = false;
+        } else {
+            progress = -1;
+            progressMessage = continueSync;
+            displayProgress();
+            handler.removeCallbacks(sendProgress);
+            networkError = true;
+            displayProgress();
+        }
+        if (!networkError) {
+            try {
                 JSONArray gen = get(GEN_URL);
                 Log.i("SYNC", "GENERAL SYNC");
                 ArrayList liste;
@@ -149,23 +170,23 @@ public class Sync extends IntentService {
                     downloadFile(liste.get(j).toString());
                     Log.i("SYNC", "DOWNLOADING FILE");
                 }
-                    progressMessage = "News...";
-                    JSONArray posts = get(POSTS_URL);
+                progressMessage = "News...";
+                JSONArray posts = get(POSTS_URL);
                 Log.i("SYNC", "POSTS SYNC");
                 db.updatePosts(posts);
                 progress = 60;
-                    progressMessage = "Teacher absences...";
-                    changeProgress(progress);
+                progressMessage = "Teacher absences...";
+                changeProgress(progress);
                 JSONArray profs = get(PROFS_URL);
                 Log.i("SYNC", "PROFS SYNC");
                 progress = 80;
-                    progressMessage = "Ending sync...";
+                progressMessage = "Ending sync...";
                 changeProgress(progress);
                 db.updateProfs(profs);
                 db.beginSync();
                 Log.i("SYNC", "END SYNC");
-                    progressMessage = "Sync ended.";
-                    progress = 100;
+                progressMessage = "Sync ended.";
+                progress = 100;
                 noti.setProgress(100, 100, false);
                 noti.setContentText(getString(R.string.sync_end));
                 manager.notify(1, noti.build());
@@ -174,7 +195,6 @@ public class Sync extends IntentService {
                 progress = -2;
                 e.printStackTrace();
             }
-
             if (Build.VERSION.SDK_INT >= 26) {
                 noti.setTimeoutAfter(20000);
             }
@@ -183,60 +203,77 @@ public class Sync extends IntentService {
             noti.setTicker(getString(R.string.end_sync_ticker));
             manager.notify(2, noti.build());
             //manager.cancel(1);
-                handler.removeCallbacks(sendProgress);
-                displayProgress();
+            handler.removeCallbacks(sendProgress);
+            displayProgress();
         }
 
         stopSelf();
     }
 
+    /**
+     * Retrieving JSON data from server and translating it into {@link JSONArray JSONArray}.
+     * @param content   the url used to download
+     * @return          {@link JSONArray JSONArray} containing the requested values
+     */
     private JSONArray get(String content) {
         String answer = "";
         URL url = null;
         JSONArray tab = new JSONArray();
-
-        try{
-            String machin;
-            if (content == GEN_URL) {machin = db.timestamp("timestamp"); } else { machin = db.timestamp("last_sync"); }
-            url = new URL(base_URL + content + KEY + "&timestamp=" + machin);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        HttpURLConnection connection = null;
-        String hello ="";
         try {
-            connection = (HttpURLConnection) url.openConnection();
-             hello = connection.getResponseMessage();
-            Log.i("NETWORK ERROR", hello);
-        } catch (IOException e) {
-            progress = -1;
-            progressMessage = "An network error has occurred while syncing. Please try again later.";
-            handler.post(sendProgress);
-            stopForeground(true);
-            networkError = true;
-        }
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null)
-                answer += inputLine;
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            connection.disconnect();
-        }
-        Log.i("E", answer);
-        try {
-            tab = new JSONArray(answer);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
+            try {
+                String machin;
+                if (content.equals(GEN_URL)) {
+                    machin = db.timestamp("timestamp");
+                } else {
+                    machin = db.timestamp("last_sync");
+                }
+                url = new URL(base_URL + content + KEY + "&timestamp=" + machin);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            HttpURLConnection connection = null;
+            String hello;
+            try {
+                connection = (HttpURLConnection) url.openConnection();
+                hello = connection.getResponseMessage();
+                Log.i("NETWORK ERROR", hello);
+            } catch (IOException e) {
+                progress = -1;
+                progressMessage = "An network error has occurred while syncing. Please try again later.";
+                handler.post(sendProgress);
+                stopForeground(true);
+                networkError = true;
+            }
+            try {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                while ((inputLine = in.readLine()) != null)
+                    answer += inputLine;
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                connection.disconnect();
+            }
+            Log.i("E", answer);
+            try {
+                tab = new JSONArray(answer);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } catch (NullPointerException e) {
+
+        }
         return tab;
     }
-    private boolean downloadFile(String file) {
+
+    /**
+     * Downloads the file given in parameter.
+     * @param file  the file name that must be downloaded
+     */
+    void downloadFile(String file) {
         try {
             URL url = new URL(base_URL + uploads + file);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -246,8 +283,8 @@ public class Sync extends IntentService {
             FileOutputStream output = openFileOutput(file, MODE_PRIVATE);
 
             byte data[] = new byte[1024];
-            long total = 0;
             int count;
+
             while ((count = input.read(data)) != -1) {
                 output.write(data, 0, count);
             }
@@ -258,10 +295,13 @@ public class Sync extends IntentService {
             Log.i("EBUG", "File downloaded " + file);
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
+
+    /**
+     * Retrieving the server state, in order to know if sync can continue.
+     * @return  server response to check file
+     */
     private String serverState() {
         URL url = null;
         String answer = "";
@@ -270,40 +310,45 @@ public class Sync extends IntentService {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
         HttpURLConnection connection = null;
-        String hello ="";
         try {
             connection = (HttpURLConnection) url.openConnection();
-            hello = connection.getResponseMessage();
+            connection.setConnectTimeout(20000);
+            try {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                while ((inputLine = in.readLine()) != null)
+                    answer += inputLine;
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                connection.disconnect();
+            }
         } catch (IOException e) {
             progress = -1;
             handler.post(sendProgress);
             stopForeground(true);
             networkError = true;
             e.printStackTrace();
-            answer = "505";
-        }
-        try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            while ((inputLine = in.readLine()) != null)
-                answer += inputLine;
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            connection.disconnect();
+            answer = "Server is unreachable, please try again later.";
         }
         return answer;
     }
 
+    /**
+     * Displaying progress in the service notification.
+     * @param newProgress   the new progress given by the service
+     */
     private void changeProgress(int newProgress) {
         noti.setProgress(100, newProgress, false);
         manager.notify(1, noti.build());
     }
 
-   private void displayProgress() {
+    /**
+     * Sending progress through broadcaster
+     */
+    private void displayProgress() {
         intent.putExtra("progress", progress);
         intent.putExtra("progressMessage", progressMessage);
         sendBroadcast(intent);
