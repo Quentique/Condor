@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cvlcondorcet.condor.LicensesActivity">
-<WebView android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:id="@+id/view_license"></WebView>
+    <WebView android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/view_license"/>
 </android.support.constraint.ConstraintLayout>

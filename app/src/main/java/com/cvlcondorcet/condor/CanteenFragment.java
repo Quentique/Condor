@@ -1,6 +1,5 @@
 package com.cvlcondorcet.condor;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,11 +10,16 @@ import com.github.barteksc.pdfviewer.PDFView;
 
 import java.io.File;
 
+/**
+ * Displays a PDF File, uses another library.
+ * @author Quentin DE MUYNCK
+ * @see com.github.barteksc.pdfviewer.PDFView
+ */
 public class CanteenFragment extends Fragment {
 
     private PDFView view;
     private File file;
-    private Context ctx;
+   // private Context ctx;
    /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,17 +40,29 @@ public class CanteenFragment extends Fragment {
         // Defines the xml file for the fragment
         return inflater.inflate(R.layout.fragment_canteen, parent, false);
     }
+
+    /**
+     * Sets view up and loads PDF file from Database
+     * @param view  the view
+     * @param savedInstanceState    oldState
+     * @see Database#timestamp(String)
+     * @see com.github.barteksc.pdfviewer.PDFView
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(getString(R.string.canteen_menu));
-
+        Database db = new Database(getActivity());
+        db.open();
         this.view = (PDFView) view.findViewById(R.id.pdfView);
-        file = new File(getActivity().getFilesDir().toString() + "/" + "menus-du-6-au-30-juin-2017.pdf");
+        file = new File(getActivity().getFilesDir().toString() + "/" + db.timestamp("canteen"));
         /*ctx = this;*/
-
+        db.close();
         loadPdf();
     }
 
+    /**
+     * Loads PDF File and sets parameters.
+     */
     private void loadPdf() {
         view.fromFile(file)
                 .defaultPage(0)

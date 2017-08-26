@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -17,25 +18,38 @@ import java.util.Iterator;
 
 
 /**
- * Created by Quentin DE MUYNCK on 12/07/2017.
+ * Class for handling database operations.
+ * @author Quentin DE MUYNCK
  */
 
 class Database {
 
     private SQLiteDatabase database;
-    private DBOpenHelper helper;
-    private Context ctx;
+    private final DBOpenHelper helper;
+    private final Context ctx;
 
+    /**
+     * Default constructor.
+     * @param context
+     */
     Database(Context context) {
         helper = new DBOpenHelper(context);
         ctx = context;
     }
+
 
     void open() throws SQLException { database = helper.getWritableDatabase(); }
     void close() {
         database.close();
     }
 
+    /**
+     * Updates data in database from {@link JSONArray JSONArray} got from sync.
+     * @param array updated data
+     * @return  files that must be downloaded
+     * @see Sync#get(String)
+     * @see Sync#downloadFile(String)
+     */
     ArrayList updateGen(JSONArray array) {
         ArrayList toBeDownloaded = new ArrayList();
         boolean logo = false;
@@ -48,25 +62,27 @@ class Database {
                 values.put(DBOpenHelper.General.COLUMN_ID, element.getInt("id"));
                 values.put(DBOpenHelper.General.COLUMN_NAME, element.getString("name"));
                 values.put(DBOpenHelper.General.COLUMN_VALUE, element.getString("value"));
-                String value = element.getString("value");
                 switch(element.getString("name")) {
                     case "logo_updated":
-                        if (element.getString("value") != timestamp("logo_updated")) { logo = true; }
+                        if (!element.getString("value").equals(timestamp("logo_updated"))) { logo = true; }
                         break;
                     case "logo":
-                        if (logo) { toBeDownloaded.add(element.getString("value")); File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+timestamp("logo")); file.delete();  }
+                        if (logo) { toBeDownloaded.add(element.getString("value")); File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+timestamp("logo")); //noinspection ResultOfMethodCallIgnored
+                            file.delete();  }
                         break;
                     case "cover_updated":
-                        if (element.getString("value") != timestamp("cover_updated")) { cover= true; }
+                        if (!element.getString("value").equals(timestamp("cover_updated"))) { cover= true; }
                         break;
                     case "cover":
-                        if (cover) { toBeDownloaded.add(element.getString("value")); File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+timestamp("cover")); file.delete(); }
+                        if (cover) { toBeDownloaded.add(element.getString("value")); File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+timestamp("cover")); //noinspection ResultOfMethodCallIgnored
+                            file.delete(); }
                         break;
                     case "canteen_updated":
-                        if (element.getString("value") != timestamp("canteen_updated")) { canteen = true; }
+                        if (!element.getString("value").equals(timestamp("canteen_updated"))) { canteen = true; }
                         break;
                     case "canteen":
-                        if (canteen) { toBeDownloaded.add(element.getString("value")); File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+timestamp("canteen")); file.delete(); }
+                        if (canteen) { toBeDownloaded.add(element.getString("value")); File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+timestamp("canteen")); //noinspection ResultOfMethodCallIgnored
+                            file.delete(); }
                 }
                 database.replace(DBOpenHelper.General.TABLE_NAME, null, values);
             } catch (JSONException e) {
@@ -76,6 +92,11 @@ class Database {
         return toBeDownloaded;
     }
 
+    /**
+     * Updates posts from data got from sync.
+     * @param array Updated data
+     *              @see Sync#get(String)
+     */
     void updatePosts(JSONArray array) {
         for (int i = 0; i < array.length(); i++) {
             try {
@@ -98,6 +119,11 @@ class Database {
         }
     }
 
+    /**
+     * Updates teacher absences from data got from sync.
+     * @param array Updated data
+     *              @see Sync#get(String)
+     */
     void updateProfs(JSONArray array) {
         for (int i = 0; i < array.length(); i++) {
             try {
@@ -116,8 +142,13 @@ class Database {
         }
     }
 
+    /**
+     * Retrieves a value from {@link DBOpenHelper#GEN_TABLE}
+     * @param name  the key of value
+     * @return  the value corresponding to the key
+     * @see DBOpenHelper#GEN_TABLE
+     */
     String timestamp(String name) {
-        String result;
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[] {DBOpenHelper.General.COLUMN_VALUE}, DBOpenHelper.General.COLUMN_NAME + " = ?", new String[] {name}, null, null, null);
 
         if (cursor != null && cursor.getCount()>0) {
@@ -128,10 +159,12 @@ class Database {
             } finally {
                 cursor.close();
             }
-
         } else { return ""; }
     }
 
+    /**
+     * Saves current date & time into the db for further synchronizations (avoid useless syncs).
+     */
     void beginSync() {
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[]{DBOpenHelper.General.COLUMN_ID}, DBOpenHelper.General.COLUMN_NAME + " = 'last_sync'", null, null, null, null);
         String id ="";
@@ -149,30 +182,41 @@ class Database {
         cursor.close();
     }
 
+    /**
+     * Retrieves all rows from teachers absences tables
+     * @return  {@link ArrayList Array} containing all rows
+     * @see DBOpenHelper#PROFS_TABLE
+     */
     ArrayList<TeachersAbsence> getTeachersAbsence() {
         ArrayList<TeachersAbsence> results = new ArrayList<>();
         Cursor cursor = database.query(DBOpenHelper.Profs.TABLE_NAME,
                         new String[] {DBOpenHelper.Profs.COLUMN_TITLE, DBOpenHelper.Profs.COLUMN_NAME, DBOpenHelper.Profs.COLUMN_BEGIN, DBOpenHelper.Profs.COLUMN_END},
                         DBOpenHelper.Profs.COLUMN_DELETED + " != 1",
                         null, null, null, null);
-
-        if (cursor != null & cursor.getCount()>0) {
-            try {
-                while(cursor.moveToNext()) {
-                    TeachersAbsence absence = new TeachersAbsence(
-                                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_TITLE)),
-                                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_NAME)),
-                                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_BEGIN)),
-                                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_END)));
-                    results.add(absence);
+        try {
+            if (cursor != null && cursor.getCount() > 0) {
+                try {
+                    while (cursor.moveToNext()) {
+                        TeachersAbsence absence = new TeachersAbsence(
+                                cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_TITLE)),
+                                cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_NAME)),
+                                cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_BEGIN)),
+                                cursor.getString(cursor.getColumnIndex(DBOpenHelper.Profs.COLUMN_END)));
+                        results.add(absence);
+                    }
+                } finally {
+                    cursor.close();
                 }
-            } finally {
-                cursor.close();
             }
-        }
+        } catch (NullPointerException e) {}
         return results;
     }
 
+    /**
+     * Retrievies all posts.
+     * @return {@link ArrayList Array} containing all posts.
+     * @see DBOpenHelper#POSTS_TABLE
+     */
     ArrayList<Post> getPosts() {
         ArrayList<Post> results = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT _id, name, substr(content, 0, 101), date, picture, categories FROM posts WHERE deleted != 1", null);
@@ -196,6 +240,10 @@ class Database {
         return results;
     }
 
+    /**
+     * Gets categories from {@link DBOpenHelper#GEN_TABLE} and parsing it (JSON format).
+     * @return  {@link ArrayList Array} containing all categories
+     */
     ArrayList<String> getCategories() {
         ArrayList<String> results = new ArrayList<>();
         Cursor cursor = database.query(DBOpenHelper.General.TABLE_NAME, new String[] {DBOpenHelper.General.COLUMN_VALUE}, DBOpenHelper.General.COLUMN_NAME + " = ?", new String[] {"categories"}, null, null, null);
@@ -213,32 +261,50 @@ class Database {
             } catch (JSONException e) {
             }
         }
+        cursor.close();
         return results;
     }
 
+    /**
+     * Retrieves post datas for displaying in {@link PostsFragment}
+     * @param id    the corresponding id in database for the post
+     * @return  a Post object, containing main information and short description
+     * @see Post
+     * @see PostsLoader#loadInBackground()
+     * @see RecyclerViewAdapterPosts#onBindViewHolder(RecyclerView.ViewHolder, int)
+     */
     Post getPost(String id) {
         Cursor cursor = database.query(DBOpenHelper.Posts.TABLE_NAME,
                 new String[] {DBOpenHelper.Posts.COLUMN_NAME, DBOpenHelper.Posts.COLUMN_CONTENT, DBOpenHelper.Posts.COLUMN_DATE, DBOpenHelper.Posts.COLUMN_PIC, DBOpenHelper.Posts.COLUMN_CAT},
                 DBOpenHelper.Posts.COLUMN_ID + " = " + id,
                 null, null, null, null);
-        if (cursor != null & cursor.getCount()>0) {
-            try {
-                cursor.moveToFirst();
-                Post post = new Post(id,
-                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_NAME)),
-                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_CONTENT)),
-                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_PIC)),
-                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_DATE)),
-                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_CAT)));
-                return post;
-            } finally {
-                cursor.close();
+        try {
+            if (cursor != null && cursor.getCount() > 0) {
+                try {
+                    cursor.moveToFirst();
+                    return new Post(id,
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_NAME)),
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_CONTENT)),
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_PIC)),
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_DATE)),
+                            cursor.getString(cursor.getColumnIndex(DBOpenHelper.Posts.COLUMN_CAT)));
+                } finally {
+                    cursor.close();
+                }
+            } else {
+                return null;
             }
-        } else {
+        } catch (NullPointerException e ){
             return null;
         }
     }
 
+    /**
+     * Static method that parses a JSON String and returning it into an ArrayList
+     * @param categories    the JSON String
+     * @return  the corresponding ArrayList
+     *
+     */
     static ArrayList<String> parseCategories(String categories) {
         JSONArray array;
         ArrayList<String> results = new ArrayList<>();

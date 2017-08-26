@@ -13,7 +13,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
@@ -21,18 +20,24 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 
-import java.io.Serializable;
 import java.util.Locale;
 
+/**
+ * Main activity, frame for fragments, home for navigation drawer, etc.
+ * @author Quentin DE MUYNCK
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar bar;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private ActionBarDrawerToggle drawerToggle;
+    //private ActionBarDrawerToggle drawerToggle;
     private Class fragmentClass;
     public static String locale;
 
+    /**
+     * Sets up activity, loading language and locale.
+     * Loads old activity state (fragment), starting syncing at app starts, etc.
+     * @param savedInstanceState    Old state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        bar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(bar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.nvView);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
         /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.your_placeholder, new PostsFragment());
@@ -83,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = (Class) savedInstanceState.getSerializable("class");
                 Fragment fg = (Fragment) fragmentClass.newInstance();
                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fg).commit();
-            } catch (Exception e) {}
+            } catch (NullPointerException e) {
+            } catch (IllegalAccessException e) {
+            } catch (InstantiationException e) {}
         } else {
             if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_app_start", true) && allowConnect(this)) {
                 Intent servicee = new Intent(getApplicationContext(), Sync.class);
@@ -95,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
                 } catch (Exception e) {}
             } else {
-                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
+                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
             }
         }
         Database db = new Database(this);
@@ -113,16 +120,27 @@ public class MainActivity extends AppCompatActivity {
         Log.i("Test2", getApplicationContext().getFilesDir().toString());
     }
 
+    /**
+     * Saves activity state and actual fragment (in order to be reloaded later).
+     * @param outState  state that is being saved
+     * @see MainActivity#onCreate(Bundle)
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("class", (Serializable) fragmentClass);
+        outState.putSerializable("class", fragmentClass);
     }
 
-   /* public Toolbar getSupportBar() {
-        return bar;
-    }
-*/
+    /* public Toolbar getSupportBar() {
+         return bar;
+     }
+ */
+
+    /**
+     * Handles menu click and opening navigation drawer
+     * @param item  menu item clicked
+     * @return  True
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -133,7 +151,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setupDrawerContent(NavigationView nav) {
+    /**
+     * Sets up the navigation drawer and handling click.
+     * @param nav   navigation view that must be set up
+     */
+    private void setupDrawerContent(NavigationView nav) {
         nav.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -145,7 +167,12 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    public void selectDrawerItem(MenuItem item) {
+    /**
+     * Starts correspond intent to menu item.
+     * @param item  menu item clicked
+     * @see #setupDrawerContent(NavigationView)
+     */
+    private void selectDrawerItem(MenuItem item) {
         Fragment fragment = null;
         fragmentClass = null;
         switch(item.getItemId()) {
@@ -189,7 +216,9 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.closeDrawers();
     }
 
-
+    /**
+     * Holds back pressed event and transmits it to needed fragment(s).
+     */
     @Override
     public void onBackPressed() {
         Fragment fg = getSupportFragmentManager().getFragments().get(0);
@@ -199,17 +228,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks whether the internet connection exists & could be used.
+     * @param context   context
+     * @return  Whether the connection is ready for use
+     */
     public static boolean allowConnect(Context context) {
         ConnectivityManager conn =  (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = conn.getActiveNetworkInfo();
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        if (!settings.getBoolean("mobile_data_usage", false) && networkInfo != null & networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            return true;
-        } else if (settings.getBoolean("mobile_data_usage", false) && networkInfo != null ) {
-            return true;
-        } else{
+        try {
+            if (!settings.getBoolean("mobile_data_usage", false) && networkInfo != null & networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                return true;
+            } else return settings.getBoolean("mobile_data_usage", false) && networkInfo != null;
+        } catch (NullPointerException e) {
             return false;
         }
     }

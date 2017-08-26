@@ -61,4 +61,5 @@
     <string name="licenses">LIZENZEN</string>
     <string name="bug_send_feedback_here">Bug? Senden Sie ein Feedback!</string>
     <string name="home">Home</string>
+    <string name="help">Hilfe</string>
 </resources>

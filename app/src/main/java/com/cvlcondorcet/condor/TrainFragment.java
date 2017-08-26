@@ -25,9 +25,9 @@ import java.nio.charset.Charset;
 import static android.view.View.GONE;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link TrainFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Displays in a WebView part of website
+ * @author Quentin DE MUYNCK
+ *
  */
 public class TrainFragment extends Fragment {
 
@@ -67,10 +67,10 @@ public class TrainFragment extends Fragment {
         return fragment;
     }*/
 
-    @Override
+    /*@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,8 +83,14 @@ public class TrainFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         getActivity().setTitle(R.string.sncf);
         web_view = view.findViewById(R.id.web_view_train);
-        bar = (ProgressBar) view.findViewById(R.id.loading_layout);
+        bar = view.findViewById(R.id.loading_layout);
         web_view.setWebViewClient(new WebViewClient() {
+            /**
+             * Handles the click on a URL by user by starting browser (too complicated to handle this inside the fragment)
+             * @param view  the webview
+             * @param url   the requested URL
+             * @return  True
+             */
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -92,6 +98,11 @@ public class TrainFragment extends Fragment {
                 return true;
             }
 
+            /**
+             * Removes the loader spinner
+             * @param view  useless
+             * @param url   useless
+             */
             @Override
             public void onPageFinished(WebView view, String url) {
                 bar.setVisibility(GONE);
@@ -109,7 +120,10 @@ public class TrainFragment extends Fragment {
     }
 
 
-
+    /**
+     * Loads the website inside the WebView and filters elements to display only main content.
+     * @author Quentin DE MUYNCK
+     */
     private class Loading extends AsyncTask<String, Void, Void> {
         private Elements element;
         @Override
@@ -123,10 +137,10 @@ public class TrainFragment extends Fragment {
                     doc.charset(Charset.forName("UTF-8"));
                     Element el = doc.select("head").first();
                     Element el2 = doc.select(".page-content").first();
-                 //   el.wrap("<body></body>");
-                   element.add(el);
+                    //   el.wrap("<body></body>");
+                    element.add(el);
                     element.add(el2);
-                 // element = doc.getAllElements();
+                    // element = doc.getAllElements();
                    /* element.getElementsByAttributeValue("class", "container_12").first().remove();
                     element.getElementsByAttributeValue("class", "container_12").first().remove();*/
                     Log.i("DO", "FOREGOUND");
@@ -138,9 +152,9 @@ public class TrainFragment extends Fragment {
         public void onPostExecute(Void result) {
             Log.i("START", "LOADING");
             web_view.loadDataWithBaseURL("http://m.sncf.com", element.toString(), "text/html", "gzip", "");
-          //  web_view.loadUrl(url);
+            //  web_view.loadUrl(url);
 
-           // web_view.loadUrl(url);
+            // web_view.loadUrl(url);
             Log.i("END", "LOADING");
         }
     }

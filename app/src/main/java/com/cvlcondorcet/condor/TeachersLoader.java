@@ -7,19 +7,25 @@ import android.util.Log;
 import java.util.List;
 
 /**
- * Created by Quentin DE MUYNCK on 16/07/2017.
+ * Loader class to retrieve absences from Database
+ * @author Quentin DE MUYNCK
  */
 
-public class TeachersLoader extends AsyncTaskLoader<List<TeachersAbsence>> {
+class TeachersLoader extends AsyncTaskLoader<List<TeachersAbsence>> {
 
     private List<TeachersAbsence> list;
-    private Database db;
+    private final Database db;
 
     public TeachersLoader(Context ctx) {
         super(ctx);
         db = new Database(ctx);
     }
 
+    /**
+     * Makes request to Database
+     * @return  the teacher absences
+     * @see Database#getTeachersAbsence()
+     */
     @Override
     public List<TeachersAbsence> loadInBackground() {
         db.open();
@@ -36,7 +42,6 @@ public class TeachersLoader extends AsyncTaskLoader<List<TeachersAbsence>> {
             return;
         }*/
 
-        List<TeachersAbsence> oldData = list;
         list = data;
 
         if (isStarted()) { super.deliverResult(data); }
