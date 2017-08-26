@@ -1,16 +1,13 @@
 # Condor
-Condorcet's CVL's app
+Condorcet CVL app
 
-Will be the smartphone app for the CVL of the Condorcet High School, written for Android, will be normally ported to iOS.
+Android app for the CVL of the Condorcet high-school.
+Allows students to get teacher absences, canteen menu, posts, etc.
 
-Technical aspects :
- - Client App, with a db, which is synced with a distant db => offline access
- - Sync of the db with a webservice, hosted on a dedicated website.
-
-# Licence 
+# License 
 
 Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
-This is a human-readable summary of (and not a substitute for) the license. Disclaimer.
+This is a human-readable summary of the license.
 You are free to:
 
     Share — copy and redistribute the material in any medium or format
