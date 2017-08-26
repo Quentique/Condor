@@ -17,18 +17,23 @@ import android.widget.TextView;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+/**
+ * Displays state of sync by using a BroadcastReceiver (data transmitted from {@link Sync})
+ * @author Quentin DE MUYNCK
+ * @see Sync#displayProgress()
+ */
 public class SyncingFragment extends Fragment {
 
     private ImageButton button;
     private TextView displayPercent, message;
     private ProgressBar bar;
     private boolean sync;
-    Intent servicee;
+    private Intent servicee;
 
-    @Override
+    /*@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -63,7 +68,8 @@ public class SyncingFragment extends Fragment {
             }
         });
     }
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateUI(intent);
@@ -72,22 +78,32 @@ public class SyncingFragment extends Fragment {
         }
     };
 
+    /**
+     * Registers the listener to get state.
+     */
     @Override
     public void onResume() {
         super.onResume();
         getActivity().registerReceiver(broadcastReceiver, new IntentFilter(Sync.broadcast_URI));
     }
 
+    /**
+     * Unregisters receiver (memory economy)
+     */
     @Override
     public void onPause() {
         super.onPause();
         getActivity().unregisterReceiver(broadcastReceiver);
     }
 
+    /**
+     * Displays data received by the broadcast receiver
+     * @param intent    the intent transmitted by the broadcast receiver
+     * @see Sync#displayProgress()
+     */
     private void updateUI(Intent intent) {
         int progress = intent.getIntExtra("progress", -3);
         displayPercent.setText(String.valueOf(intent.getIntExtra("progress", -3)) + " %");
-        String text ="";
         switch (progress) {
             case -1:
                 button.setImageResource(R.drawable.ic_sync_problem_black_300dp);

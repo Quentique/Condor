@@ -1,10 +1,6 @@
 package com.cvlcondorcet.condor;
 
-/**
- * Created by Gunaseelan A in 2015
- * Modified by Quentin DE MUYNCK in 2017
- * Original licensed under Apache License 2.0.
- */
+
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,10 +13,20 @@ import android.widget.ArrayAdapter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
+/**
+ * Original licensed under Apache License 2.0.
+ * Spinner that allows multiple choices.
+ * @author Gunaseelan A in 2015
+ * @author Modified by Quentin DE MUYNCK in 2017
+ * @see com.cvlcondorcet.condor.PostsFragment
+ * @see com.cvlcondorcet.condor.RecyclerViewAdapterPosts#filterByCategories(java.util.List, java.lang.String)
+ */
 public class MultiSelectionSpinner extends AppCompatSpinner implements
         OnMultiChoiceClickListener {
 
+    /**
+     * Interface that must be implemented to get results.
+     */
     public interface OnMultipleItemsSelectedListener{
         void selectedIndices(List<Integer> indices);
         void selectedStrings(List<String> strings);
@@ -29,12 +35,12 @@ public class MultiSelectionSpinner extends AppCompatSpinner implements
     private AlertDialog dialog;
     private AlertDialog.Builder builder;
 
-    String[] _items = null;
-    boolean[] mSelection = null;
-    boolean[] mSelectionAtStart = null;
-    String _itemsAtStart = null;
+    private String[] _items = null;
+    private boolean[] mSelection = null;
+    private boolean[] mSelectionAtStart = null;
+    private String _itemsAtStart = null;
 
-    ArrayAdapter<String> simple_adapter;
+    private final ArrayAdapter<String> simple_adapter;
 
     public MultiSelectionSpinner(Context context) {
         super(context);
@@ -197,7 +203,7 @@ public class MultiSelectionSpinner extends AppCompatSpinner implements
         simple_adapter.add(buildSelectedItemString());
     }
 
-    public List<String> getSelectedStrings() {
+    private List<String> getSelectedStrings() {
         List<String> selection = new LinkedList<>();
         for (int i = 0; i < _items.length; ++i) {
             if (mSelection[i]) {
@@ -207,7 +213,7 @@ public class MultiSelectionSpinner extends AppCompatSpinner implements
         return selection;
     }
 
-    public List<Integer> getSelectedIndices() {
+    private List<Integer> getSelectedIndices() {
         List<Integer> selection = new LinkedList<>();
         for (int i = 0; i < _items.length; ++i) {
             if (mSelection[i]) {
@@ -234,7 +240,7 @@ public class MultiSelectionSpinner extends AppCompatSpinner implements
         return sb.toString();
     }
 
-    public String getSelectedItemsAsString() {
+    private String getSelectedItemsAsString() {
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
 

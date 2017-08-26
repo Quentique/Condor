@@ -21,11 +21,18 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * Displays a RecyclerView (for absences) and a search field (to filter absences by name)
+ * @author Quentin DE MUYNCK
+ * @see TeachersAbsence
+ * @see TeachersLoader
+ * @see RecyclerViewAdapterProfs
+ */
 public class TeachersFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<TeachersAbsence>>, SearchView.OnQueryTextListener {
 
-    protected RecyclerViewAdapterProfs adapter;
-    protected RecyclerView recycler;
+    private RecyclerViewAdapterProfs adapter;
+    private RecyclerView recycler;
     private SwipeRefreshLayout swipeContainer;
 
     @Override
@@ -38,11 +45,11 @@ public class TeachersFragment extends Fragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
-       // setTitle("Absences des profs");
+        // setTitle("Absences des profs");
         getActivity().setTitle(getString(R.string.teachers_absences));
-        recycler = (RecyclerView) view.findViewById(R.id.recycler);
+        recycler = view.findViewById(R.id.recycler);
         adapter = new RecyclerViewAdapterProfs(getActivity(),null, R.layout.profs_one_day_layout);
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_profs);
+        swipeContainer = view.findViewById(R.id.swipe_profs);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -51,7 +58,7 @@ public class TeachersFragment extends Fragment
         });
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.header);
+        LinearLayout layout = view.findViewById(R.id.header);
         ((TextView) layout.findViewById(R.id.profs)).setText(R.string.teacher);
         ((TextView) layout.findViewById(R.id.date)).setText(R.string.date);
         ((TextView) layout.findViewById(R.id.morning)).setText(R.string.morning);
@@ -82,8 +89,11 @@ public class TeachersFragment extends Fragment
         getSupportLoaderManager().initLoader(1, null, this);
     }*/
 
+    /**
+     * Refreshing the data if user wants it
+     */
     private void refresh() {
-       // getSupportLoaderManager().restartLoader(1, null, this);
+        // getSupportLoaderManager().restartLoader(1, null, this);
         getLoaderManager().restartLoader(1, null, this);
         swipeContainer.setRefreshing(false);
     }
@@ -93,6 +103,12 @@ public class TeachersFragment extends Fragment
         return new TeachersLoader(getActivity());
     }
 
+    /**
+     * Transfers data to adapter after load finished
+     * @param loader    the loader that has loaded the data
+     * @param data  the awaited data
+     * @see RecyclerViewAdapterProfs#setData(List)
+     */
     @Override
     public void onLoadFinished(Loader<List<TeachersAbsence>> loader, List<TeachersAbsence> data) {
         adapter.setData(data);
@@ -118,6 +134,12 @@ public class TeachersFragment extends Fragment
         return onQueryTextChange(query);
     }
 
+    /**
+     * Filters absences by name
+     * @param query the user entry
+     * @return  True
+     * @see RecyclerViewAdapterProfs#filter(String)
+     */
     @Override
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();

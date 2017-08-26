@@ -13,7 +13,7 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        android:popupTheme="@style/ThemeOverlay.AppCompat.Dark"></android.support.v7.widget.Toolbar>
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 
     <ScrollView
         android:layout_width="match_parent"

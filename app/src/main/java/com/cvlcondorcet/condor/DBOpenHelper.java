@@ -7,7 +7,10 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 /**
- * Created by Quentin DE MUYNCK on 12/07/2017.
+ * Contains table & column names, manages creation and upgrade of the database.
+ * @author Quentin DE MUYNCK
+ * @see Database#open()
+ * @see Database
  */
 
 class DBOpenHelper extends SQLiteOpenHelper {
@@ -39,6 +42,10 @@ class DBOpenHelper extends SQLiteOpenHelper {
         Log.i("UPGRADE", "WANT TO UPDATE DB3");
     }
 
+    /**
+     * Creates the Database, by SQL instructions.
+     * @param db    the {@link SQLiteDatabase} object
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.i("UPGRADE", "WANT TO UPDATE DB2");
@@ -47,6 +54,12 @@ class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(GEN_TABLE);
     }
 
+    /**
+     * If database is too old (when upgrading the app), destroys previous tables and recreates it.
+     * @param db    the {@link SQLiteDatabase} object
+     * @param oldVersion    current version
+     * @param newVersion    new version
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i("UPGRADE", "WANT TO UPDATE DB");

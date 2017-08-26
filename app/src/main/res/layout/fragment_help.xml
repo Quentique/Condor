@@ -12,40 +12,35 @@
         <TextView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textAlignment="center"
-            ></TextView>
+            android:textAlignment="center" />
         <TextView android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id="@+id/version_code"
-
             android:textAlignment="center"
-            android:layout_marginBottom="30dp"></TextView>
+            android:layout_marginBottom="30dp"/>
         <ImageView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_launcher"
-
-            android:textAlignment="center"></ImageView>
+            android:textAlignment="center"/>
         <TextView
             android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="© 2017 Quentin DE MUYNCK\n All rights reserved."
-
-            android:textAlignment="center"
-            />
+            android:textAlignment="center" />
         <Button android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="@string/licenses"
             android:id="@+id/licenses"
-android:layout_marginTop="30dp"
+            android:layout_marginTop="30dp"
             android:textAlignment="center"
-            android:background="#0000"></Button>
+            android:background="#0000"/>
         <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/bug_report"
             android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:background="#0000"
-            android:text="@string/bug_send_feedback_here"></Button>
+            android:text="@string/bug_send_feedback_here"/>
     </LinearLayout>
 </RelativeLayout>
