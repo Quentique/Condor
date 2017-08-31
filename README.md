@@ -4,6 +4,8 @@ Condorcet CVL app
 Android app for the CVL of the Condorcet high-school.
 Allows students to get teacher absences, canteen menu, posts, etc.
 
+***Link to doc : https://quentique.github.io/Condor/index.html
+
 # License 
 
 Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
