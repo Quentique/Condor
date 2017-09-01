@@ -9,6 +9,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,15 +43,23 @@ public class HelpFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 click++;
-                if (click == 20) {
-                    view.animate().rotation(720).setDuration(2000).start();
+                if (click == 7) {
+                   // view.animate().rotation(1080).setDuration(2000).setListener(null).setStartDelay(0).setInterpolator(null);
+                    //Animation anim = AnimationUtils.loadAnimation(getActivity(), R.anim.spin_around);
+                    Animation anim = new RotateAnimation(0, 720, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                    anim.setDuration(2000);
+                    anim.setInterpolator(new AccelerateDecelerateInterpolator());
+                    anim.setAnimationListener(null);
+                    view.startAnimation(anim);
                     final Toast toast = Toast.makeText(getActivity(), "« Quand les gens retrouveraient nos corps calcinés, ils se demanderaient ce qu'on fabriquait ensemble. »", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP, 0, 70);
                     toast.show();
-                    new CountDownTimer(9000, 1000) {
+                    new CountDownTimer(7000, 1000) {
                         public void onTick(long millisUntilFInished) {toast.show();}
                         public void onFinish() {toast.show();}
                     }.start();
+                    click = 0;
+
                 }
             }
         });
