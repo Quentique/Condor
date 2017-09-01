@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.jsoup.Jsoup;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -72,7 +74,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
         Log.i("DEBUGGGGG", "ICH BIN DA");
 
         ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setText(post.getName());
-        ((RecyclerViewAdapterPosts.ViewHolder) holder).content.setText(post.getContent());
+        ((RecyclerViewAdapterPosts.ViewHolder) holder).content.setText(Jsoup.parse(post.getContent()).text());
         ((RecyclerViewAdapterPosts.ViewHolder) holder).date.setText(post.getFormatedDate());
         ((ViewHolder) holder).categories.setText(post.getFormatedCategories());
         try {
