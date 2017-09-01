@@ -130,7 +130,7 @@ public class Sync extends IntentService {
         }
         noti.setContentTitle("Synchronization")
                 .setContentText(tickerText)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_launcher)
                 .setOngoing(true)
                 .setTicker(getString(R.string.sync_start_ticker));
         if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(VISIBILITY_PUBLIC); }

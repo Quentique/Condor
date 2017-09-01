@@ -26,10 +26,6 @@ import java.io.File;
  */
 
 public class MainFragment extends Fragment {
-    private TextView title;
-    private TextView adress;
-    private ImageView cover;
-    private ImageView logo;
     private Database db;
     //Button bouton;
 
@@ -46,10 +42,10 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.app_name);
-        title = view.findViewById(R.id.cover_title);
-        adress = view.findViewById(R.id.adress_highschool);
-        cover = view.findViewById(R.id.cover_image);
-        logo = view.findViewById(R.id.image_logo);
+        TextView title = view.findViewById(R.id.cover_title);
+        TextView adress = view.findViewById(R.id.adress_highschool);
+        ImageView cover = view.findViewById(R.id.cover_image);
+        ImageView logo = view.findViewById(R.id.image_logo);
         db.open();
         title.setText(db.timestamp("name"));
         int color;
