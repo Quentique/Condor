@@ -4,18 +4,22 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:weightSum="3"
-    android:layout_marginTop="20dp">
+    android:baselineAligned="true"
+    android:layout_marginTop="10dp">
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:id="@+id/facebook_logo"
-        android:src="@mipmap/facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:background="#00FFFFFF"
+        android:foreground="?attr/selectableItemBackground"
+        android:foregroundGravity="center_vertical"
+        android:minHeight="100dip"
         android:scaleType="fitCenter"
-        android:minHeight="90dip"
-        android:foreground="?attr/selectableItemBackground"/>
+        android:src="@mipmap/facebook"
+        android:scaleX="0.9"
+        android:scaleY="0.9"/>
 
     <ImageButton
         android:foreground="?attr/selectableItemBackground"
@@ -26,7 +30,7 @@
         android:src="@mipmap/highschool"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
-        android:minHeight="90dip"/>
+        android:minHeight="100dip"/>
 
     <ImageButton
         android:foreground="?attr/selectableItemBackground"
@@ -37,5 +41,5 @@
         android:src="@mipmap/twitter"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
-        android:minHeight="90dip"/>
+        android:minHeight="100dip"/>
 </LinearLayout>

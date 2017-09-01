@@ -3,12 +3,16 @@ package com.cvlcondorcet.condor;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Displays license, author information, send feedbacks, etc.
@@ -21,15 +25,33 @@ public class HelpFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }*/
-
+    int click = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_help, parent, false);
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         getActivity().setTitle(R.string.help);
         TextView version = view.findViewById(R.id.version_code);
+        ImageView logo = view.findViewById(R.id.logo);
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                click++;
+                if (click == 20) {
+                    view.animate().rotation(720).setDuration(2000).start();
+                    final Toast toast = Toast.makeText(getActivity(), "« Quand les gens retrouveraient nos corps calcinés, ils se demanderaient ce qu'on fabriquait ensemble. »", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP, 0, 70);
+                    toast.show();
+                    new CountDownTimer(9000, 1000) {
+                        public void onTick(long millisUntilFInished) {toast.show();}
+                        public void onFinish() {toast.show();}
+                    }.start();
+                }
+            }
+        });
         version.setText("Version " + BuildConfig.VERSION_NAME);
         Button button = view.findViewById(R.id.licenses);
         button.setOnClickListener(new View.OnClickListener() {
