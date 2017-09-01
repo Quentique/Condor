@@ -48,6 +48,7 @@
         android:padding="40dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:layout_alignParentRight="true"/>
     </RelativeLayout>
 </RelativeLayout>
