@@ -78,7 +78,7 @@ public class HelpFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setType("*/*");
                 intent.setData(Uri.parse("mailto:"));
-                intent.putExtra(Intent.EXTRA_EMAIL, "cvlcondorcet@gmail.com");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"cvlcondorcet@gmail.com"});
                 intent.putExtra(Intent.EXTRA_SUBJECT, "[CONDOR] Report");
                 intent.putExtra(Intent.EXTRA_TEXT, "Subject : \n Message : ");
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
