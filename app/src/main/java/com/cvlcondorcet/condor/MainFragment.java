@@ -116,7 +116,7 @@ public class MainFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setType("*/*");
                 intent.setData(Uri.parse("mailto:"));
-                intent.putExtra(Intent.EXTRA_EMAIL, mail);
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{mail});
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivity(intent);
                 }

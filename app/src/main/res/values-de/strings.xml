@@ -15,7 +15,7 @@
     <string name="afternoon">Nachm.</string>
     <string name="canteen">Mensa</string>
     <string name="canteen_menu">Mensa-Speiseplan</string>
-    <string name="cat_select">Wählen Sie Kategorien aus</string>
+    <string name="cat_select">Wählen Sie Kategorie(n) aus</string>
     <string name="date">Datum</string>
     <string name="hello_blank_fragment">"Hallo weißes Fragment "</string>
     <string name="settings">Einstellungen</string>
@@ -25,7 +25,7 @@
     <string name="sync_app_start">Die Datenbank synchronisieren, indem das App startet.</string>
     <string name="sync_mobile_data">Mobile Daten nutzen, um Inhalt zu bekommen.</string>
     <string name="sync_mobile_data_title">Mobile Daten</string>
-    <string name="sync_notif_name">Condor\'s Synchronisation</string>
+    <string name="sync_notif_name">Synchronisation Condors</string>
     <string name="others">Andere</string>
     <string name="end_sync_ticker">Synchronisation beendet</string>
     <string name="sync_start_ticker">Anfang der Synchronisation</string>
