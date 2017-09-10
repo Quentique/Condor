@@ -29,6 +29,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     //private ActionBarDrawerToggle drawerToggle;
     private Class fragmentClass;
     public static String locale;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nvView);
+        navigationView = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
         /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.your_placeholder, new PostsFragment());
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = (Class) savedInstanceState.getSerializable("class");
                 Fragment fg = (Fragment) fragmentClass.newInstance();
                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fg).commit();
+                Log.i("INSTANCE", "Old instance exists");
             } catch (NullPointerException e) {
             } catch (IllegalAccessException e) {
             } catch (InstantiationException e) {}
@@ -95,14 +97,19 @@ public class MainActivity extends AppCompatActivity {
             if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_app_start", true) && allowConnect(this)) {
                 Intent servicee = new Intent(getApplicationContext(), Sync.class);
                 startService(servicee);
+                Log.i("INSTANCE", "New start of app SYNCING");
             }
             if (getIntent().getExtras() != null) {
                 try {
                     // getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new PostsFragment()).commit();
                     selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
+                   /* getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new PostsFragment()).commit();
+                    navigationView.getMenu().findItem(R.id.nav_posts).setChecked(true);*/
+                    Log.i("INSTANCE", "NEW -- Starting Posts");
                 } catch (Exception e) {}
             } else {
                 selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
+                Log.i("INSTANCE", "ERROR -- Starting Home");
             }
         }
         Database db = new Database(this);
@@ -212,7 +219,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {}
 
         getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
-        item.setChecked(true);
+        //item.setChecked(true);
+        navigationView.setCheckedItem(item.getItemId());
         drawerLayout.closeDrawers();
     }
 
@@ -222,9 +230,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Fragment fg = getSupportFragmentManager().getFragments().get(0);
-        if (fg.getClass() == BusFragment.class)
+        if (fg != null && fg.getClass() == BusFragment.class)
         {
             ((BusFragment) fg).backPressed();
+        } else {
+           // super.onBackPressed();
         }
     }
 

@@ -2,13 +2,16 @@ package com.cvlcondorcet.condor;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -69,15 +72,32 @@ public class PostViewerActivity extends AppCompatActivity {
                 startActivity(browser);
                 return true;
             }
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError err) {
+                handler.proceed();
+            }
         });
         setSupportActionBar(bar);
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } catch (NullPointerException e) {}
+
         String id = getIntent().getStringExtra("id");
         Log.i("ID", "'" + id +"'");
         if (!id.equals("0")) {
-            new Loading().execute("id", id);
+            if (getIntent().getExtras().containsKey("link")) {
+
+                view.loadUrl(getIntent().getStringExtra("link"));
+
+                view.getSettings().setDefaultFontSize(10);
+                view.getSettings().setTextZoom(100);
+
+                title.setVisibility(GONE);
+                date.setVisibility(GONE);
+                setTitle(view.getTitle());
+            } else {
+                new Loading().execute("id", id);
+            }
         } else {
             new LoadingWeb().execute(getIntent().getStringExtra("link"));
         }
@@ -95,7 +115,9 @@ public class PostViewerActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             Intent relaunch = new Intent(this, MainActivity.class);
             relaunch.putExtra("HELLO","test");
-            startActivity(relaunch);
+            //startActivity(relaunch);
+            NavUtils.navigateUpTo(this, relaunch);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

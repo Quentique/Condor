@@ -247,6 +247,10 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
             if (pos != RecyclerView.NO_POSITION) {
                 Post post = filteredList.get(pos);
                 Intent intent = new Intent(context, PostViewerActivity.class);
+                if (post.getContent().startsWith("http")) {
+                    post.setLink(post.getContent());
+                    intent.putExtra("link", post.getLink());
+                }
                 intent.putExtra("id", post.getId());
                 if (post.getId().equals("0")) {
                     intent.putExtra("link", post.getLink());
