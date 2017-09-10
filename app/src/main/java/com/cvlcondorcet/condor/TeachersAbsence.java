@@ -78,9 +78,9 @@ class TeachersAbsence {
                     break;
             }
             Log.i("e", beginning.substring(11, 13));
-            if (beginning.substring(11, 13).contains("12")) { morning = false; afternoon = true; Log.i("e", "12 HOURS");}
+            if (beginning.substring(11, 13).contains("13")) { morning = false; afternoon = true; Log.i("e", "12 HOURS");}
             else if (end.substring(11, 13).contains("23") || end.substring(11, 13).contains("18")) { morning = true; afternoon = true; Log.i("e", "23 HOURS");}
-            else if (beginning.substring(11, 13).contains("00") || beginning.contains("08") && end.substring(11, 13).contains("12")){ morning = true; afternoon = false; Log.i("e", "ELSE HOURS");}
+            else if (beginning.substring(11, 13).contains("00") || beginning.contains("08") && end.substring(11, 13).contains("13")){ morning = true; afternoon = false; Log.i("e", "ELSE HOURS");}
             else {
                 Log.i("E", "NEW HOURS");
                 date = new SimpleDateFormat(finalFormat).format(begin);

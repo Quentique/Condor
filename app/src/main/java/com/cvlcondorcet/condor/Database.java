@@ -140,6 +140,7 @@ class Database {
                 e.printStackTrace();
             }
         }
+        database.delete(DBOpenHelper.Profs.TABLE_NAME, DBOpenHelper.Profs.COLUMN_END + " < CURRENT_TIMESTAMP", null);
     }
 
     /**
@@ -191,8 +192,8 @@ class Database {
         ArrayList<TeachersAbsence> results = new ArrayList<>();
         Cursor cursor = database.query(DBOpenHelper.Profs.TABLE_NAME,
                         new String[] {DBOpenHelper.Profs.COLUMN_TITLE, DBOpenHelper.Profs.COLUMN_NAME, DBOpenHelper.Profs.COLUMN_BEGIN, DBOpenHelper.Profs.COLUMN_END},
-                        DBOpenHelper.Profs.COLUMN_DELETED + " != 1",
-                        null, null, null, null);
+                        DBOpenHelper.Profs.COLUMN_DELETED + " != 1 AND " + DBOpenHelper.Profs.COLUMN_END + " > CURRENT_TIMESTAMP",
+                        null, null, null, DBOpenHelper.Profs.COLUMN_BEGIN);
         try {
             if (cursor != null && cursor.getCount() > 0) {
                 try {

@@ -72,9 +72,9 @@ public class SyncingFragment extends Fragment {
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            updateUI(intent);
             bar.setVisibility(VISIBLE);
             button.setVisibility(GONE);
+            updateUI(intent);
         }
     };
 
