@@ -18,8 +18,8 @@ import java.util.Locale;
  */
 
 class Post implements Comparable<Post> {
-    private final String name, content, id, picture, date, formatedDate, formatedCategories;
-    private String link;
+    private final String name, content, picture, date, formatedDate, formatedCategories;
+    private String link, id;
     private final ArrayList<String> categories;
 
     public Post(String id, String name, String content, String picture, String date, String categories) {
@@ -45,6 +45,7 @@ class Post implements Comparable<Post> {
     public String getLink() { return link; }
 
     public void setLink(String link) { this.link = link; }
+    public void setId(String id) { this.id = id; }
 
     /**
      * Compares the post by date (to classifies them by descending date).

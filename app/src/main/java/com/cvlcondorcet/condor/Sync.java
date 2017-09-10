@@ -19,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -148,8 +149,10 @@ public class Sync extends IntentService {
         if (continueSync.contains("200")) {
             networkError = false;
         } else {
+
             progress = -1;
             progressMessage = continueSync;
+            Log.i("TESTSYNC", progressMessage);
             displayProgress();
             handler.removeCallbacks(sendProgress);
             networkError = true;
@@ -322,16 +325,28 @@ public class Sync extends IntentService {
                 in.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                progress = -1;
+                handler.post(sendProgress);
+                stopForeground(true);
+                networkError = true;
+                answer = "Server is unreachable, please try again later.";
             } finally {
                 connection.disconnect();
             }
-        } catch (IOException e) {
+        } catch (ConnectException e) {
             progress = -1;
             handler.post(sendProgress);
             stopForeground(true);
             networkError = true;
             e.printStackTrace();
             answer = "Server is unreachable, please try again later.";
+        } catch (IOException e) {
+            progress = -1;
+            handler.post(sendProgress);
+            stopForeground(true);
+            networkError = true;
+            e.printStackTrace();
+            answer = "I/O Error";
         }
         return answer;
     }

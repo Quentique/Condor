@@ -3,9 +3,7 @@ package com.cvlcondorcet.condor;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Displays license, author information, send feedbacks, etc.
@@ -51,13 +48,13 @@ public class HelpFragment extends Fragment {
                     anim.setInterpolator(new AccelerateDecelerateInterpolator());
                     anim.setAnimationListener(null);
                     view.startAnimation(anim);
-                    final Toast toast = Toast.makeText(getActivity(), "« Quand les gens retrouveraient nos corps calcinés, ils se demanderaient ce qu'on fabriquait ensemble. »", Toast.LENGTH_LONG);
+                   /* final Toast toast = Toast.makeText(getActivity(), "« Quand les gens retrouveraient nos corps calcinés, ils se demanderaient ce qu'on fabriquait ensemble. »", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP, 0, 70);
                     toast.show();
                     new CountDownTimer(7000, 1000) {
                         public void onTick(long millisUntilFInished) {toast.show();}
                         public void onFinish() {toast.show();}
-                    }.start();
+                    }.start();*/
                     click = 0;
 
                 }
