@@ -44,6 +44,8 @@ public class Sync extends IntentService {
     private static final String GEN_URL = "gen_deliver.php";
     private static final String POSTS_URL = "pos_deliver.php";
     private static final String PROFS_URL = "tea_deliver.php";
+    private static final String MAPS_CHECK_URL = "map_check.php";
+    private static final String MAPS_URL = "map_deliver.php";
     private static final String KEY = "?q=***REMOVED***";
 
     public static String rssURL;
@@ -160,8 +162,11 @@ public class Sync extends IntentService {
         }
         if (!networkError) {
             try {
-                JSONArray gen = get(GEN_URL);
                 Log.i("SYNC", "GENERAL SYNC");
+                JSONArray maps = get(MAPS_URL);
+                db.updateMaps(maps);
+                JSONArray gen = get(GEN_URL);
+
                 ArrayList liste;
                 liste = db.updateGen(gen);
                 progress = 20;
@@ -178,7 +183,7 @@ public class Sync extends IntentService {
                 Log.i("SYNC", "POSTS SYNC");
                 db.updatePosts(posts);
                 progress = 60;
-                progressMessage = "Teacher absences...";
+                progressMessage = "Mapping...";
                 changeProgress(progress);
                /* JSONArray profs = get(PROFS_URL);
                 Log.i("SYNC", "PROFS SYNC");*/
@@ -228,6 +233,8 @@ public class Sync extends IntentService {
                 String machin;
                 if (content.equals(GEN_URL)) {
                     machin = db.timestamp("timestamp");
+                } else if (content.equals(MAPS_URL)) {
+                    machin = db.timestamp("maps_change");
                 } else {
                     machin = db.timestamp("last_sync");
                 }
