@@ -144,6 +144,33 @@ class Database {
     }
 
     /**
+     * Updates maps table, empty it and refill it with new datas.
+     * @param array Updated data
+     *              @see Sync#get(String)
+     */
+    void updateMaps(JSONArray array) {
+        if (array.length() != 0) {
+            database.rawQuery("ALTER TABLE " + DBOpenHelper.Maps.TABLE_NAME, null);
+            for (int i = 0 ; i < array.length() ; i++) {
+                try {
+                    JSONObject element = array.getJSONObject(i);
+                    ContentValues values = new ContentValues();
+                    values.put(DBOpenHelper.Maps.COLUMN_ID, element.getInt("id"));
+                    values.put(DBOpenHelper.Maps.COLUMN_NAME, element.getString("name"));
+                    values.put(DBOpenHelper.Maps.COLUMN_DPNAME, element.getString("display_name"));
+                    values.put(DBOpenHelper.Maps.COLUMN_DESC, element.getString("description"));
+                    values.put(DBOpenHelper.Maps.COLUMN_FILE, element.getString("map"));
+                    values.put(DBOpenHelper.Maps.COLUMN_POS, element.getString("pos"));
+                    values.put(DBOpenHelper.Maps.COLUMN_MARK, element.getString("mark"));
+                    database.replace(DBOpenHelper.Maps.TABLE_NAME, null, values);
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
      * Retrieves a value from {@link DBOpenHelper#GEN_TABLE}
      * @param name  the key of value
      * @return  the value corresponding to the key

@@ -40,6 +40,7 @@ class DBOpenHelper extends SQLiteOpenHelper {
     private static final String MAPS_TABLE = "CREATE TABLE " + Maps.TABLE_NAME + "(" +
             Maps.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Maps.COLUMN_NAME + " TEXT, " +
+            Maps.COLUMN_DPNAME + " TEXT, " +
             Maps.COLUMN_DESC + " TEXT, " +
             Maps.COLUMN_FILE + " TEXT, " +
             Maps.COLUMN_POS + " TEXT, " +
@@ -60,6 +61,7 @@ class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(POSTS_TABLE);
         db.execSQL(PROFS_TABLE);
         db.execSQL(GEN_TABLE);
+        db.execSQL(MAPS_TABLE);
     }
 
     /**
@@ -74,12 +76,13 @@ class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Posts.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Profs.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + General.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Maps.TABLE_NAME);
         onCreate(db);
     }
 
     private static class Constants implements BaseColumns {
         static final String DATABASE_NAME = "database.db";
-        static final int DATABASE_VERSION = 18;
+        static final int DATABASE_VERSION = 19;
     }
 
     static class Posts implements BaseColumns {
@@ -114,6 +117,7 @@ class DBOpenHelper extends SQLiteOpenHelper {
         static final String TABLE_NAME = "maps";
         static final String COLUMN_ID = "_id";
         static final String COLUMN_NAME = "name";
+        static final String COLUMN_DPNAME = "display_name";
         static final String COLUMN_DESC = "description";
         static final String COLUMN_FILE = "file";
         static final String COLUMN_POS = "pos";
