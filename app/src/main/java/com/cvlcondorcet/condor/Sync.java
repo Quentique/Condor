@@ -180,12 +180,12 @@ public class Sync extends IntentService {
                 progress = 60;
                 progressMessage = "Teacher absences...";
                 changeProgress(progress);
-                JSONArray profs = get(PROFS_URL);
-                Log.i("SYNC", "PROFS SYNC");
+               /* JSONArray profs = get(PROFS_URL);
+                Log.i("SYNC", "PROFS SYNC");*/
                 progress = 80;
                 progressMessage = "Ending sync...";
                 changeProgress(progress);
-                db.updateProfs(profs);
+              //  db.updateProfs(profs);
                 db.beginSync();
                 Log.i("SYNC", "END SYNC");
                 progressMessage = "Sync ended.";
