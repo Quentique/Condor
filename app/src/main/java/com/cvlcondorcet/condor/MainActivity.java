@@ -186,9 +186,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_posts:
                 fragmentClass = PostsFragment.class;
                 break;
-            case R.id.nav_teachers:
+            /*case R.id.nav_teachers:
                 fragmentClass = TeachersFragment.class;
-                break;
+                break;*/
             case R.id.nav_canteen:
                 fragmentClass = CanteenFragment.class;
                 break;
@@ -209,6 +209,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.nav_home:
                 fragmentClass = MainFragment.class;
+                break;
+            case R.id.nav_maps:
+                fragmentClass = MapsFragment.class;
                 break;
             default:
                 Log.i("PATATE", "CHAUDE");
