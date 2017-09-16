@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -47,7 +48,18 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_maps, menu);
-        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        //SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        final MenuItem item = menu.findItem(R.id.action_search_maps);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+      //  final SearchView searchView = (SearchView) menu.getItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                query = "";
+                return false;
+            }
+        });
         // item = menu.findItem(R.id.action_search);
         //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 //        search.setOnQueryTextListener(this);
@@ -123,6 +135,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                         loadPdf(ge.valueAt(i1));
                         break;
                 }
+                dialog.dismiss();
                 return false;
             }
         });
