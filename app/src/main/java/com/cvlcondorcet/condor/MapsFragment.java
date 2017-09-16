@@ -18,6 +18,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.github.barteksc.pdfviewer.PDFView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +34,13 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     private ArrayMap<String, List<String>> total;
     private List<String> title;
     private AlertDialog dialog;
+    private PDFView pdf;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -45,14 +50,14 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
         // item = menu.findItem(R.id.action_search);
         //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-        search.setOnQueryTextListener(this);
-        search.setOnCloseListener(new SearchView.OnCloseListener() {
+//        search.setOnQueryTextListener(this);
+/*        search.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 query = "";
                 return false;
             }
-        });
+        });*/
 
         menu.findItem(R.id.menu_select).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -65,7 +70,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
-        getActivity().setTitle(R.string.sncf);
+        getActivity().setTitle("TEST");
         gl=new ArrayMap<>();
         String[] grandl_lycee = getResources().getStringArray(R.array.gl);
         for (int i = 0 ; i<grandl_lycee.length ; i++) {
@@ -104,13 +109,28 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-                
+                switch (title.get(i)) {
+                    case "GRAND LYCEE":
+                        loadPdf(gl.valueAt(i1));
+                        break;
+                    case "PETIT LYCEE":
+                        loadPdf(pl.valueAt(i1));
+                        break;
+                    case "INTERNAT":
+                        loadPdf(in.valueAt(i1));
+                        break;
+                    case "GENERAL":
+                        loadPdf(ge.valueAt(i1));
+                        break;
+                }
                 return false;
             }
         });
 
         builder.setView(list);
         dialog = builder.create();
+
+        pdf = view.findViewById(R.id.pdfView);
     }
 
     @Override
@@ -130,6 +150,10 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         this.query = query;
         Log.i("e", "Query");
         return false;
+    }
+
+    private void loadPdf(String name) {
+        pdf.fromAsset(name).load();
     }
 
     public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
