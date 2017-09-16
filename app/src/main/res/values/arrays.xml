@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="maps_list">
+        <item>General</item>
+    </string-array>
+    <string-array name="gl">
+        <item name="0EGL">Ground Floor</item>
+        <item name="1EGL">1st Floor</item>
+        <item name="2EGL">2nd Floor</item>
+        <item name="3EGL">3rd Floor</item>
+    </string-array>
+    <string-array name="pl">
+        <item name="0EPL">Ground Floor</item>
+        <item name="1EPL">1st Floor</item>
+        <item name="2EPL">2nd Floor</item>
+        <item name="3EPL">3rd Floor</item>
+    </string-array>
+    <string-array name="in">
+        <item name="0EIN">Ground Floor</item>
+        <item name="1EIN">1st Floor</item>
+    </string-array>
+</resources>
