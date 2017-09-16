@@ -37,6 +37,14 @@ class DBOpenHelper extends SQLiteOpenHelper {
             Profs.COLUMN_END + " TEXT, " +
             Profs.COLUMN_DELETED + " TEXT)";
 
+    private static final String MAPS_TABLE = "CREATE TABLE " + Maps.TABLE_NAME + "(" +
+            Maps.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            Maps.COLUMN_NAME + " TEXT, " +
+            Maps.COLUMN_DESC + " TEXT, " +
+            Maps.COLUMN_FILE + " TEXT, " +
+            Maps.COLUMN_POS + " TEXT, " +
+            Maps.COLUMN_MARK + " TEXT)";
+
     DBOpenHelper(Context context) {
         super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
         Log.i("UPGRADE", "WANT TO UPDATE DB3");
@@ -100,5 +108,15 @@ class DBOpenHelper extends SQLiteOpenHelper {
         static final String COLUMN_BEGIN = "date_begin";
         static final String COLUMN_END = "date_end";
         static final String COLUMN_DELETED = "deleted";
+    }
+
+    static class Maps implements BaseColumns {
+        static final String TABLE_NAME = "maps";
+        static final String COLUMN_ID = "_id";
+        static final String COLUMN_NAME = "name";
+        static final String COLUMN_DESC = "description";
+        static final String COLUMN_FILE = "file";
+        static final String COLUMN_POS = "pos";
+        static final String COLUMN_MARK = "mark";
     }
 }

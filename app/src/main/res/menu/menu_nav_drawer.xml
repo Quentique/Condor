@@ -12,9 +12,9 @@
                         android:title="@string/news">
                     </item>
 
-                    <item android:id="@+id/nav_teachers"
+                    <!--<item android:id="@+id/nav_teachers"
                         android:icon="@drawable/ic_person_outline_24px"
-                        android:title="@string/absences"/>
+                        android:title="@string/absences"/>-->
 
                     <item android:id="@+id/nav_canteen"
                         android:icon="@drawable/ic_restaurant_black_24dp"
