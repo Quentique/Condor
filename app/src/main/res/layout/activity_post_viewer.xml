@@ -23,7 +23,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@android:color/white">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -33,12 +34,24 @@
                     android:id="@+id/post_display_title"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
                     android:textSize="@dimen/BigTitle"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/post_display_title"
-                    android:id="@+id/post_date_display"/>
+                    android:id="@+id/post_date_display"
+                    android:paddingLeft="20dp"
+                    android:paddingBottom="5dp"
+                    android:textStyle="italic"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/post_display_title"
+                    android:layout_toEndOf="@+id/post_date_display"
+                    android:id="@+id/post_display_cat"
+                    android:paddingLeft="15dp"/>
             </RelativeLayout>
             <WebView
                 android:layout_width="match_parent"
