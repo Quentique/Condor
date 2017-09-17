@@ -99,3 +99,6 @@ html, body, h1, h2, h3, h4, h5, h6, p, img, ul, ol, li, form, fieldset {
 	margin-top: 5px;
 	max-width: 60%;
 }
+body {
+line-height: 100%;
+}
