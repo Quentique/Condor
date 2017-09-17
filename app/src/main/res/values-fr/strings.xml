@@ -62,4 +62,7 @@
     <string name="bug_send_feedback_here">Bug ? Envoyez un rapport !</string>
     <string name="home">Accueil</string>
     <string name="help">Aide</string>
+    <string name="maps">Plans</string>
+    <string name="floor">Étage</string>
+    <string name="from_building">" du bâtiment "</string>
 </resources>

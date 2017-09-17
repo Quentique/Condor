@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -150,7 +152,7 @@ class Database {
      */
     void updateMaps(JSONArray array) {
         if (array.length() != 0) {
-            database.rawQuery("ALTER TABLE " + DBOpenHelper.Maps.TABLE_NAME, null);
+            database.delete(DBOpenHelper.Maps.TABLE_NAME, null, null);
             for (int i = 0 ; i < array.length() ; i++) {
                 try {
                     JSONObject element = array.getJSONObject(i);
@@ -293,6 +295,16 @@ class Database {
         return results;
     }
 
+    CursorAdapter getSuggestions() {
+        Cursor cursor = null;
+        try {
+             cursor = database.query(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME}, null, null, null, null, null);
+            return new SimpleCursorAdapter(ctx, android.R.layout.simple_list_item_1, cursor, new String[]{DBOpenHelper.Maps.COLUMN_DPNAME}, new int[]{android.R.id.text1}, 0);
+        } finally {
+           // cursor.close();
+        }
+    }
+
     /**
      * Retrieves post datas for displaying in {@link PostsFragment}
      * @param id    the corresponding id in database for the post
@@ -325,6 +337,22 @@ class Database {
         } catch (NullPointerException e ){
             return null;
         }
+    }
+
+    Cursor getPlace(long id) {
+        Cursor cursor = database.query(DBOpenHelper.Maps.TABLE_NAME,
+                new String[] {DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_FILE, DBOpenHelper.Maps.COLUMN_DESC, DBOpenHelper.Maps.COLUMN_POS, DBOpenHelper.Maps.COLUMN_MARK},
+                DBOpenHelper.Maps.COLUMN_ID + " = " + String.valueOf(id),
+                null, null, null, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                return cursor;
+            } else {
+                return null;
+            }
+    }
+
+    Cursor getQuery(String table, String[] columns, String clause) {
+        return database.query(table, columns, clause, null, null, null, null);
     }
 
     /**
