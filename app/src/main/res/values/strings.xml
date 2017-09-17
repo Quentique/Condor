@@ -64,5 +64,8 @@
         <item>de</item>
     </string-array>
     <string name="help">Help</string>
+    <string name="maps">Maps</string>
+    <string name="floor">Floor</string>
+    <string name="from_building">" from building "</string>
 
 </resources>
