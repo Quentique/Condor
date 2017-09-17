@@ -1,11 +1,16 @@
 package com.cvlcondorcet.condor;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Canvas;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -17,12 +22,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.FilterQueryProvider;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnDrawListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.View.GONE;
 
 /**
  * Created by Quentin DE MUYNCK on 16/09/2017.
@@ -31,11 +45,16 @@ import java.util.List;
 public class MapsFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private String query;
+    private RelativeLayout layout;
+    private SimpleCursorAdapter adapter;
     private ArrayMap<String, String> gl, pl, in, ge;
     private ArrayMap<String, List<String>> total;
     private List<String> title;
     private AlertDialog dialog;
     private PDFView pdf;
+    private Database db;
+    private TextView name, desc, place;
+    private double initialX, initialY, x, y;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +79,37 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 return false;
             }
         });
+        db = new Database(getActivity());
+        db.open();
+        adapter = (SimpleCursorAdapter)db.getSuggestions();
+        adapter.setFilterQueryProvider(new FilterQueryProvider() {
+            @Override
+            public Cursor runQuery(CharSequence charSequence) {
+
+                return db.getQuery(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME},
+                        DBOpenHelper.Maps.COLUMN_DPNAME +" LIKE '%"+charSequence+"%'" );
+            }
+        });
+        searchView.setSuggestionsAdapter(adapter);
+        searchView.setIconifiedByDefault(true);
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                Log.i("TESTT", String.valueOf(adapter.getItemId(position)));
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+                Log.i("TESTT", String.valueOf(adapter.getItemId(position)));
+                searchView.clearFocus();
+                Cursor cursor =(Cursor)adapter.getItem(position);
+                searchView.setQuery(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)), true);
+                loadPdf(adapter.getItemId(position));
+                return false;
+            }
+        });
+       // db.close();
         // item = menu.findItem(R.id.action_search);
         //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 //        search.setOnQueryTextListener(this);
@@ -78,6 +128,8 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 return false;
             }
         });
+
+
     }
 
     @Override
@@ -144,6 +196,13 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         dialog = builder.create();
 
         pdf = view.findViewById(R.id.pdfView);
+        layout = view.findViewById(R.id.maps_layout);
+        name = view.findViewById(R.id.text_maps_name);
+        desc = view.findViewById(R.id.text_maps_desc);
+        place = view.findViewById(R.id.text_maps_acces);
+        layout.setVisibility(GONE);
+        loadPdf("GEN.pdf");
+        pdf.zoomWithAnimation(3.0f);
     }
 
     @Override
@@ -161,12 +220,108 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
         this.query = query;
+        adapter.getFilter().filter(query);
         Log.i("e", "Query");
-        return false;
+        return true;
     }
 
     private void loadPdf(String name) {
-        pdf.fromAsset(name).load();
+        layout.setVisibility(GONE);
+        pdf.fromAsset(name).defaultPage(0)
+                .enableSwipe(true)
+                .swipeHorizontal(true)
+                .enableAnnotationRendering(true)
+                .load();
+    }
+
+    private void loadPdf(long id) {
+        db.open();
+        Cursor cursor = db.getPlace(id);
+        if (cursor == null) {
+            Log.i("NULL", "CURSOR IS NULL");
+        }
+        cursor.moveToFirst();
+       // loadPdf(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_FILE)));
+        name.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)));
+        desc.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DESC)));
+        try {
+            JSONArray array = new JSONArray(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_MARK)));
+            if (array.getString(1).equals("NU")) {
+                place.setVisibility(GONE);
+            } else {
+                String toAdd;
+                switch (array.getString(1)) {
+                    case "GL":
+                        toAdd = "Grand Lycée";
+                        break;
+                    case "PL":
+                        toAdd="Petit Lycée";
+                        break;
+                    case "IN":
+                        toAdd="Internat";
+                        break;
+                    default:
+                        toAdd="Error";
+                        break;
+                }
+                place.setText(getResources().getString(R.string.floor) + " " + array.getString(0) + getResources().getString(R.string.from_building) + toAdd);
+            }
+        } catch (JSONException e) {
+            place.setVisibility(GONE);
+        }
+        final JSONObject pos;
+        try {
+            pos = new JSONObject(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_POS)));
+            initialX = pos.getDouble("x");
+            initialY = pos.getDouble("y");
+        } catch(JSONException e) {
+            initialX = 0;
+            initialY = 0;
+        }
+            pdf.fromAsset(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_FILE)))
+                    .defaultPage(0)
+                    .enableSwipe(true)
+                    .swipeHorizontal(true)
+                    .enableAnnotationRendering(true)
+                    .enableDoubletap(true)
+                    .onDraw(new OnDrawListener() {
+                        @Override
+                        public void onLayerDrawn(Canvas canvas, float pageWidth, float pageHeight, int displayedPage) {
+                            if (initialX != 0) {
+                                Drawable toDraw = getResources().getDrawable(R.drawable.ic_place_black_24dp);
+                                if (Build.VERSION.SDK_INT >= 21) {
+                                    toDraw.setTint(getResources().getColor(R.color.place));
+                                }
+                                toDraw.setLevel(2);
+                                toDraw.setAlpha(235);
+                                x = initialX* pageWidth;
+                                y = initialY * pageHeight;
+
+                                toDraw.setBounds((int) Math.round(x - pageWidth / 30), (int) Math.round(y - pageWidth / 15), (int) Math.round(x + pageWidth / 30), (int) Math.round(y));
+                                toDraw.draw(canvas);
+                            }
+                        }
+                    })
+                    .load();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                }catch (InterruptedException e) { e.printStackTrace(); }
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pdf.resetZoom();
+                        pdf.zoomWithAnimation((float)x, (float)y, 2.5f);
+                    }
+                });
+            }
+        }).start();
+        layout.setVisibility(View.VISIBLE);
+        cursor.close();
     }
 
     public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
