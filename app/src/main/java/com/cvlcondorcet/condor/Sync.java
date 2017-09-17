@@ -44,8 +44,8 @@ public class Sync extends IntentService {
     private static final String GEN_URL = "***REMOVED***";
     private static final String POSTS_URL = "***REMOVED***";
     private static final String PROFS_URL = "***REMOVED***";
-    private static final String MAPS_CHECK_URL = "map_***REMOVED***";
     private static final String MAPS_URL = "***REMOVED***";
+    private static final String EVENTS_URL = "***REMOVED***";
     private static final String KEY = "?q=***REMOVED***";
 
     public static String rssURL;
@@ -183,7 +183,10 @@ public class Sync extends IntentService {
                 Log.i("SYNC", "POSTS SYNC");
                 db.updatePosts(posts);
                 progress = 60;
-                progressMessage = "Mapping...";
+                progressMessage = "Events...";
+                changeProgress(progress);
+                JSONArray events = get(EVENTS_URL);
+                progressMessage = "Events...";
                 changeProgress(progress);
                /* JSONArray profs = get(PROFS_URL);
                 Log.i("SYNC", "PROFS SYNC");*/

@@ -46,6 +46,16 @@ class DBOpenHelper extends SQLiteOpenHelper {
             Maps.COLUMN_POS + " TEXT, " +
             Maps.COLUMN_MARK + " TEXT)";
 
+    private static final String EVENTS_TABLE = "CREATE TABLE " + Events.TABLE_NAME + "(" +
+            Events.COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            Events.COLUMN_NAME + " TEXT, " +
+            Events.COLUMN_DESC + " TEXT, " +
+            Events.COLUMN_START + " TEXT, " +
+            Events.COLUMN_END + " TEXT, "+
+            Events.COLUMN_PLACE + " TEXT, " +
+            Events.COLUMN_STATE + " TEXT, " +
+            Events.COLUMN_PICT + " TEXT)";
+
     DBOpenHelper(Context context) {
         super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
         Log.i("UPGRADE", "WANT TO UPDATE DB3");
@@ -62,6 +72,7 @@ class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(PROFS_TABLE);
         db.execSQL(GEN_TABLE);
         db.execSQL(MAPS_TABLE);
+        db.execSQL(EVENTS_TABLE);
     }
 
     /**
@@ -77,12 +88,13 @@ class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Profs.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + General.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Maps.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Events.TABLE_NAME);
         onCreate(db);
     }
 
     private static class Constants implements BaseColumns {
         static final String DATABASE_NAME = "database.db";
-        static final int DATABASE_VERSION = 19;
+        static final int DATABASE_VERSION = 20;
     }
 
     static class Posts implements BaseColumns {
@@ -122,5 +134,17 @@ class DBOpenHelper extends SQLiteOpenHelper {
         static final String COLUMN_FILE = "file";
         static final String COLUMN_POS = "pos";
         static final String COLUMN_MARK = "mark";
+    }
+
+    static class Events implements BaseColumns {
+        static final String TABLE_NAME = "events";
+        static final String COLUMN_ID = "_id";
+        static final String COLUMN_NAME = "name";
+        static final String COLUMN_DESC = "description";
+        static final String COLUMN_START = "start";
+        static final String COLUMN_END = "end";
+        static final String COLUMN_PLACE = "place";
+        static final String COLUMN_STATE = "state";
+        static final String COLUMN_PICT = "picture";
     }
 }
