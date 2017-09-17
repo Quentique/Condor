@@ -44,8 +44,8 @@ public class Sync extends IntentService {
     private static final String GEN_URL = "gen_deliver.php";
     private static final String POSTS_URL = "pos_deliver.php";
     private static final String PROFS_URL = "tea_deliver.php";
-    private static final String MAPS_CHECK_URL = "map_check.php";
     private static final String MAPS_URL = "map_deliver.php";
+    private static final String EVENTS_URL = "eve_deliver.php";
     private static final String KEY = "?q=196eede6266723aee37f390e79de9e0e";
 
     public static String rssURL;
@@ -183,7 +183,10 @@ public class Sync extends IntentService {
                 Log.i("SYNC", "POSTS SYNC");
                 db.updatePosts(posts);
                 progress = 60;
-                progressMessage = "Mapping...";
+                progressMessage = "Events...";
+                changeProgress(progress);
+                JSONArray events = get(EVENTS_URL);
+                progressMessage = "Events...";
                 changeProgress(progress);
                /* JSONArray profs = get(PROFS_URL);
                 Log.i("SYNC", "PROFS SYNC");*/
