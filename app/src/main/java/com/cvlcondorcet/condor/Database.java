@@ -172,6 +172,27 @@ class Database {
         }
     }
 
+    void updateEvents(JSONArray array) {
+        for (int i = 0 ; i < array.length() ; i++) {
+            try {
+                JSONObject element = array.getJSONObject(i);
+                ContentValues values = new ContentValues();
+                values.put(DBOpenHelper.Events.COLUMN_ID, element.getInt("id"));
+                values.put(DBOpenHelper.Events.COLUMN_NAME , element.getString("name"));
+                values.put(DBOpenHelper.Events.COLUMN_DESC, element.getString("description"));
+                values.put(DBOpenHelper.Events.COLUMN_START, element.getString("start"));
+                values.put(DBOpenHelper.Events.COLUMN_END, element.getString("end"));
+                values.put(DBOpenHelper.Events.COLUMN_PLACE, element.getString("place"));
+                values.put(DBOpenHelper.Events.COLUMN_STATE, element.getString("state"));
+                values.put(DBOpenHelper.Events.COLUMN_PICT, element.getString("picture"));
+                database.replace(DBOpenHelper.Events.TABLE_NAME, null, values);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        database.delete(DBOpenHelper.Events.TABLE_NAME, "end < CURRENT_TIMESTAMP", null);
+    }
+
     /**
      * Retrieves a value from {@link DBOpenHelper#GEN_TABLE}
      * @param name  the key of value
@@ -249,7 +270,7 @@ class Database {
      */
     ArrayList<Post> getPosts() {
         ArrayList<Post> results = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT _id, name, substr(content, 0, 101), date, picture, categories FROM posts WHERE deleted != 1", null);
+        Cursor cursor = database.rawQuery("SELECT _id, name, substr(content, 0, 101), date, picture, categories FROM posts WHERE deleted != 1 LIMIT 100", null);
 
         if (cursor != null && cursor.getCount()>0) {
             try {
