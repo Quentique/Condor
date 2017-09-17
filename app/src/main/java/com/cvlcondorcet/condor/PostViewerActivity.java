@@ -35,7 +35,7 @@ public class PostViewerActivity extends AppCompatActivity {
 
     private WebView view;
     private Database db;
-    private TextView title, date;
+    private TextView title, date, cat;
     private ProgressBar progress;
 
     /**
@@ -52,6 +52,7 @@ public class PostViewerActivity extends AppCompatActivity {
 
         title = (TextView) findViewById(R.id.post_display_title);
         date = (TextView) findViewById(R.id.post_date_display);
+        cat = (TextView) findViewById(R.id.post_display_cat);
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar_viewer_post);
         progress = (ProgressBar) findViewById(R.id.loading_layout);
         progress.setVisibility(View.VISIBLE);
@@ -94,6 +95,7 @@ public class PostViewerActivity extends AppCompatActivity {
 
                 title.setVisibility(GONE);
                 date.setVisibility(GONE);
+                cat.setVisibility(GONE);
                 setTitle(view.getTitle());
             } else {
                 new Loading().execute("id", id);
@@ -149,6 +151,7 @@ public class PostViewerActivity extends AppCompatActivity {
             view.loadDataWithBaseURL("file:///android_asset/", toDisplay, "text/html", "utf-8", "");
             title.setVisibility(GONE);
             date.setVisibility(GONE);
+            cat.setVisibility(GONE);
         }
     }
 
@@ -170,10 +173,11 @@ public class PostViewerActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(Void nothing) {
-            view.loadData(post.getContent(), "text/html", "utf-8");
+            view.loadDataWithBaseURL("file:///android_asset/", "<link rel=\"stylesheet\" href=\"style2.css\"/>"+post.getContent(),"text/html", "utf-8", "");
             setTitle(post.getName());
             title.setText(post.getName());
             date.setText(post.getFormatedDate());
+            cat.setText(post.getFormatedCategories());
             db.close();
             //progress.setVisibility(GONE);
         }
