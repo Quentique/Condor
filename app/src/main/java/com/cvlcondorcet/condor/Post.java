@@ -85,7 +85,7 @@ class Post implements Comparable<Post> {
      * @return  date object
      * @see Post#compareTo(Post)
      */
-    private static Date getDateObject(String obj) {
+    public static Date getDateObject(String obj) {
         try {
             return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(obj);
         } catch (ParseException e) { e.printStackTrace(); return null; }
