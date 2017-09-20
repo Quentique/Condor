@@ -213,6 +213,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_maps:
                 fragmentClass = MapsFragment.class;
                 break;
+            case R.id.nav_events:
+                fragmentClass = EventsFragment.class;
+                break;
             default:
                 Log.i("PATATE", "CHAUDE");
                 break;
