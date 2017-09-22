@@ -318,18 +318,22 @@ class Database {
 
     ArrayList<Event> getEvents() {
         ArrayList<Event> toReturn = new ArrayList<>();
-        Cursor cursor = database.query(DBOpenHelper.Events.TABLE_NAME, new String[] { DBOpenHelper.Events.COLUMN_NAME, DBOpenHelper.Events.COLUMN_DESC, DBOpenHelper.Events.COLUMN_START, DBOpenHelper.Events.COLUMN_END, DBOpenHelper.Events.COLUMN_PICT, DBOpenHelper.Events.COLUMN_PLACE}, DBOpenHelper.Events.COLUMN_STATE + " = 'published'", null, null, null, DBOpenHelper.Events.COLUMN_START);
-        if (cursor != null & cursor.getCount() > 0) {
+        Cursor cursor = database.query(DBOpenHelper.Events.TABLE_NAME, new String[] { DBOpenHelper.Events.COLUMN_ID, DBOpenHelper.Events.COLUMN_NAME, DBOpenHelper.Events.COLUMN_DESC, DBOpenHelper.Events.COLUMN_START, DBOpenHelper.Events.COLUMN_END, DBOpenHelper.Events.COLUMN_PICT, DBOpenHelper.Events.COLUMN_PLACE}, DBOpenHelper.Events.COLUMN_STATE + " = ?", new String[]{"published"}, null, null, DBOpenHelper.Events.COLUMN_START);
+        if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                Event event = new Event(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_NAME)),
+                Event event = new Event(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_NAME)),
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_DESC)),
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_PLACE)),
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_PICT)),
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_START)),
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_END)));
                 toReturn.add(event);
+                Log.i("EVENT", event.getPlace());
             }
         }
+        cursor.close();
+        Log.i("START", String.valueOf(toReturn.size()));
         return toReturn;
     }
 
@@ -373,6 +377,27 @@ class Database {
                 return null;
             }
         } catch (NullPointerException e ){
+            return null;
+        }
+    }
+
+    Event getEvent(String id) {
+        Cursor cursor = database.query(DBOpenHelper.Events.TABLE_NAME,
+                new String[]{DBOpenHelper.Events.COLUMN_ID, DBOpenHelper.Events.COLUMN_NAME, DBOpenHelper.Events.COLUMN_DESC, DBOpenHelper.Events.COLUMN_PLACE, DBOpenHelper.Events.COLUMN_START, DBOpenHelper.Events.COLUMN_END, DBOpenHelper.Events.COLUMN_PICT},
+                DBOpenHelper.Events.COLUMN_ID + " = " + id,
+                null, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            return new Event(
+                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_ID)),
+                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_NAME)),
+                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_DESC)),
+                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_PLACE)),
+                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_PICT)),
+                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_START)),
+                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_END)));
+
+        } else {
             return null;
         }
     }

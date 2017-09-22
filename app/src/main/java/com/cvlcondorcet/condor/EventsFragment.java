@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +25,18 @@ public class EventsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        getActivity().setTitle("Events");
+        getActivity().setTitle(R.string.events);
         recycler = view.findViewById(R.id.recycler_events);
 
         db= new Database(getActivity());
         db.open();
 
-        adapter = new RecyclerViewAdapterEvents(db.getEvents());
+        adapter = new RecyclerViewAdapterEvents(db.getEvents(), getActivity());
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+
         recycler.setAdapter(adapter);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Log.i("START", "EVENTS FRAGMENT LOADED");
+        db.close();
     }
 }

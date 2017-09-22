@@ -67,5 +67,10 @@
     <string name="maps">Maps</string>
     <string name="floor">Floor</string>
     <string name="from_building">" from building "</string>
+    <string name="where">"Where: "</string>
+    <string name="when">"When: "</string>
+    <string name="events">Events</string>
+    <string name="from_the">"The "</string>
+    <string name="event">Event</string>
 
 </resources>

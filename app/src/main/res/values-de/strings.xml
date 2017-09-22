@@ -65,4 +65,9 @@
     <string name="maps">Karten</string>
     <string name="floor">Stockwerk</string>
     <string name="from_building">" vom Gebäude "</string>
+    <string name="events">Events</string>
+    <string name="when">"Wann: "</string>
+    <string name="where">"Wo: "</string>
+    <string name="from_the">"Den "</string>
+    <string name="event">Event</string>
 </resources>
