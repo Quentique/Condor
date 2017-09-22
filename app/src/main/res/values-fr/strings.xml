@@ -65,4 +65,9 @@
     <string name="maps">Plans</string>
     <string name="floor">Étage</string>
     <string name="from_building">" du bâtiment "</string>
+    <string name="events">Évènements</string>
+    <string name="when">"Quand : "</string>
+    <string name="where">"Où : "</string>
+    <string name="from_the">"Le "</string>
+    <string name="event">Évènement</string>
 </resources>

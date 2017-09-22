@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".PostViewerActivity"  android:parentActivityName=".MainActivity">
         <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.cvlcondorcet.condor.MainActivity"/></activity>
+        <activity android:name=".EventViewerActivity" android:parentActivityName=".MainActivity">
+        <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.cvlcondorcet.condor.MainActivity"/></activity>
         <activity android:name=".LicensesActivity"
             android:parentActivityName=".MainActivity">
             <meta-data android:name="android.support.PARENT_ACTIVITY" android:value="com.cvlcondorcet.condor.MainActivity"/>

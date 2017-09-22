@@ -10,10 +10,11 @@ import java.util.Date;
  */
 
 public class Event {
-    private String name, desc, place, picture;
+    private String name, desc, place, picture, id;
     private Date begin, end;
 
-    public Event(String name, String desc, String place, String picture, String begin, String end) {
+    public Event(String id, String name, String desc, String place, String picture, String begin, String end) {
+        this.id = id;
         this.name = name;
         this.desc = desc;
         this.place = place;
@@ -24,6 +25,7 @@ public class Event {
         } catch (ParseException e) {e.printStackTrace(); }
     }
 
+    public String getId() {return id;}
     public String getName() { return name; }
     public String getDesc() { return desc; }
     public String getPlace() { return place; }
