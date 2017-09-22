@@ -186,6 +186,7 @@ public class Sync extends IntentService {
                 progressMessage = "Events...";
                 changeProgress(progress);
                 JSONArray events = get(EVENTS_URL);
+                db.updateEvents(events);
                 progressMessage = "Events...";
                 changeProgress(progress);
                /* JSONArray profs = get(PROFS_URL);
