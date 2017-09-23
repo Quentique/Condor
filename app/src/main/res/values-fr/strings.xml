@@ -71,4 +71,7 @@
     <string name="from_the">"Le "</string>
     <string name="event">Évènement</string>
     <string name="tomorrow">"Demain à "</string>
+    <string name="began">"A commencé le "</string>
+    <string name="date_format">dd/MM</string>
+    <string name="hour_format">HH\'h\'mm</string>
 </resources>
