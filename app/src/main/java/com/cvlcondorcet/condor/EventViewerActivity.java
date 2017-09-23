@@ -45,11 +45,11 @@ public class EventViewerActivity extends AppCompatActivity {
         Event event = db.getEvent(id);
         db.close();
         name.setText(Html.fromHtml(event.getName()));
-        desc.setText(event.getDesc());
+        desc.setText(Html.fromHtml(event.getDesc()));
         where.setText(Html.fromHtml(event.getPlace()));
         String date;
         if (event.getDateBegin().equals(event.getDateEnd())) {
-            date = getResources().getString(R.string.from_the) + event.getDateBegin() + getResources().getString(R.string.from_single_day).toLowerCase() + event.getHourBegin() + getResources().getString(R.string.to_single_day) + event.getHourEnd();
+            date = getResources().getString(R.string.from_the) + event.getDateBegin() + " " + getResources().getString(R.string.from_single_day).toLowerCase() + event.getHourBegin() + getResources().getString(R.string.to_single_day) + event.getHourEnd();
         } else {
             date = getResources().getString(R.string.from) + event.getDateBegin() + getResources().getString(R.string.to) + event.getDateEnd();
         }

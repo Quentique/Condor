@@ -12,6 +12,7 @@ import java.util.Date;
 public class Event {
     private String name, desc, place, picture, id;
     private Date begin, end;
+    public static String format, format2;
 
     public Event(String id, String name, String desc, String place, String picture, String begin, String end) {
         this.id = id;
@@ -30,9 +31,9 @@ public class Event {
     public String getDesc() { return desc; }
     public String getPlace() { return place; }
     public String getPicture() { return picture; }
-    public String getDateBegin() { return new SimpleDateFormat("dd/MM").format(begin);}
+    public String getDateBegin() { return new SimpleDateFormat(format).format(begin);}
     public Date getDateBeginDate() { return begin; }
-    public String getDateEnd() { return new SimpleDateFormat("dd/MM").format(end); }
-    public String getHourBegin() { return new SimpleDateFormat("hh:mm").format(begin); }
-    public String getHourEnd() { return new SimpleDateFormat("hh:mm").format(end);}
+    public String getDateEnd() { return new SimpleDateFormat(format).format(end); }
+    public String getHourBegin() { return new SimpleDateFormat(format2).format(begin); }
+    public String getHourEnd() { return new SimpleDateFormat(format2).format(end);}
 }

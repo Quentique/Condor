@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         locale = localeChosen.getISO3Language();
         Log.i("E", locale);
         setContentView(R.layout.activity_main);
-
+        Event.format = getString(R.string.date_format);
+        Event.format2 = getString(R.string.hour_format);
 
 
 

@@ -3,6 +3,7 @@ package com.cvlcondorcet.condor;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,10 +30,10 @@ class RecyclerViewAdapterEvents extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Event event = events.get(position);
-        ((ViewHolder) holder).name.setText(event.getName());
+        ((ViewHolder) holder).name.setText(Html.fromHtml(event.getName()));
         String date;
         if (event.getDateBegin().equals(event.getDateEnd())) {
-            date = ctx.getResources().getString(R.string.from_the) + event.getDateBegin() + ctx.getResources().getString(R.string.from_single_day).toLowerCase() + event.getHourBegin() + ctx.getResources().getString(R.string.to_single_day) + event.getHourEnd();
+            date = ctx.getResources().getString(R.string.from_the) + event.getDateBegin() + " " + ctx.getResources().getString(R.string.from_single_day).toLowerCase() + event.getHourBegin() + ctx.getResources().getString(R.string.to_single_day) + event.getHourEnd();
         } else {
             date = ctx.getResources().getString(R.string.from) + event.getDateBegin() + ctx.getResources().getString(R.string.to) + event.getDateEnd();
         }

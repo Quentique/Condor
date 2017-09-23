@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import java.util.Calendar;
+
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 
@@ -41,8 +43,17 @@ public class AlarmReceiver extends BroadcastReceiver {
             newIntent.putExtra("id", e.getId());
             newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            String content;
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(e.getDateBeginDate());
+            cal.roll(Calendar.DAY_OF_MONTH, false);
+            if (cal.get(Calendar.DATE) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+                content = ctx.getResources().getString(R.string.tomorrow) + e.getHourBegin();
+            } else {
+                content =  ctx.getResources().getString(R.string.began) + e.getHourBegin();
+            }
             noti.setContentTitle(e.getName())
-                    .setContentText(ctx.getResources().getString(R.string.tomorrow) + e.getHourBegin())
+                    .setContentText(content)
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setOngoing(true)
                     .setContentIntent(pendingIntent);
