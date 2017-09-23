@@ -8,7 +8,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
+import android.text.Html;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -23,7 +24,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context ctx, Intent intent) {
-        Log.i("BROADCAST", "RECEIVE INTENT");
+
+        Event.format = ctx.getResources().getString(R.string.date_format);
+        Event.format2 = ctx.getResources().getString(R.string.hour_format);
+        if (intent.getExtras() != null) {
+            Toast.makeText(ctx, intent.getStringExtra("id"), Toast.LENGTH_SHORT).show();
+        }
         if (intent.getExtras().containsKey("id") && !intent.getStringExtra("id").equals("")) {
             Database db = new Database(ctx);
             db.open();
@@ -32,6 +38,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             NotificationManager manager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
             Notification.Builder noti;
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel chanell = new NotificationChannel("channel1", "Condor", 1);
                 manager.createNotificationChannel(chanell);
@@ -39,27 +46,34 @@ public class AlarmReceiver extends BroadcastReceiver {
             } else {
                 noti = new Notification.Builder(ctx);
             }
+
+
             Intent newIntent = new Intent(ctx, EventViewerActivity.class);
             newIntent.putExtra("id", e.getId());
             newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
             PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             String content;
             Calendar cal = Calendar.getInstance();
             cal.setTime(e.getDateBeginDate());
             cal.roll(Calendar.DAY_OF_MONTH, false);
-            if (cal.get(Calendar.DATE) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+
+            if (cal.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
                 content = ctx.getResources().getString(R.string.tomorrow) + e.getHourBegin();
             } else {
-                content =  ctx.getResources().getString(R.string.began) + e.getHourBegin();
+                content =  ctx.getResources().getString(R.string.began) + e.getDateBegin() + ctx.getResources().getString(R.string.at) + e.getHourBegin();
             }
-            noti.setContentTitle(e.getName())
+           // content =  ctx.getResources().getString(R.string.began) + e.getDateBegin() + ctx.getResources().getString(R.string.at) + e.getHourBegin();
+            Toast.makeText(ctx, e.getDateBegin(), Toast.LENGTH_LONG).show();
+            noti.setContentTitle(Html.fromHtml(e.getName()))
                     .setContentText(content)
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setOngoing(true)
                     .setContentIntent(pendingIntent);
             if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(VISIBILITY_PUBLIC); }
-            manager.notify(1, noti.build());
-            Log.i("NOTIF", "NOtifcation displayed");
+            final int _id = (int) System.currentTimeMillis();
+            manager.notify(_id, noti.build());
+            //Log.i("NOTIF", "NOtifcation displayed");
         }
     }
 }

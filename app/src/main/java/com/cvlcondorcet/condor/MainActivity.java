@@ -150,6 +150,10 @@ public class MainActivity extends AppCompatActivity {
           //  startService(intent);
         }*/
         FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");
+       /* Intent test = new Intent(this, AlarmReceiver.class);
+        test.putExtra("id", "4");
+        sendBroadcast(test);*/
+       AlarmProgrammer.scheduleAllAlarms(this);
     }
 
     /**
