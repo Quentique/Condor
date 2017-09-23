@@ -36,9 +36,10 @@ public class NotifListener extends FirebaseMessagingService {
             newIntent.putExtra("fragment", "sync");
             newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            noti.setContentTitle("New Content")
+            noti.setContentTitle(getString(R.string.new_content))
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setOngoing(true)
+                    .setContentText(getString(R.string.click_sync))
                     .setContentIntent(intent);
             manager.notify(1, noti.build());
             Log.i("TEST", "NOTIFICATION RECEIVED");

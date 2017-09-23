@@ -74,4 +74,6 @@
     <string name="began">"A commencé le "</string>
     <string name="date_format">dd/MM</string>
     <string name="hour_format">HH\'h\'mm</string>
+    <string name="click_sync">Cliquez pour synchroniser</string>
+    <string name="new_content">Nouveau contenu</string>
 </resources>
