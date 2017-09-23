@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.ArrayMap;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
@@ -34,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -47,8 +47,8 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     private String query;
     private RelativeLayout layout;
     private SimpleCursorAdapter adapter;
-    private ArrayMap<String, String> gl, pl, in, ge;
-    private ArrayMap<String, List<String>> total;
+    private LinkedHashMap<String, String> gl, pl, in, ge;
+    private LinkedHashMap<String, List<String>> total;
     private List<String> title;
     private AlertDialog dialog;
     private PDFView pdf;
@@ -135,27 +135,28 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         getActivity().setTitle("TEST");
-        gl=new ArrayMap<>();
+        gl=new LinkedHashMap<>();
         String[] grandl_lycee = getResources().getStringArray(R.array.gl);
         for (int i = 0 ; i<grandl_lycee.length ; i++) {
             gl.put(grandl_lycee[i], String.valueOf(i)+"EGL.pdf");
+            Log.i("TEST", grandl_lycee[i]);
         }
-        pl=new ArrayMap<>();
+        pl=new LinkedHashMap<>();
         String[] petti_lycee = getResources().getStringArray(R.array.pl);
         for (int i = 0 ; i<petti_lycee.length ; i++) {
             pl.put(petti_lycee[i], String.valueOf(i)+"EPL.pdf");
         }
-        in=new ArrayMap<>();
+        in=new LinkedHashMap<>();
         String[] internat = getResources().getStringArray(R.array.in);
         for (int i = 0 ; i<internat.length ; i++) {
             in.put(internat[i], String.valueOf(i)+"EIN.pdf");
         }
-        ge = new ArrayMap<>();
+        ge = new LinkedHashMap<>();
         String[] general = getResources().getStringArray(R.array.maps_list);
         for (int i = 0 ; i<general.length ; i++) {
             ge.put(general[i], "GEN.pdf");
         }
-        total = new ArrayMap<>();
+        total = new LinkedHashMap<>();
         total.put("GENERAL", new ArrayList<String>(ge.keySet()));
         total.put("GRAND LYCEE", new ArrayList<String>(gl.keySet()));
         total.put("PETIT LYCEE", new ArrayList<String>(pl.keySet()));
@@ -175,16 +176,16 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
                 switch (title.get(i)) {
                     case "GRAND LYCEE":
-                        loadPdf(gl.valueAt(i1));
+                        loadPdf(gl.get(gl.keySet().toArray()[i1]));
                         break;
                     case "PETIT LYCEE":
-                        loadPdf(pl.valueAt(i1));
+                        loadPdf(pl.get(pl.keySet().toArray()[i1]));
                         break;
                     case "INTERNAT":
-                        loadPdf(in.valueAt(i1));
+                        loadPdf(in.get(in.keySet().toArray()[i1]));
                         break;
                     case "GENERAL":
-                        loadPdf(ge.valueAt(i1));
+                        loadPdf(ge.get(ge.keySet().toArray()[i1]));
                         break;
                 }
                 dialog.dismiss();
@@ -328,9 +329,9 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
 
         private Context context;
         private List<String> expandableListTitle;
-        private ArrayMap<String, List<String>> expandableListDetail;
+        private LinkedHashMap<String, List<String>> expandableListDetail;
 
-        public CustomExpandableListAdapter(Context context, List<String> expandableListTitle, ArrayMap<String, List<String>> expandableListDetail) {
+        public CustomExpandableListAdapter(Context context, List<String> expandableListTitle, LinkedHashMap<String, List<String>> expandableListDetail) {
             this.context = context;
             this.expandableListTitle = expandableListTitle;
             this.expandableListDetail = expandableListDetail;

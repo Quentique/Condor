@@ -116,7 +116,7 @@ public class PostViewerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             Intent relaunch = new Intent(this, MainActivity.class);
-            relaunch.putExtra("HELLO","test");
+            relaunch.putExtra("fragment","posts");
             //startActivity(relaunch);
             NavUtils.navigateUpTo(this, relaunch);
             return true;
