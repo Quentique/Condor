@@ -20,16 +20,18 @@ public class AlarmProgrammer {
         AlarmManager manager = (AlarmManager)ctx.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startEvent);
-        calendar.set(Calendar.HOUR_OF_DAY, 18);
-        calendar.set(Calendar.MINUTE, 00);
+        calendar.set(Calendar.HOUR_OF_DAY, 20);
+        calendar.set(Calendar.MINUTE, 20);
         calendar.roll(Calendar.DAY_OF_MONTH, false);
         Intent newIntent = new Intent(ctx, AlarmReceiver.class);
         newIntent.putExtra("id", id);
-        PendingIntent intent = PendingIntent.getBroadcast(ctx, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        final int _id = (int) System.currentTimeMillis();
+        PendingIntent intent = PendingIntent.getBroadcast(ctx, _id, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+       // manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
         manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
         Log.i("ALarm", calendar.toString());
-        Log.i("ALARM", calendar.getTime().toString());
-       // manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5*1000, intent);
+        Log.i("ALARM", Calendar.getInstance().getTime().toString());
+      //  manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5*1000, intent);
         Log.i("ALARM", "Alarm has been set");
     }
 
@@ -41,5 +43,6 @@ public class AlarmProgrammer {
         for (Event event : list) {
             setAlarm(ctx, event.getId(), event.getDateBeginDate());
         }
+        Log.i("SCHEDULED", "ALL ALARMS");
     }
 }

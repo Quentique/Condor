@@ -141,7 +141,7 @@ public class Sync extends IntentService {
         noti.setProgress(0, 0, true);
         Log.i("NOTI", "DONE");
 
-        startForeground(1, noti.build());
+        startForeground(5, noti.build());
         try {
             db.open();
             rssURL = db.timestamp("website") + "feed";
@@ -201,7 +201,7 @@ public class Sync extends IntentService {
                 progress = 100;
                 noti.setProgress(100, 100, false);
                 noti.setContentText(getString(R.string.sync_end));
-                manager.notify(1, noti.build());
+                manager.notify(5, noti.build());
                 db.close();
             } catch(SQLException e){
                 progress = -2;
@@ -368,7 +368,7 @@ public class Sync extends IntentService {
      */
     private void changeProgress(int newProgress) {
         noti.setProgress(100, newProgress, false);
-        manager.notify(1, noti.build());
+        manager.notify(5, noti.build());
     }
 
     /**
