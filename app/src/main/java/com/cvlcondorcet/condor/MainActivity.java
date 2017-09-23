@@ -1,5 +1,6 @@
 package com.cvlcondorcet.condor;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +21,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.util.Locale;
+
+/*import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;*/
 
 /**
  * Main activity, frame for fragments, home for navigation drawer, etc.
@@ -33,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     //private ActionBarDrawerToggle drawerToggle;
     private Class fragmentClass;
     public static String locale;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     /**
      * Sets up activity, loading language and locale.
@@ -126,6 +133,15 @@ public class MainActivity extends AppCompatActivity {
         getResources().updateConfiguration(config,getResources().getDisplayMetrics());*/
 
         Log.i("Test2", getApplicationContext().getFilesDir().toString());
+        /*if (checkPlayServices()) {
+            Log.i("HELLO", "TEST SERVICES");
+            // Start IntentService to register this application with GCM.
+           //Intent intent = new Intent(this, RegistrationIntentService.class);
+           // InstanceIDService service = new InstanceIDService();
+         //   service.onTokenRefresh();
+          //  startService(intent);
+        }*/
+        FirebaseMessaging.getInstance().subscribeToTopic("***REMOVED***");
     }
 
     /**
@@ -264,4 +280,20 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
+   /* private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, 9000)
+                        .show();
+            } else {
+                Log.i("TEST", "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }*/
 }

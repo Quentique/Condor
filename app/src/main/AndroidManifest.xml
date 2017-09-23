@@ -30,6 +30,17 @@
         <service
             android:name=".Sync"
             android:label="Condor sync" />
+        <service android:name=".InstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+        <service android:name=".NotifListener">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".RegistrationIntentService" android:exported="false"/>
         <receiver android:name=".AlarmReceiver" android:process=":remote"/>
         <receiver android:name=".RebootReceiver">
             <intent-filter>
