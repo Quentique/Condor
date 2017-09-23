@@ -31,6 +31,7 @@ public class Event {
     public String getPlace() { return place; }
     public String getPicture() { return picture; }
     public String getDateBegin() { return new SimpleDateFormat("dd/MM").format(begin);}
+    public Date getDateBeginDate() { return begin; }
     public String getDateEnd() { return new SimpleDateFormat("dd/MM").format(end); }
     public String getHourBegin() { return new SimpleDateFormat("hh:mm").format(begin); }
     public String getHourEnd() { return new SimpleDateFormat("hh:mm").format(end);}
