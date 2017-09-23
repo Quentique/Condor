@@ -72,5 +72,6 @@
     <string name="events">Events</string>
     <string name="from_the">"The "</string>
     <string name="event">Event</string>
+    <string name="tomorrow">"Tomorrow at "</string>
 
 </resources>

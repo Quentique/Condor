@@ -191,6 +191,7 @@ class Database {
             }
         }
         database.delete(DBOpenHelper.Events.TABLE_NAME, DBOpenHelper.Events.COLUMN_END + " < CURRENT_TIMESTAMP", null);
+        AlarmProgrammer.scheduleAllAlarms(ctx);
     }
 
     /**

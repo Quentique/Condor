@@ -30,6 +30,7 @@
         <service
             android:name=".Sync"
             android:label="Condor sync" />
+        <receiver android:name=".AlarmReceiver" android:process=":remote"/>
     </application>
 
 </manifest>

@@ -70,4 +70,5 @@
     <string name="where">"Wo: "</string>
     <string name="from_the">"Den "</string>
     <string name="event">Event</string>
+    <string name="tomorrow">"Morgen um "</string>
 </resources>
