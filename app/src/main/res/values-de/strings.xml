@@ -30,7 +30,7 @@
     <string name="end_sync_ticker">Synchronisation beendet</string>
     <string name="sync_start_ticker">Anfang der Synchronisation</string>
     <string name="sync_forbidden">Ihre Einstellungen verbieten die Synchronisation oder Sie haben keinen Internetzugang.</string>
-    <string name="sync_ready">Drücken Sie um zu synchronisieren</string>
+    <string name="sync_ready">Klicken Sie um zu synchronisieren</string>
     <string name="all_category">Alle</string>
     <string name="female_title">Fr.</string>
     <string name="male_title">Hr.</string>
@@ -74,4 +74,6 @@
     <string name="began">"Began am "</string>
     <string name="date_format">dd.MM</string>
     <string name="hour_format">H.mm</string>
+    <string name="click_sync">Klicken Sie um zu synchronisieren</string>
+    <string name="new_content">Neue Inhalte</string>
 </resources>

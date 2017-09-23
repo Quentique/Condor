@@ -109,8 +109,16 @@ public class MainActivity extends AppCompatActivity {
             }
             if (getIntent().getExtras() != null) {
                 try {
+                    switch (getIntent().getStringExtra("fragment")) {
+                        case "sync":
+                            selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_sync));
+                            break;
+                        case "posts":
+                            selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
+                            break;
+                    }
                     // getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new PostsFragment()).commit();
-                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
+                  //  selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
                    /* getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new PostsFragment()).commit();
                     navigationView.getMenu().findItem(R.id.nav_posts).setChecked(true);*/
                     Log.i("INSTANCE", "NEW -- Starting Posts");
