@@ -76,4 +76,5 @@
     <string name="hour_format">HH\'h\'mm</string>
     <string name="click_sync">Cliquez pour synchroniser</string>
     <string name="new_content">Nouveau contenu</string>
+    <string name="at">" à "</string>
 </resources>
