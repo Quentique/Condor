@@ -71,6 +71,9 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         final MenuItem item = menu.findItem(R.id.action_search_maps);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
       //  final SearchView searchView = (SearchView) menu.getItem(R.id.action_search).getActionView();
+        int autoCompleteTextViewID = getResources().getIdentifier("android:id/search_src_text", null, null);
+        SearchView.SearchAutoComplete searchAutoCompleteTextView = (SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
+        searchAutoCompleteTextView.setThreshold(1);
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
@@ -85,9 +88,11 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         adapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
             public Cursor runQuery(CharSequence charSequence) {
-
-                return db.getQuery(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME},
-                        DBOpenHelper.Maps.COLUMN_DPNAME +" LIKE '%"+charSequence+"%'" );
+                Cursor cursor = db.getQuery(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME},
+                        DBOpenHelper.Maps.COLUMN_DPNAME +" LIKE '%"+query+"%'" );
+                Log.i("COUNT", String.valueOf(cursor.getCount()));
+                Log.i("QUERY", query);
+                return cursor;
             }
         });
         searchView.setSuggestionsAdapter(adapter);
@@ -221,8 +226,9 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
         this.query = query;
-        adapter.getFilter().filter(query);
-        Log.i("e", "Query");
+        //adapter.getFilter().filter(query);
+        Log.i("e", query);
+        adapter.changeCursor(adapter.runQueryOnBackgroundThread(query));
         return true;
     }
 

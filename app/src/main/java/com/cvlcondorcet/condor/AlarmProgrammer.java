@@ -20,8 +20,8 @@ public class AlarmProgrammer {
         AlarmManager manager = (AlarmManager)ctx.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startEvent);
-        calendar.set(Calendar.HOUR_OF_DAY, 20);
-        calendar.set(Calendar.MINUTE, 20);
+        calendar.set(Calendar.HOUR_OF_DAY, 18);
+        calendar.set(Calendar.MINUTE, 05);
         calendar.roll(Calendar.DAY_OF_MONTH, false);
         Intent newIntent = new Intent(ctx, AlarmReceiver.class);
         newIntent.putExtra("id", id);
