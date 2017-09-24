@@ -71,7 +71,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setOngoing(true)
                     .setContentIntent(pendingIntent);
             if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(VISIBILITY_PUBLIC); }
-            final int _id = (int) System.currentTimeMillis();
+            final int _id = Integer.decode(e.getId()) + 1025638;
             manager.notify(_id, noti.build());
             //Log.i("NOTIF", "NOtifcation displayed");
         }
