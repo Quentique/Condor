@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
        /* Intent test = new Intent(this, AlarmReceiver.class);
         test.putExtra("id", "4");
         sendBroadcast(test);*/
-       AlarmProgrammer.scheduleAllAlarms(this);
     }
 
     /**
