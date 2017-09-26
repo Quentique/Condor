@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.SQLException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -133,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
         if (db.timestamp("name").equals("")) {
             selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_sync));
         }
+        try {
+            db.open();
+            Sync.rssURL = db.timestamp("website") + "feed";
+        } catch( SQLException e) { }
         db.close();
         /*Locale locale = new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("language", "default"));
         Locale.setDefault(locale);
