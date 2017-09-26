@@ -112,8 +112,9 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 Cursor cursor =(Cursor)adapter.getItem(position);
                 Log.i("TESTT", "C" +cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_ID)));
                 Log.i("TESTT", adapter.getCursor().getString(position));
-                searchView.setQuery(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)), true);
                 loadPdf(adapter.getItemId(position));
+                searchView.setQuery(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)), true);
+
                 cursor.close();
                 return false;
             }
