@@ -410,6 +410,8 @@ class Database {
                 new String[] {DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_FILE, DBOpenHelper.Maps.COLUMN_DESC, DBOpenHelper.Maps.COLUMN_POS, DBOpenHelper.Maps.COLUMN_MARK},
                 DBOpenHelper.Maps.COLUMN_ID + " = " + String.valueOf(id),
                 null, null, null, null);
+        Log.i("DB", String.valueOf(id));
+        Log.i("DB", String.valueOf(cursor.getCount()));
             if (cursor != null && cursor.getCount() > 0) {
                 return cursor;
             } else {
