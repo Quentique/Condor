@@ -48,6 +48,8 @@ class PostsLoader extends AsyncTaskLoader<List<Post>> {
         if (rssAllowed && connection) {
             List<Post> rssFeed = new ArrayList<>();
             try {
+                Log.i("LOAD", Sync.rssURL);
+                try {
                 Document doc = Jsoup.connect(Sync.rssURL).postDataCharset("UTF-8").get();
                 doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml).prettyPrint(true);
                 Elements rss_articles = doc.select("item");
@@ -64,9 +66,9 @@ class PostsLoader extends AsyncTaskLoader<List<Post>> {
                     //Log.i("EEEE", element.select("description").first().html());
                     Log.i("EEEE", Jsoup.clean(element.select("description").first().text(), Whitelist.none()));
                     // Log.i("EEEE", element.select("description").first().data());
-
-
                 }
+
+                }catch (IllegalArgumentException e) {}
                 data.addAll(rssFeed);
             } catch (IOException e) {
                 e.printStackTrace();

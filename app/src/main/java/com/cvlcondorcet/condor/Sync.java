@@ -142,10 +142,6 @@ public class Sync extends IntentService {
         Log.i("NOTI", "DONE");
 
         startForeground(5, noti.build());
-        try {
-            db.open();
-            rssURL = db.timestamp("website") + "feed";
-        } catch( SQLException e) { stopSelf(); return; }
 
         String continueSync = serverState();
         if (continueSync.contains("200")) {
