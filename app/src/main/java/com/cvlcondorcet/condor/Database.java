@@ -39,6 +39,8 @@ class Database {
         ctx = context;
     }
 
+    boolean isOpen() { return database.isOpen(); }
+
 
     void open() throws SQLException { database = helper.getWritableDatabase(); }
     void close() {

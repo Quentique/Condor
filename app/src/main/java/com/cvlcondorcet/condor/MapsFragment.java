@@ -107,10 +107,14 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             @Override
             public boolean onSuggestionClick(int position) {
                 Log.i("TESTT", String.valueOf(adapter.getItemId(position)));
+
                 searchView.clearFocus();
                 Cursor cursor =(Cursor)adapter.getItem(position);
+                Log.i("TESTT", "C" +cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_ID)));
+                Log.i("TESTT", adapter.getCursor().getString(position));
                 searchView.setQuery(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)), true);
                 loadPdf(adapter.getItemId(position));
+                cursor.close();
                 return false;
             }
         });
@@ -138,8 +142,29 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (db != null) {
+            db.open();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        db.close();
+    }
+
+    public void onStop() {
+        super.onStop();
+        if (db.isOpen()) {
+            db.close();
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
-        getActivity().setTitle("TEST");
+        getActivity().setTitle(R.string.maps);
         gl=new LinkedHashMap<>();
         String[] grandl_lycee = getResources().getStringArray(R.array.gl);
         for (int i = 0 ; i<grandl_lycee.length ; i++) {
@@ -242,49 +267,48 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     private void loadPdf(long id) {
-        db.open();
         Cursor cursor = db.getPlace(id);
-        if (cursor == null) {
+        if (cursor != null) {
             Log.i("NULL", "CURSOR IS NULL");
-        }
-        cursor.moveToFirst();
-       // loadPdf(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_FILE)));
-        name.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)));
-        desc.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DESC)));
-        try {
-            JSONArray array = new JSONArray(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_MARK)));
-            if (array.getString(1).equals("NU")) {
-                place.setVisibility(GONE);
-            } else {
-                String toAdd;
-                switch (array.getString(1)) {
-                    case "GL":
-                        toAdd = "Grand Lycée";
-                        break;
-                    case "PL":
-                        toAdd="Petit Lycée";
-                        break;
-                    case "IN":
-                        toAdd="Internat";
-                        break;
-                    default:
-                        toAdd="Error";
-                        break;
+
+            cursor.moveToFirst();
+            // loadPdf(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_FILE)));
+            name.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)));
+            desc.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DESC)));
+            try {
+                JSONArray array = new JSONArray(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_MARK)));
+                if (array.getString(1).equals("NU")) {
+                    place.setVisibility(GONE);
+                } else {
+                    String toAdd;
+                    switch (array.getString(1)) {
+                        case "GL":
+                            toAdd = "Grand Lycée";
+                            break;
+                        case "PL":
+                            toAdd = "Petit Lycée";
+                            break;
+                        case "IN":
+                            toAdd = "Internat";
+                            break;
+                        default:
+                            toAdd = "Error";
+                            break;
+                    }
+                    place.setText(getResources().getString(R.string.floor) + " " + array.getString(0) + getResources().getString(R.string.from_building) + toAdd);
                 }
-                place.setText(getResources().getString(R.string.floor) + " " + array.getString(0) + getResources().getString(R.string.from_building) + toAdd);
+            } catch (JSONException e) {
+                place.setVisibility(GONE);
             }
-        } catch (JSONException e) {
-            place.setVisibility(GONE);
-        }
-        final JSONObject pos;
-        try {
-            pos = new JSONObject(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_POS)));
-            initialX = pos.getDouble("x");
-            initialY = pos.getDouble("y");
-        } catch(JSONException e) {
-            initialX = 0;
-            initialY = 0;
-        }
+            final JSONObject pos;
+            try {
+                pos = new JSONObject(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_POS)));
+                initialX = pos.getDouble("x");
+                initialY = pos.getDouble("y");
+            } catch (JSONException e) {
+                initialX = 0;
+                initialY = 0;
+            }
             pdf.fromAsset(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_FILE)))
                     .defaultPage(0)
                     .enableSwipe(true)
@@ -301,7 +325,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                                 }
                                 toDraw.setLevel(2);
                                 toDraw.setAlpha(235);
-                                x = initialX* pageWidth;
+                                x = initialX * pageWidth;
                                 y = initialY * pageHeight;
 
                                 toDraw.setBounds((int) Math.round(x - pageWidth / 30), (int) Math.round(y - pageWidth / 15), (int) Math.round(x + pageWidth / 30), (int) Math.round(y));
@@ -311,24 +335,27 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                     })
                     .load();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000);
-                }catch (InterruptedException e) { e.printStackTrace(); }
-
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        pdf.resetZoom();
-                        pdf.zoomWithAnimation((float)x, (float)y, 2.5f);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                });
-            }
-        }).start();
-        layout.setVisibility(View.VISIBLE);
-        cursor.close();
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            pdf.resetZoom();
+                            pdf.zoomWithAnimation((float) x, (float) y, 2.5f);
+                        }
+                    });
+                }
+            }).start();
+            layout.setVisibility(View.VISIBLE);
+            cursor.close();
+        }
     }
 
     public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
