@@ -59,6 +59,7 @@ class Database {
         boolean logo = false;
         boolean cover = false;
         boolean canteen = false;
+        boolean cvl = false;
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject element = array.getJSONObject(i);
@@ -87,6 +88,17 @@ class Database {
                     case "canteen":
                         if (canteen) { toBeDownloaded.add(element.getString("value")); File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+timestamp("canteen")); //noinspection ResultOfMethodCallIgnored
                             file.delete(); }
+                        break;
+                    case "cvl_updated":
+                        if (!element.getString("value").equals(timestamp("cvl_updated"))) { cvl = true; }
+                        break;
+                    case "cvl":
+                        if (cvl) {
+                            toBeDownloaded.add(element.getString("value"));
+                            File file = new File(ctx.getApplicationContext().getFilesDir().toString() + "/" + timestamp("cvl"));
+                            file.delete();
+                        }
+                        break;
                 }
                 database.replace(DBOpenHelper.General.TABLE_NAME, null, values);
             } catch (JSONException e) {

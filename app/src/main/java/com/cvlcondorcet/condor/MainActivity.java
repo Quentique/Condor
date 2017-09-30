@@ -249,6 +249,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_events:
                 fragmentClass = EventsFragment.class;
                 break;
+            case R.id.nav_cvl:
+                fragmentClass = CVLFragment.class;
+                break;
             default:
                 Log.i("PATATE", "CHAUDE");
                 break;
