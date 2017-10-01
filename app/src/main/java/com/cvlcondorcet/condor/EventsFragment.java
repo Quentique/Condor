@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by Quentin DE MUYNCK on 20/09/2017.
+ * Displays in a RecyclerView the different events
+ * @author Quentin DE MUYNCK
+ * @see RecyclerViewAdapterEvents
+ * @see Event
  */
 
 public class EventsFragment extends Fragment {

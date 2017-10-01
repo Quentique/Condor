@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * // NO MORE USED //
  * Class representing a teacher absence
  */
 

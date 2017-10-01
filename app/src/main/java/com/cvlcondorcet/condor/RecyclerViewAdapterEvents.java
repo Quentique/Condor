@@ -11,6 +11,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * Adapter for RecyclerView of {@link Event}
+ * @author Quentin DE MUYNCK
+ * @see Event
+ * @see EventsFragment
+ * @see EventViewerActivity
+ */
 class RecyclerViewAdapterEvents extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Event> events;

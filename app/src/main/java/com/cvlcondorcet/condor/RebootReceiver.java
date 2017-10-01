@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Created by Quentin DE MUYNCK on 23/09/2017.
+ * Schedules all alarms again after device reboots
+ * @author Quentin DE MUYNCK
+ * @see AlarmProgrammer
  */
 
 public class RebootReceiver extends BroadcastReceiver {

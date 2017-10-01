@@ -9,7 +9,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.io.IOException;
 
 /**
- * Created by Quentin DE MUYNCK on 23/09/2017.
+ * Registers token & subscribe to the topic to receive new-content notification
+ * @author Quentin DE MUYNCK
+ * @see MainActivity
  */
 
 public class InstanceIDService extends FirebaseInstanceIdService {

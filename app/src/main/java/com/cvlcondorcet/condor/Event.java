@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Quentin DE MUYNCK on 19/09/2017.
+ * Class representing an event
+ * @author Quentin DE MUYNCK
+ * @see RecyclerViewAdapterEvents#events
  */
 
 public class Event {

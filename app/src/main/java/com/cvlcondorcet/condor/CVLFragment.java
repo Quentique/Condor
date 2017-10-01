@@ -9,7 +9,8 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 /**
- * Created by Quentin DE MUYNCK on 30/09/2017.
+ * Simple WebView Fragment, displays CVL information (by a web page)
+ * @author Quentin DE MUYNCK
  */
 
 public class CVLFragment extends Fragment {
