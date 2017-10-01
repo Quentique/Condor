@@ -11,11 +11,19 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by Quentin DE MUYNCK on 23/09/2017.
+ * Programs the different alarms, which order displaying notification for events
+ * @author Quentin DE MUYNCK
+ * @see AlarmReceiver
  */
 
 public class AlarmProgrammer {
 
+    /**
+     * Programs ONE alarm of ONE event
+     * @param ctx   Context
+     * @param id    the id of the event {@link Event#id}
+     * @param startEvent    the beginning of the event {@link Event#begin}
+     */
     static void setAlarm(Context ctx, String id, Date startEvent) {
         AlarmManager manager = (AlarmManager)ctx.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
@@ -35,6 +43,11 @@ public class AlarmProgrammer {
         Log.i("ALARM", "Alarm has been set");
     }
 
+    /**
+     * Retrieves and schedules all events again
+     * @param ctx   Context
+     * @see Database#getEvents()
+     */
     static void scheduleAllAlarms(Context ctx) {
         Database db = new Database(ctx);
         db.open();

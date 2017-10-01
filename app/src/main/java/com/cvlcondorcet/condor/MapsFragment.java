@@ -39,7 +39,8 @@ import java.util.List;
 import static android.view.View.GONE;
 
 /**
- * Created by Quentin DE MUYNCK on 16/09/2017.
+ * Displays a {@link PDFView} with the different plans of the high-school ; integrates a SearchView
+ * @author Quentin DE MUYNCK
  */
 
 public class MapsFragment extends Fragment implements SearchView.OnQueryTextListener {

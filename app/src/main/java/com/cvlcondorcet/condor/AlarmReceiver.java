@@ -17,7 +17,9 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 
 /**
- * Created by Quentin DE MUYNCK on 23/09/2017.
+ * Receives alarm broadcasts of the application and displays the appropriate notification
+ * @author Quentin DE MUYNCK
+ * @see Database#getEvent(String)
  */
 
 public class AlarmReceiver extends BroadcastReceiver {

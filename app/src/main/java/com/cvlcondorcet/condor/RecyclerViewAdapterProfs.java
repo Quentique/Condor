@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * //NO MORE USED//
  * Adapter for RecyclerView that displays teacher absences. Uses different ViewHolder.
  * @author Quentin DE MUYNCK
  */
