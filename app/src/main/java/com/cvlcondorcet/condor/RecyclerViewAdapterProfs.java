@@ -156,6 +156,7 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     /**
+     * // NO MORE USED //
      * Absence for a single day and defined hours (am & pm)
      */
     private static class ViewHolder extends RecyclerView.ViewHolder {
@@ -172,6 +173,7 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     /**
+     * // NO MORE USED //
      * Absence for several days
      */
     private static class ViewHolder2 extends RecyclerView.ViewHolder {
@@ -186,6 +188,7 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     /**
+     * // NO MORE USED //
      * Absence for a single day but specific hours
      */
     private static class ViewHolder3 extends RecyclerView.ViewHolder {
