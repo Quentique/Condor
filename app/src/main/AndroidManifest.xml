@@ -42,7 +42,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".RegistrationIntentService" android:exported="false"/>
+
         <receiver android:name=".AlarmReceiver" android:process=":remote" android:enabled="true"/>
         <receiver android:name=".RebootReceiver">
             <intent-filter>

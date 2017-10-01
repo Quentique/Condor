@@ -1,5 +1,7 @@
 package com.cvlcondorcet.condor;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +14,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by Quentin DE MUYNCK on 22/09/2017.
+ * Shows an event (from {@link EventsFragment} or from {@link AlarmReceiver#onReceive(Context, Intent)} and displays its information
+ * @author Quentin DE MUYNCK
  */
 
 public class EventViewerActivity extends AppCompatActivity {

@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.List;
 
 /**
+ * // NO MORE USED //
  * Loader class to retrieve absences from Database
  * @author Quentin DE MUYNCK
  */

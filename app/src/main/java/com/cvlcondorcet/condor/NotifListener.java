@@ -12,7 +12,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 /**
- * Created by Quentin DE MUYNCK on 23/09/2017.
+ * Receives the topic message from the web & shows notification to advise user of new content
+ * @author Quentin DE MUYNCK
  */
 
 public class NotifListener extends FirebaseMessagingService {

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
+ * // NO MORE USED //
  * Displays a RecyclerView (for absences) and a search field (to filter absences by name)
  * @author Quentin DE MUYNCK
  * @see TeachersAbsence
