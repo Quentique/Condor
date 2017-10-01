@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 
 /**
  * Created by Quentin DE MUYNCK on 30/09/2017.
@@ -23,11 +24,12 @@ public class CVLFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        getActivity().setTitle(R.string.optymo);
+        getActivity().setTitle(getString(R.string.cvl));
         db = new Database(getActivity());
         db.open();
         Wview = view.findViewById(R.id.web_view_train);
         Wview.loadUrl("file:///"+getActivity().getApplicationContext().getFilesDir().toString()+"/"+db.timestamp("cvl"));
         db.close();
+        ((ProgressBar)view.findViewById(R.id.loading_layout)).setVisibility(View.GONE);
     }
 }
