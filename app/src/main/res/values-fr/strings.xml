@@ -77,4 +77,5 @@
     <string name="click_sync">Cliquez pour synchroniser</string>
     <string name="new_content">Nouveau contenu</string>
     <string name="at">" à "</string>
+    <string name="cvl">CVL</string>
 </resources>

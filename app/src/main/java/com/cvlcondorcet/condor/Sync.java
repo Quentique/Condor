@@ -158,6 +158,7 @@ public class Sync extends IntentService {
         }
         if (!networkError) {
             try {
+                db.open();
                 Log.i("SYNC", "GENERAL SYNC");
                 JSONArray maps = get(MAPS_URL);
                 db.updateMaps(maps);
@@ -214,7 +215,7 @@ public class Sync extends IntentService {
             handler.removeCallbacks(sendProgress);
             displayProgress();
         }
-
+        db.close();
         stopSelf();
     }
 
