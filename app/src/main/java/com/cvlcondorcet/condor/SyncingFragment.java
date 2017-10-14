@@ -30,11 +30,6 @@ public class SyncingFragment extends Fragment {
     private boolean sync;
     private Intent servicee;
 
-    /*@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }*/
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_syncing, parent, false);
