@@ -65,7 +65,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             } else {
                 content =  ctx.getResources().getString(R.string.began) + e.getDateBegin() + ctx.getResources().getString(R.string.at) + e.getHourBegin();
             }
-           // content =  ctx.getResources().getString(R.string.began) + e.getDateBegin() + ctx.getResources().getString(R.string.at) + e.getHourBegin();
             Toast.makeText(ctx, e.getDateBegin(), Toast.LENGTH_LONG).show();
             noti.setContentTitle(Html.fromHtml(e.getName()))
                     .setContentText(content)
@@ -75,7 +74,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(VISIBILITY_PUBLIC); }
             final int _id = Integer.decode(e.getId()) + 1025638;
             manager.notify(_id, noti.build());
-            //Log.i("NOTIF", "NOtifcation displayed");
         }
     }
 }

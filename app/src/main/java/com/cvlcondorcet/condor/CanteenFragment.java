@@ -19,20 +19,6 @@ public class CanteenFragment extends Fragment {
 
     private PDFView view;
     private File file;
-   // private Context ctx;
-   /* @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.fragment_canteen);
-        setTitle("Menu de la cantine");
-
-        view = (PDFView) findViewById(R.id.pdfView);
-        file = new File(getApplicationContext().getFilesDir().toString() + "/" + "menus-du-6-au-30-juin-2017.pdf");
-        ctx = this;
-
-        loadPdf();
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -55,7 +41,6 @@ public class CanteenFragment extends Fragment {
         db.open();
         this.view = (PDFView) view.findViewById(R.id.pdfView);
         file = new File(getActivity().getFilesDir().toString() + "/" + db.timestamp("canteen"));
-        /*ctx = this;*/
         db.close();
         loadPdf();
     }

@@ -21,7 +21,6 @@ public class NotifListener extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage message) {
         String messageT = message.getFrom();
         Log.d("TEST", "From: " + messageT);
-        //Log.d("TEST", "Message: " + message);
 
         if (messageT.startsWith("/topics/condor")) {
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

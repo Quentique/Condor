@@ -54,7 +54,6 @@ class PostsLoader extends AsyncTaskLoader<List<Post>> {
                 doc.outputSettings().escapeMode(Entities.EscapeMode.xhtml).prettyPrint(true);
                 Elements rss_articles = doc.select("item");
                 for (Element element : rss_articles) {
-                    //Date date = Post.getDateObject(element.select("pubDate").first().text(), "EEE, d MMM yyyy HH:mm:ss Z");
                     Post post = new Post("0",
                             element.select("title").first().text(),
                             Parser.unescapeEntities(Jsoup.clean(element.select("description").first().text(), Whitelist.simpleText()), false),
@@ -63,9 +62,7 @@ class PostsLoader extends AsyncTaskLoader<List<Post>> {
                             "[\"RSS\"]");
                     post.setLink(element.select("link").first().text());
                     rssFeed.add(post);
-                    //Log.i("EEEE", element.select("description").first().html());
                     Log.i("EEEE", Jsoup.clean(element.select("description").first().text(), Whitelist.none()));
-                    // Log.i("EEEE", element.select("description").first().data());
                 }
 
                 }catch (IllegalArgumentException e) {}
@@ -81,14 +78,8 @@ class PostsLoader extends AsyncTaskLoader<List<Post>> {
 
     @Override
     public void deliverResult(List<Post> data){
-       /* if (isReset()) {
-            releaseResources(data);
-            return;
-        }*/
         list = data;
-
         if (isStarted()) { super.deliverResult(data); }
-        // if (oldData != null & oldData != data) { releaseResources(oldData); }
     }
 
     @Override

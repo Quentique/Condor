@@ -71,17 +71,6 @@ public class MainActivity extends AppCompatActivity {
         Event.format = getString(R.string.date_format);
         Event.format2 = getString(R.string.hour_format);
 
-
-
-       /* final Button bouton = (Button) findViewById(R.id.button);
-        bouton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent service = new Intent(getApplicationContext(), TeachersFragment.class);
-                startActivity(service);
-            }
-        });*/
-
         Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(bar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
@@ -89,9 +78,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
-        /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.your_placeholder, new PostsFragment());
-        ft.commit();*/
 
         if (savedInstanceState != null){
             try {
@@ -118,10 +104,6 @@ public class MainActivity extends AppCompatActivity {
                             selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
                             break;
                     }
-                    // getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new PostsFragment()).commit();
-                  //  selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
-                   /* getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new PostsFragment()).commit();
-                    navigationView.getMenu().findItem(R.id.nav_posts).setChecked(true);*/
                     Log.i("INSTANCE", "NEW -- Starting Posts");
                 } catch (Exception e) {}
             } else {
@@ -139,25 +121,8 @@ public class MainActivity extends AppCompatActivity {
             Sync.rssURL = db.timestamp("website") + "feed";
         } catch( SQLException e) { }
         db.close();
-        /*Locale locale = new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("language", "default"));
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config,getResources().getDisplayMetrics());*/
-
         Log.i("Test2", getApplicationContext().getFilesDir().toString());
-        /*if (checkPlayServices()) {
-            Log.i("HELLO", "TEST SERVICES");
-            // Start IntentService to register this application with GCM.
-           //Intent intent = new Intent(this, RegistrationIntentService.class);
-           // InstanceIDService service = new InstanceIDService();
-         //   service.onTokenRefresh();
-          //  startService(intent);
-        }*/
         FirebaseMessaging.getInstance().subscribeToTopic("***REMOVED***");
-       /* Intent test = new Intent(this, AlarmReceiver.class);
-        test.putExtra("id", "4");
-        sendBroadcast(test);*/
     }
 
     /**
@@ -170,11 +135,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putSerializable("class", fragmentClass);
     }
-
-    /* public Toolbar getSupportBar() {
-         return bar;
-     }
- */
 
     /**
      * Handles menu click and opening navigation drawer
@@ -261,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {}
 
         getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
-        //item.setChecked(true);
         navigationView.setCheckedItem(item.getItemId());
         drawerLayout.closeDrawers();
     }
@@ -275,8 +234,6 @@ public class MainActivity extends AppCompatActivity {
         if (fg != null && fg.getClass() == BusFragment.class)
         {
             ((BusFragment) fg).backPressed();
-        } else {
-           // super.onBackPressed();
         }
     }
 
@@ -299,20 +256,4 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
-
-   /* private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode, 9000)
-                        .show();
-            } else {
-                Log.i("TEST", "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }*/
 }
