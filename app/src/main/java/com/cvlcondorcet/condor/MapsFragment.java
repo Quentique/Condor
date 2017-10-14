@@ -68,11 +68,8 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_maps, menu);
-        //SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
         final MenuItem item = menu.findItem(R.id.action_search_maps);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-      //  final SearchView searchView = (SearchView) menu.getItem(R.id.action_search).getActionView();
-        int autoCompleteTextViewID = getResources().getIdentifier("android:id/search_src_text", null, null);
         SearchView.SearchAutoComplete searchAutoCompleteTextView = (SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
         searchAutoCompleteTextView.setThreshold(1);
         searchView.setOnQueryTextListener(this);
@@ -120,17 +117,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 return false;
             }
         });
-       // db.close();
-        // item = menu.findItem(R.id.action_search);
-        //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-//        search.setOnQueryTextListener(this);
-/*        search.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                query = "";
-                return false;
-            }
-        });*/
 
         menu.findItem(R.id.menu_select).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
@@ -253,7 +239,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
         this.query = query;
-        //adapter.getFilter().filter(query);
         Log.i("e", query);
         adapter.changeCursor(adapter.runQueryOnBackgroundThread(query));
         return true;
@@ -274,7 +259,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             Log.i("NULL", "CURSOR IS NULL");
 
             cursor.moveToFirst();
-            // loadPdf(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_FILE)));
             name.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)));
             desc.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DESC)));
             try {

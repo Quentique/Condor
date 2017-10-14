@@ -35,11 +35,9 @@ public class AlarmProgrammer {
         newIntent.putExtra("id", id);
         final int _id = (int) System.currentTimeMillis();
         PendingIntent intent = PendingIntent.getBroadcast(ctx, _id, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-       // manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
         manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
         Log.i("ALarm", calendar.toString());
         Log.i("ALARM", Calendar.getInstance().getTime().toString());
-      //  manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5*1000, intent);
         Log.i("ALARM", "Alarm has been set");
     }
 

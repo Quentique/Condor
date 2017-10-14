@@ -66,7 +66,6 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.list = list;
         filter("");
         notifyDataSetChanged();
-        //Log.i("Hello", String.valueOf(list.size()));
     }
 
     /**
@@ -168,7 +167,6 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
             date = itemView.findViewById(R.id.date);
             morning = itemView.findViewById(R.id.morning);
             afternoon = itemView.findViewById(R.id.afternoon);
-            //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
         }
     }
 
@@ -183,7 +181,6 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(itemView);
             name = itemView.findViewById(R.id.prof_name1);
             date = itemView.findViewById(R.id.date2);
-            //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
         }
     }
 

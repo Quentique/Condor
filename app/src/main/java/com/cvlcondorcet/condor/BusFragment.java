@@ -29,11 +29,6 @@ public class BusFragment extends Fragment {
     private ProgressBar progress;
     private String user;
 
-    /*@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }*/
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -114,16 +109,11 @@ public class BusFragment extends Fragment {
                     element = new Elements();
                     Log.i("e", user);
                     Document doc = Jsoup.connect(url).userAgent(user).header("Accept-Language", "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").get();
-                    //doc.charset(Charset.forName("UTF-8"));
                     Element el = doc.select("head").first();
                     Element el2 = doc.select("#go-to-main").first();
                     Log.i("HELLO", el2.toString());
-                    //   el.wrap("<body></body>");
                     element.add(el);
                     element.add(el2);
-                    // element = doc.getAllElements();
-                   /* element.getElementsByAttributeValue("class", "container_12").first().remove();
-                    element.getElementsByAttributeValue("class", "container_12").first().remove();*/
                     Log.i("DO", "FOREGOUND");
                 } catch (IOException e) {}
             }
@@ -133,9 +123,6 @@ public class BusFragment extends Fragment {
         public void onPostExecute(Void result) {
             Log.i("START", "LOADING");
             web_view.loadDataWithBaseURL(null, element.toString(), "text/html", "UTF-8", url);
-            //  web_view.loadUrl(url);
-
-            // web_view.loadUrl(url);
             Log.i("END", "LOADING");
         }
     }

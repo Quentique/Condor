@@ -16,12 +16,9 @@ import java.io.IOException;
 
 public class InstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
-        /*Intent intent = new Intent(this, RegistrationIntentService.class);
-        startService(intent);*/
         try {
             String refreshedToken = FirebaseInstanceId.getInstance().getToken();
             Log.d("TEST", "Refreshed token: " + refreshedToken);
-            // TODO: Implement this method to send any registration to your app's servers.
             subscribeTopic(refreshedToken);
         } catch(IOException e) {}
     }

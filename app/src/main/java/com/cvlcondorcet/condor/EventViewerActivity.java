@@ -64,9 +64,6 @@ public class EventViewerActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-           /* Intent relaunch = new Intent(this, MainActivity.class);
-            relaunch.putExtra("HELLO","test");
-            //startActivity(relaunch);*/
             NavUtils.navigateUpFromSameTask(this);
             return true;
         }
