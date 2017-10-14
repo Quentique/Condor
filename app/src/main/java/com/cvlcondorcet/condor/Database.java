@@ -32,7 +32,7 @@ class Database {
 
     /**
      * Default constructor.
-     * @param context
+     * @param context Context
      */
     Database(Context context) {
         helper = new DBOpenHelper(context);
