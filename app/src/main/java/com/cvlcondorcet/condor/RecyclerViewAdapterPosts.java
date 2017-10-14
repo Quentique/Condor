@@ -57,8 +57,6 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void setData(List<Post> list) {
         this.list = list;
         filterByCategories(null, "");
-        //filter("");
-        //notifyDataSetChanged();
         Log.i("Hello", "Data has changed");
     }
 
@@ -81,17 +79,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
             Picasso.with(ctx).load(post.getPicture()).into(((ViewHolder) holder).pic);
             ((RecyclerViewAdapterPosts.ViewHolder) holder).pic.setVisibility(View.VISIBLE);
         }catch (IllegalArgumentException e ) { e.printStackTrace(); ((RecyclerViewAdapterPosts.ViewHolder) holder).pic.setVisibility(View.GONE);}
-        // holder.secondaryText.setText("no matter");
     }
-
-   /* @Override
-    public int getItemViewType(int position) {
-        if (filteredList.get(position).getMultipleDays())
-        {
-            Log.i("DE", "SEVERAL");
-            return SEVERAL;
-        } else { Log.i("de", "SINGLE"); return SINGLE; }
-    }*/
 
     /**
      * Filters the list (of posts) from a given query, then sort them by descending data
@@ -177,18 +165,8 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                         catList.addAll(list);
                         Log.i("EE", "ARRAY NULL / SET LIST TO CATLIST");
                     }
-
-                    // Collections.sort(filteredList, Collections.reverseOrder());
                     filter(queryy);
                 } catch (Exception e ) {e.printStackTrace();}
-
-                   /* ((Activity) ctx).runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            notifyDataSetChanged();
-                        }
-                    });*/
-
 
             }
         }).start();
@@ -221,19 +199,13 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                     if (lay.getVisibility() == View.VISIBLE) {
                         lay.setVisibility(View.GONE);
                         expand.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_more_black_24dp));
-                        //expand.setImageDrawable(Reso));
-                        //collapse(lay);
                     } else {
                         lay.setVisibility(View.VISIBLE);
                         expand.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_less_black_24dp));
-                        // expand(lay);
-                        //expand.setImageDrawable(Resources.getSystem().getDrawable(R.drawable.ic_expand_less_black_24dp));
                     }
                 }
             });
             itemView.setOnClickListener(this);
-            // (CardView) itemView.findViewById(R.id.post_card).
-            //secondaryText = (TextView) itemView.findViewById(R.id.beginning);
         }
 
         /**

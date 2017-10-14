@@ -60,7 +60,6 @@ public class PostViewerActivity extends AppCompatActivity {
         view.getSettings().setJavaScriptEnabled(true);
         view.getSettings().setLoadWithOverviewMode(true);
         view.getSettings().setUseWideViewPort(true);
-       // view.getSettings().setDefaultFontSize(30);
         view.getSettings().setTextZoom(250);
         view.setWebViewClient(new WebViewClient() {
             @Override
@@ -117,7 +116,6 @@ public class PostViewerActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             Intent relaunch = new Intent(this, MainActivity.class);
             relaunch.putExtra("fragment","posts");
-            //startActivity(relaunch);
             NavUtils.navigateUpTo(this, relaunch);
             return true;
         }
@@ -133,13 +131,6 @@ public class PostViewerActivity extends AppCompatActivity {
         protected Void doInBackground(String... args) {
             try {
                 Document doc = Jsoup.connect(args[0]).postDataCharset("UTF-8").get();
-               // toDisplay = doc.select(".post").first().html();
-               /* Elements elements = new Elements();
-                Element el = doc.select("head").first();
-                Element el2 = doc.select(".post").first();
-                elements.add(el);
-                elements.add(el2);*/
-               //toDisplay = doc.select("head").first().html();
                 toDisplay = "<link rel=\"stylesheet\" href=\"style.css\"/>";
                 toDisplay += doc.select(".post").first().html();
 
@@ -179,7 +170,6 @@ public class PostViewerActivity extends AppCompatActivity {
             date.setText(post.getFormatedDate());
             cat.setText(post.getFormatedCategories());
             db.close();
-            //progress.setVisibility(GONE);
         }
     }
 }
