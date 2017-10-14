@@ -35,42 +35,11 @@ public class TrainFragment extends Fragment {
     private WebView web_view;
     private String user;
     private ProgressBar bar;
-  /*  // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;*/
 
 
     public TrainFragment() {
         // Required empty public constructor
     }
-
-  /*  /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TrainFragment.
-     */
-    /*// TODO: Rename and change types and number of parameters
-    public static TrainFragment newInstance(String param1, String param2) {
-        TrainFragment fragment = new TrainFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
-
-    /*@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,12 +106,8 @@ public class TrainFragment extends Fragment {
                     doc.charset(Charset.forName("UTF-8"));
                     Element el = doc.select("head").first();
                     Element el2 = doc.select(".page-content").first();
-                    //   el.wrap("<body></body>");
                     element.add(el);
                     element.add(el2);
-                    // element = doc.getAllElements();
-                   /* element.getElementsByAttributeValue("class", "container_12").first().remove();
-                    element.getElementsByAttributeValue("class", "container_12").first().remove();*/
                     Log.i("DO", "FOREGOUND");
                 } catch (IOException e) {}
             }
@@ -152,9 +117,6 @@ public class TrainFragment extends Fragment {
         public void onPostExecute(Void result) {
             Log.i("START", "LOADING");
             web_view.loadDataWithBaseURL("http://m.sncf.com", element.toString(), "text/html", "gzip", "");
-            //  web_view.loadUrl(url);
-
-            // web_view.loadUrl(url);
             Log.i("END", "LOADING");
         }
     }
