@@ -23,7 +23,7 @@ public class InstanceIDService extends FirebaseInstanceIdService {
         } catch(IOException e) {}
     }
     private void subscribeTopic(String token) throws IOException {
-        FirebaseMessaging.getInstance().subscribeToTopic("***REMOVED***");
+       FirebaseMessaging.getInstance().subscribeToTopic("***REMOVED***");
 
         Log.i("TEST", "SUBSCRIBED TOPIC");
     }
