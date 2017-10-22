@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         db.close();
         Log.i("Test2", getApplicationContext().getFilesDir().toString());
         FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");
+
     }
 
     /**
@@ -220,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {}
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
         navigationView.setCheckedItem(item.getItemId());
         drawerLayout.closeDrawers();
     }
@@ -230,10 +232,15 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        Fragment fg = getSupportFragmentManager().getFragments().get(0);
-        if (fg != null && fg.getClass() == BusFragment.class)
-        {
+        FragmentManager manager = getSupportFragmentManager();
+        Log.i("DATA", String.valueOf(manager.getBackStackEntryCount()));
+        Fragment fg = manager.getFragments().get(0);
+        if (drawerLayout.isDrawerOpen(navigationView)) {
+            drawerLayout.closeDrawers();
+        } else if (fg != null && fg.getClass() == BusFragment.class) {
             ((BusFragment) fg).backPressed();
+        } else if (manager.getBackStackEntryCount() > 1 ){
+            manager.popBackStack();
         }
     }
 
