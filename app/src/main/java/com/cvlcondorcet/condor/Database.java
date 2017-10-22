@@ -39,7 +39,7 @@ class Database {
         ctx = context;
     }
 
-    boolean isOpen() { return database.isOpen(); }
+    boolean isOpen() { if (database != null) return database.isOpen(); else return false;}
 
 
     void open() throws SQLException { database = helper.getWritableDatabase(); }

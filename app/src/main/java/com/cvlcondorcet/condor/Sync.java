@@ -166,31 +166,23 @@ public class Sync extends IntentService {
 
                 ArrayList liste;
                 liste = db.updateGen(gen);
-                progress = 20;
-                progressMessage = "Downloading files...";
-                changeProgress(20);
+                changeProgress(20, "Downloading files...");
                 for (int j = 0; j < liste.size(); j++) {
                     progress += 20 / liste.size();
-                    changeProgress(progress);
+                    changeProgress(progress, "Downloading file " + j + "/" + liste.size());
                     downloadFile(liste.get(j).toString());
                     Log.i("SYNC", "DOWNLOADING FILE");
                 }
-                progressMessage = "News...";
+                changeProgress(50, "News....");
                 JSONArray posts = get(POSTS_URL);
                 Log.i("SYNC", "POSTS SYNC");
                 db.updatePosts(posts);
-                progress = 60;
-                progressMessage = "Events...";
-                changeProgress(progress);
+                changeProgress(70, "Events....");
                 JSONArray events = get(EVENTS_URL);
                 db.updateEvents(events);
-                progressMessage = "Events...";
-                changeProgress(progress);
                /* JSONArray profs = get(PROFS_URL);
                 Log.i("SYNC", "PROFS SYNC");*/
-                progress = 80;
-                progressMessage = "Ending sync...";
-                changeProgress(progress);
+                changeProgress(90, "Ending sync...");
               //  db.updateProfs(profs);
                 db.beginSync();
                 Log.i("SYNC", "END SYNC");
@@ -215,7 +207,9 @@ public class Sync extends IntentService {
             handler.removeCallbacks(sendProgress);
             displayProgress();
         }
-        db.close();
+        if(db != null && db.isOpen()) {
+            db.close();
+        }
         stopSelf();
     }
 
@@ -363,7 +357,9 @@ public class Sync extends IntentService {
      * Displaying progress in the service notification.
      * @param newProgress   the new progress given by the service
      */
-    private void changeProgress(int newProgress) {
+    private void changeProgress(int newProgress, String newProgressMessage) {
+        progress = newProgress;
+        progressMessage = newProgressMessage;
         noti.setProgress(100, newProgress, false);
         manager.notify(5, noti.build());
     }
