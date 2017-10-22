@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -21,7 +22,7 @@ public class NotifListener extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage message) {
         String messageT = message.getFrom();
         Log.d("TEST", "From: " + messageT);
-
+        Toast.makeText(this, "Message received", Toast.LENGTH_LONG).show();
         if (messageT.startsWith("/topics/condor")) {
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             Notification.Builder noti;
