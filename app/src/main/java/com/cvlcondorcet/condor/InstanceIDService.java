@@ -23,7 +23,7 @@ public class InstanceIDService extends FirebaseInstanceIdService {
         } catch(IOException e) {}
     }
     private void subscribeTopic(String token) throws IOException {
-        FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");
+       FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");
 
         Log.i("TEST", "SUBSCRIBED TOPIC");
     }
