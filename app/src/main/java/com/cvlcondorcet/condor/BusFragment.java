@@ -51,6 +51,7 @@ public class BusFragment extends Fragment {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.i("E", "OVERRIDE");
                 if (url.contains("optymo")) {
+                    progress.setVisibility(View.VISIBLE);
                     Log.i("E", "INSIDE");
                     new Loading().execute(url);
                     return true;
@@ -85,7 +86,6 @@ public class BusFragment extends Fragment {
      */
     public void backPressed() {
         web_view.goBack();
-        progress.setVisibility(View.VISIBLE);
         Log.i("E", "BACK PRESSED");
     }
 
