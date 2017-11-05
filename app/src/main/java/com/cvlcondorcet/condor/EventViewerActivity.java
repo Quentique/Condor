@@ -29,6 +29,9 @@ public class EventViewerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_viewer);
 
+        Event.format = getString(R.string.date_format);
+        Event.format2 = getString(R.string.hour_format);
+
         name = (TextView) findViewById(R.id.name_event);
         desc = (TextView) findViewById(R.id.desc_event);
         when = (TextView) findViewById(R.id.when_event);

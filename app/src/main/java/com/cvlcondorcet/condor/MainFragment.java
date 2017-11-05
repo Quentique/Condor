@@ -157,6 +157,24 @@ public class MainFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        view.findViewById(R.id.news_quick).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new PostsFragment()).addToBackStack("").commit();
+            }
+        });
+        view.findViewById(R.id.events_quick).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new EventsFragment()).addToBackStack("").commit();
+            }
+        });
+        view.findViewById(R.id.canteen_quick).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new CanteenFragment()).addToBackStack("").commit();
+            }
+        });
 
     }
 }
