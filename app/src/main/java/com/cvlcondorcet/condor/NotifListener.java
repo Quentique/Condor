@@ -42,6 +42,7 @@ public class NotifListener extends FirebaseMessagingService {
                     .setOngoing(true)
                     .setContentText(getString(R.string.click_sync))
                     .setContentIntent(intent);
+            noti.setAutoCancel(true);
             manager.notify(1, noti.build());
             Log.i("TEST", "NOTIFICATION RECEIVED");
         }
