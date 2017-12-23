@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="maps_list">
+        <item>Général</item>
+    </string-array>
+    <string-array name="gl">
+        <item name="0EGL">Rez-de-chaussée</item>
+        <item name="1EGL">1er Étage</item>
+        <item name="2EGL">2ème Étage</item>
+        <item name="3EGL">3ème Étage</item>
+    </string-array>
+    <string-array name="pl">
+        <item name="0EPL">Ground Floor</item>
+        <item name="1EPL">1er Étage</item>
+        <item name="2EPL">2ème Étage</item>
+        <item name="3EPL">3ème Étage</item>
+    </string-array>
+    <string-array name="in">
+        <item name="0EIN">Rez-de-chaussée</item>
+        <item name="1EIN">1er Étage</item>
+    </string-array>
+</resources>

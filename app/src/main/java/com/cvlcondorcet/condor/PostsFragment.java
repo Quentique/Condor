@@ -92,7 +92,6 @@ public class PostsFragment extends Fragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.news);
-        bar = ((MainActivity) getActivity()).getSupportActionBar();
         progress = view.findViewById(R.id.loading_layout);
         progress.setVisibility(View.VISIBLE);
         recycler = view.findViewById(R.id.recycler_posts);
@@ -100,15 +99,28 @@ public class PostsFragment extends Fragment
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler.setHasFixedSize(true);
-        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        bar.setDisplayHomeAsUpEnabled(true);
-        bar.setCustomView(lay);
+
         loader = new Task();
         loader.execute();
         spinner.setListener(this);
         rssAllowed = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("rss_display", true);
 
         getLoaderManager().initLoader(2, null, this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        bar = ((MainActivity) getActivity()).getSupportActionBar();
+        bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        bar.setDisplayHomeAsUpEnabled(true);
+        bar.setCustomView(lay);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        bar.setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_TITLE | android.support.v7.app.ActionBar.DISPLAY_HOME_AS_UP | android.support.v7.app.ActionBar.DISPLAY_SHOW_HOME);
     }
 
     /**

@@ -38,7 +38,7 @@ public class Sync extends IntentService {
 
     public final static String broadcast_URI = "com.cvlcondorcet.condor.broadcast.progress";
 
-    private static final String base_URL = "http://77.195.184.62:81/condor/";
+    private static final String base_URL = "***REMOVED***";
     private static final String uploads = "***REMOVED***";
     private static final String check_URL = "***REMOVED***";
     private static final String GEN_URL = "***REMOVED***";
