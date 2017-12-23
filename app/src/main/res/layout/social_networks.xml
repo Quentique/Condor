@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="3"
+    android:weightSum="4"
     android:baselineAligned="true"
     android:layout_marginTop="10dp">
 
@@ -42,4 +42,14 @@
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
         android:minHeight="100dip"/>
+
+    <ImageButton
+        android:id="@+id/ent_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#00FFFFFF"
+        android:minHeight="100dip"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ent_logo_foreground" />
 </LinearLayout>

@@ -91,6 +91,7 @@ public class MainFragment extends Fragment {
         final String facebook = db.timestamp("facebook");
         final String twitter = db.timestamp("twitter");
         final String high = db.timestamp("website");
+        final String ent = db.timestamp("ent_link");
         db.close();
 
         (layout1.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
@@ -154,6 +155,13 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(high));
+                startActivity(intent);
+            }
+        });
+        view.findViewById(R.id.ent_logo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ent));
                 startActivity(intent);
             }
         });
