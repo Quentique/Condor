@@ -84,9 +84,13 @@ public class BusFragment extends Fragment {
      * Handles back pressed button and redirects it to WebView to go back.
      * @see MainActivity#onBackPressed()
      */
-    public void backPressed() {
-        web_view.goBack();
-        Log.i("E", "BACK PRESSED");
+    public boolean backPressed() {
+        if (web_view.canGoBack()) {
+            web_view.goBack();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
