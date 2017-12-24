@@ -1,6 +1,7 @@
 package com.cvlcondorcet.condor;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             db.open();
             Sync.rssURL = db.timestamp("website") + "feed";
+            Log.i("TEST", Sync.rssURL);
         } catch( SQLException e) { }
         db.close();
         Log.i("Test2", getApplicationContext().getFilesDir().toString());
@@ -191,7 +193,16 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = PreferencesFragment.class;
                 break;
             case R.id.nav_train:
-                fragmentClass = TrainFragment.class;
+                if (getPackageManager().getLaunchIntentForPackage("com.sncf.fusion") == null) {
+                    fragmentClass = TrainFragment.class;
+                } else {
+                    Intent intent = new Intent();
+                    intent.setAction("com.sncf.fusion.STATION");
+                    intent.setComponent(new ComponentName("com.sncf.fusion", "com.sncf.fusion.ui.station.trainboard.StationBoardsActivity"));
+                    intent.putExtra("stationUic", "87184002");
+                    intent.addCategory("DEFAULT");
+                    startActivity(intent);
+                }
                 break;
             case R.id.nav_bus:
                 fragmentClass = BusFragment.class;
@@ -220,10 +231,9 @@ public class MainActivity extends AppCompatActivity {
         }
         try {
             fragment = (Fragment) fragmentClass.newInstance();
+            getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
+            navigationView.setCheckedItem(item.getItemId());
         } catch (Exception e) {}
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
-        navigationView.setCheckedItem(item.getItemId());
         drawerLayout.closeDrawers();
     }
 
