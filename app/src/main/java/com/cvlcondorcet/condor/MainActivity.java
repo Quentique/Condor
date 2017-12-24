@@ -244,11 +244,14 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         FragmentManager manager = getSupportFragmentManager();
         Log.i("DATA", String.valueOf(manager.getBackStackEntryCount()));
-        Fragment fg = manager.getFragments().get(0);
+        Fragment fg = manager.getFragments().get(manager.getFragments().size()-1);
+        Log.i("DATA", fg.getClass().toString());
         if (drawerLayout.isDrawerOpen(navigationView)) {
             drawerLayout.closeDrawers();
         } else if (fg != null && fg.getClass() == BusFragment.class) {
-            ((BusFragment) fg).backPressed();
+            if (!((BusFragment) fg).backPressed()) {
+                manager.popBackStack();
+            }
         } else if (manager.getBackStackEntryCount() > 1 ){
             manager.popBackStack();
         }
