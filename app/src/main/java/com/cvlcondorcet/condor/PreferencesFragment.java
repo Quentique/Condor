@@ -14,5 +14,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getActivity().setTitle(R.string.settings);
         setPreferencesFromResource(R.xml.preferences, rootKey);
+        findPreference("uniqueid").setVisible(false);
     }
 }

@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,9 +35,9 @@ public class AlarmProgrammer {
         final int _id = (int) System.currentTimeMillis();
         PendingIntent intent = PendingIntent.getBroadcast(ctx, _id, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
-        Log.i("ALarm", calendar.toString());
-        Log.i("ALARM", Calendar.getInstance().getTime().toString());
-        Log.i("ALARM", "Alarm has been set");
+//        Log.i("ALarm", calendar.toString());
+//        Log.i("ALARM", Calendar.getInstance().getTime().toString());
+//        Log.i("ALARM", "Alarm has been set");
     }
 
     /**
@@ -54,6 +53,6 @@ public class AlarmProgrammer {
         for (Event event : list) {
             setAlarm(ctx, event.getId(), event.getDateBeginDate());
         }
-        Log.i("SCHEDULED", "ALL ALARMS");
+//        Log.i("SCHEDULED", "ALL ALARMS");
     }
 }

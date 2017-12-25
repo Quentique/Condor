@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.Html;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -30,7 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Event.format = ctx.getResources().getString(R.string.date_format);
         Event.format2 = ctx.getResources().getString(R.string.hour_format);
         if (intent.getExtras() != null) {
-            Toast.makeText(ctx, intent.getStringExtra("id"), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(ctx, intent.getStringExtra("id"), Toast.LENGTH_SHORT).show();
         }
         if (intent.getExtras().containsKey("id") && !intent.getStringExtra("id").equals("")) {
             Database db = new Database(ctx);
@@ -65,7 +64,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             } else {
                 content =  ctx.getResources().getString(R.string.began) + e.getDateBegin() + ctx.getResources().getString(R.string.at) + e.getHourBegin();
             }
-            Toast.makeText(ctx, e.getDateBegin(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(ctx, e.getDateBegin(), Toast.LENGTH_LONG).show();
             noti.setContentTitle(Html.fromHtml(e.getName()))
                     .setContentText(content)
                     .setSmallIcon(R.drawable.ic_launcher)
