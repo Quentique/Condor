@@ -3,7 +3,6 @@ package com.cvlcondorcet.condor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +48,10 @@ public class BusFragment extends Fragment {
              */
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.i("E", "OVERRIDE");
+//                Log.i("E", "OVERRIDE");
                 if (url.contains("optymo")) {
                     progress.setVisibility(View.VISIBLE);
-                    Log.i("E", "INSIDE");
+//                    Log.i("E", "INSIDE");
                     new Loading().execute(url);
                     return true;
                 } else { return false; }
@@ -76,7 +75,7 @@ public class BusFragment extends Fragment {
         web_view.getSettings().setUseWideViewPort(true);
         web_view.getSettings().setDefaultTextEncodingName("utf-8");
 
-        Log.i("g", "FRAMGNET STARTED");
+//        Log.i("g", "FRAMGNET STARTED");
         new Loading().execute(url);
     }
 
@@ -106,28 +105,28 @@ public class BusFragment extends Fragment {
         }
         @Override
         public Void doInBackground(String... args) {
-            Log.i("DO", "BACKGROUND");
+//            Log.i("DO", "BACKGROUND");
             if (MainActivity.allowConnect(getActivity())) {
                 try {
                     url = args[0];
                     element = new Elements();
-                    Log.i("e", user);
+                    //Log.i("e", user);
                     Document doc = Jsoup.connect(url).userAgent(user).header("Accept-Language", "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").get();
                     Element el = doc.select("head").first();
                     Element el2 = doc.select("#go-to-main").first();
-                    Log.i("HELLO", el2.toString());
+                   // Log.i("HELLO", el2.toString());
                     element.add(el);
                     element.add(el2);
-                    Log.i("DO", "FOREGOUND");
+                    //Log.i("DO", "FOREGOUND");
                 } catch (IOException e) {}
             }
             return null;
         }
         @Override
         public void onPostExecute(Void result) {
-            Log.i("START", "LOADING");
+            //Log.i("START", "LOADING");
             web_view.loadDataWithBaseURL(null, element.toString(), "text/html", "UTF-8", url);
-            Log.i("END", "LOADING");
+            //Log.i("END", "LOADING");
         }
     }
 

@@ -1,7 +1,5 @@
 package com.cvlcondorcet.condor;
 
-import android.util.Log;
-
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -18,13 +16,13 @@ public class InstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         try {
             String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-            Log.d("TEST", "Refreshed token: " + refreshedToken);
+           // Log.d("TEST", "Refreshed token: " + refreshedToken);
             subscribeTopic(refreshedToken);
         } catch(IOException e) {}
     }
     private void subscribeTopic(String token) throws IOException {
        FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");
 
-        Log.i("TEST", "SUBSCRIBED TOPIC");
+        //Log.i("TEST", "SUBSCRIBED TOPIC");
     }
 }

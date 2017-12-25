@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -122,7 +121,7 @@ class Database {
                 values.put(DBOpenHelper.Posts.COLUMN_NAME, element.getString("name"));
                 values.put(DBOpenHelper.Posts.COLUMN_CONTENT, element.getString("content"));
                 values.put(DBOpenHelper.Posts.COLUMN_DATE, element.getString("date"));
-                Log.i("DEBUG", element.getString("state"));
+               // Log.i("DEBUG", element.getString("state"));
                 if (element.getString("state").contains("deleted")) {
                     values.put(DBOpenHelper.Posts.COLUMN_STATE, 1);
                 } else { values.put(DBOpenHelper.Posts.COLUMN_STATE, 0); }
@@ -220,7 +219,7 @@ class Database {
         if (cursor != null && cursor.getCount()>0) {
             try {
                 cursor.moveToFirst();
-                Log.i("DEBUGONCE", cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
+               // Log.i("DEBUGONCE", cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
                 return cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE));
             } finally {
                 cursor.close();
@@ -344,11 +343,11 @@ class Database {
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_START)),
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_END)));
                 toReturn.add(event);
-                Log.i("EVENT", event.getPlace());
+                //Log.i("EVENT", event.getPlace());
             }
         }
         cursor.close();
-        Log.i("START", String.valueOf(toReturn.size()));
+        //Log.i("START", String.valueOf(toReturn.size()));
         return toReturn;
     }
 
@@ -422,8 +421,8 @@ class Database {
                 new String[] {DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_FILE, DBOpenHelper.Maps.COLUMN_DESC, DBOpenHelper.Maps.COLUMN_POS, DBOpenHelper.Maps.COLUMN_MARK},
                 DBOpenHelper.Maps.COLUMN_ID + " = " + String.valueOf(id),
                 null, null, null, null);
-        Log.i("DB", String.valueOf(id));
-        Log.i("DB", String.valueOf(cursor.getCount()));
+       // Log.i("DB", String.valueOf(id));
+       // Log.i("DB", String.valueOf(cursor.getCount()));
             if (cursor != null && cursor.getCount() > 0) {
                 return cursor;
             } else {
