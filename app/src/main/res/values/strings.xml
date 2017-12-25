@@ -80,5 +80,7 @@
     <string name="click_sync">Click to sync</string>
     <string name="at">" at "</string>
     <string name="cvl">CVL</string>
+    <string name="sync_firebase">Sync when notified</string>
+    <string name="sync_firebase_more">Automatically sync when an update is available.</string>
 
 </resources>

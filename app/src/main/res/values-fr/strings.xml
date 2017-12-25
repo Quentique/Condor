@@ -78,4 +78,6 @@
     <string name="new_content">Nouveau contenu</string>
     <string name="at">" à "</string>
     <string name="cvl">CVL</string>
+    <string name="sync_firebase">Synchronisation auto</string>
+    <string name="sync_firebase_more">Synchroniser automatiquement quand une mise à jour est disponible.</string>
 </resources>

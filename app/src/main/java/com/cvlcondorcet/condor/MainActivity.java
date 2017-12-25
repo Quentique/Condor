@@ -21,12 +21,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Locale;
+import java.util.UUID;
 
 /*import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;*/
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             res.updateConfiguration(conf, dm);
         }
         locale = localeChosen.getISO3Language();
-        Log.i("E", locale);
+       // Log.i("E", locale);
         setContentView(R.layout.activity_main);
         Event.format = getString(R.string.date_format);
         Event.format2 = getString(R.string.hour_format);
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = (Class) savedInstanceState.getSerializable("class");
                 Fragment fg = (Fragment) fragmentClass.newInstance();
                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fg).commit();
-                Log.i("INSTANCE", "Old instance exists");
+              //  Log.i("INSTANCE", "Old instance exists");
             } catch (NullPointerException e) {
             } catch (IllegalAccessException e) {
             } catch (InstantiationException e) {}
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_app_start", true) && allowConnect(this)) {
                 Intent servicee = new Intent(getApplicationContext(), Sync.class);
                 startService(servicee);
-                Log.i("INSTANCE", "New start of app SYNCING");
+               // Log.i("INSTANCE", "New start of app SYNCING");
             }
             if (getIntent().getExtras() != null) {
                 try {
@@ -106,27 +106,29 @@ public class MainActivity extends AppCompatActivity {
                             selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
                             break;
                     }
-                    Log.i("INSTANCE", "NEW -- Starting Posts");
+                //    Log.i("INSTANCE", "NEW -- Starting Posts");
                 } catch (Exception e) {}
             } else {
                 selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
-                Log.i("INSTANCE", "ERROR -- Starting Home");
+              //  Log.i("INSTANCE", "ERROR -- Starting Home");
             }
         }
         Database db = new Database(this);
         db.open();
         if (db.timestamp("name").equals("")) {
             selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_sync));
+            if (PreferenceManager.getDefaultSharedPreferences(this).getString("uniqueid", "0").equals("0")){
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("uniqueid", UUID.randomUUID().toString()).commit();
+            }
         }
         try {
             db.open();
             Sync.rssURL = db.timestamp("website") + "feed";
-            Log.i("TEST", Sync.rssURL);
+          //  Log.i("TEST", Sync.rssURL);
         } catch( SQLException e) { }
         db.close();
-        Log.i("Test2", getApplicationContext().getFilesDir().toString());
+       // Log.i("Test2", getApplicationContext().getFilesDir().toString());
         FirebaseMessaging.getInstance().subscribeToTopic("***REMOVED***");
-
     }
 
     /**
@@ -226,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = CVLFragment.class;
                 break;
             default:
-                Log.i("PATATE", "CHAUDE");
+               // Log.i("PATATE", "CHAUDE");
                 break;
         }
         try {
@@ -243,9 +245,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         FragmentManager manager = getSupportFragmentManager();
-        Log.i("DATA", String.valueOf(manager.getBackStackEntryCount()));
+       // Log.i("DATA", String.valueOf(manager.getBackStackEntryCount()));
         Fragment fg = manager.getFragments().get(manager.getFragments().size()-1);
-        Log.i("DATA", fg.getClass().toString());
+        //Log.i("DATA", fg.getClass().toString());
         if (drawerLayout.isDrawerOpen(navigationView)) {
             drawerLayout.closeDrawers();
         } else if (fg != null && fg.getClass() == BusFragment.class) {

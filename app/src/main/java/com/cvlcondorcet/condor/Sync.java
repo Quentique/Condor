@@ -7,8 +7,12 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,6 +60,8 @@ public class Sync extends IntentService {
     private final Handler handler = new Handler();
     private NotificationManager manager;
     private Notification.Builder noti;
+
+    private FirebaseAnalytics analytics;
 
     private Intent intent;
 
@@ -131,7 +137,7 @@ public class Sync extends IntentService {
         } else {
             noti = new Notification.Builder(this);
         }
-        noti.setContentTitle("Synchronization")
+        noti.setContentTitle(getResources().getString(R.string.sync_app_start_title))
                 .setContentText(tickerText)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setOngoing(true)
@@ -141,13 +147,17 @@ public class Sync extends IntentService {
         noti.setProgress(0, 0, true);
         Log.i("NOTI", "DONE");
 
+        analytics = FirebaseAnalytics.getInstance(this);
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.ITEM_ID, PreferenceManager.getDefaultSharedPreferences(this).getString("uniqueid", "0"));
         startForeground(5, noti.build());
 
         String continueSync = serverState();
         if (continueSync.contains("200")) {
             networkError = false;
+            params.putString(FirebaseAnalytics.Param.VALUE, "success");
         } else {
-
+            params.putString(FirebaseAnalytics.Param.VALUE, "fail");
             progress = -1;
             progressMessage = continueSync;
             Log.i("TESTSYNC", progressMessage);
@@ -156,6 +166,7 @@ public class Sync extends IntentService {
             networkError = true;
             displayProgress();
         }
+        analytics.logEvent("sync", params);
         if (!networkError) {
             try {
                 db.open();
@@ -196,9 +207,7 @@ public class Sync extends IntentService {
                 progress = -2;
                 e.printStackTrace();
             }
-            if (Build.VERSION.SDK_INT >= 26) {
-                noti.setTimeoutAfter(20000);
-            }
+
             noti.setOngoing(false);
             noti.setAutoCancel(true);
             noti.setTicker(getString(R.string.end_sync_ticker));
@@ -206,6 +215,11 @@ public class Sync extends IntentService {
             //manager.cancel(1);
             handler.removeCallbacks(sendProgress);
             displayProgress();
+            if (Build.VERSION.SDK_INT >= 26) {
+                noti.setTimeoutAfter(20000);
+            } else {
+                manager.cancel(2);
+            }
         }
         if(db != null && db.isOpen()) {
             db.close();
