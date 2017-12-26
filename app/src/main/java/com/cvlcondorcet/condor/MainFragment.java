@@ -64,7 +64,7 @@ public class MainFragment extends Fragment {
         File file2 = new File(getActivity().getFilesDir().toString() + "/" + db.timestamp("logo"));
         Picasso.with(getActivity()).load(file).into(cover);
         Picasso.with(getActivity()).load(file2).into(logo);
-        Log.i("EEEE", getActivity().getFilesDir().toString() + "/" + db.timestamp("cover"));
+       // Log.i("EEEE", getActivity().getFilesDir().toString() + "/" + db.timestamp("cover"));
         LinearLayout layout1 = view.findViewById(R.id.tel1);
         ImageView image1 = layout1.findViewById(R.id.image_contact);
         TextView contactTitle1 = layout1.findViewById(R.id.title_contact);
@@ -134,9 +134,9 @@ public class MainFragment extends Fragment {
                     ApplicationInfo appInfo = getActivity().getPackageManager().getApplicationInfo("com.facebook.katana", 0);
                     if (appInfo.enabled) {
                         uri = Uri.parse("fb://page/"+ facebook);
-                        Log.i("TEST", "work");
+                       // Log.i("TEST", "work");
                     }
-                    Log.i("FACEBOOK", "TRY");
+                   // Log.i("FACEBOOK", "TRY");
                 } catch (PackageManager.NameNotFoundException ignored) {}
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);

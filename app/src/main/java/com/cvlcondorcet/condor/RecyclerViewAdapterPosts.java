@@ -57,7 +57,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void setData(List<Post> list) {
         this.list = list;
         filterByCategories(null, "");
-        Log.i("Hello", "Data has changed");
+       // Log.i("Hello", "Data has changed");
     }
 
     /**
@@ -69,7 +69,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
      */
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Post post = filteredList.get(position);
-        Log.i("DEBUGGGGG", "ICH BIN DA");
+       // Log.i("DEBUGGGGG", "ICH BIN DA");
 
         ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setText(post.getName());
         ((RecyclerViewAdapterPosts.ViewHolder) holder).content.setText(Jsoup.parse(post.getContent()).text());
@@ -101,15 +101,15 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                     try {
                         qu = query.toLowerCase();
 
-                        Log.i("E", "\""+ qu+"\"");
-                        Log.i("e", "Filter : " + qu);
+                      //  Log.i("E", "\""+ qu+"\"");
+                      //  Log.i("e", "Filter : " + qu);
                         for (Post post : catList) {
                             if (post.getName().toLowerCase().contains(qu)) {
                                 filteredList.add(post);
                             }
                         }
                     } catch (NullPointerException e) { filteredList = new ArrayList<>(); filteredList.addAll(catList); }
-                    Log.i("EEE", String.valueOf(filteredList.size()));
+                   // Log.i("EEE", String.valueOf(filteredList.size()));
                     try {
                         Collections.sort(filteredList, Collections.<Post>reverseOrder());
                     } catch (NullPointerException e) {}
@@ -135,7 +135,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.i("NEED", "WE DONT SEE YOU");
+               // Log.i("NEED", "WE DONT SEE YOU");
                 try {
                     if (array != null && !array.get(0).equals(ctx.getResources().getString(R.string.all_category))) {
                         List<Post> copy;
@@ -144,15 +144,15 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                         try {
                             catList.clear();
                         } catch (NullPointerException e) {
-                            Log.i("NULL", "NullPointerException Thrown");
+                         //   Log.i("NULL", "NullPointerException Thrown");
                             catList = new ArrayList<>();
                         }
-                        Log.i("BE", "Entering loop for");
+                       // Log.i("BE", "Entering loop for");
                         for (int i = 0; i < array.size(); i++) {
-                            Log.i("DE", "First loop");
+                        //    Log.i("DE", "First loop");
                             for (int j = 0; j < copy.size(); j++) {
                                 Post post = copy.get(j);
-                                Log.i("e", array.get(i));
+                           //     Log.i("e", array.get(i));
                                 if (post.getCategories().contains(array.get(i))) {
                                     catList.add(post);
                                 }
@@ -163,7 +163,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                         catList = new ArrayList<>();
                         catList.addAll(list);
-                        Log.i("EE", "ARRAY NULL / SET LIST TO CATLIST");
+                       // Log.i("EE", "ARRAY NULL / SET LIST TO CATLIST");
                     }
                     filter(queryy);
                 } catch (Exception e ) {e.printStackTrace();}
