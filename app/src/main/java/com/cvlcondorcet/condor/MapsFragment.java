@@ -88,8 +88,8 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             public Cursor runQuery(CharSequence charSequence) {
                 Cursor cursor = db.getQuery(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME},
                         DBOpenHelper.Maps.COLUMN_DPNAME +" LIKE '%"+query+"%'" );
-                Log.i("COUNT", String.valueOf(cursor.getCount()));
-                Log.i("QUERY", query);
+               // Log.i("COUNT", String.valueOf(cursor.getCount()));
+              //  Log.i("QUERY", query);
                 return cursor;
             }
         });
@@ -98,18 +98,18 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
             @Override
             public boolean onSuggestionSelect(int position) {
-                Log.i("TESTT", String.valueOf(adapter.getItemId(position)));
+               // Log.i("TESTT", String.valueOf(adapter.getItemId(position)));
                 return false;
             }
 
             @Override
             public boolean onSuggestionClick(int position) {
-                Log.i("TESTT", String.valueOf(adapter.getItemId(position)));
+               // Log.i("TESTT", String.valueOf(adapter.getItemId(position)));
 
                 searchView.clearFocus();
                 Cursor cursor =(Cursor)adapter.getItem(position);
-                Log.i("TESTT", "C" +cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_ID)));
-                Log.i("TESTT", adapter.getCursor().getString(position));
+               // Log.i("TESTT", "C" +cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_ID)));
+               // Log.i("TESTT", adapter.getCursor().getString(position));
                 loadPdf(adapter.getItemId(position));
                 searchView.setQuery(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)), true);
 
@@ -157,7 +157,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         String[] grandl_lycee = getResources().getStringArray(R.array.gl);
         for (int i = 0 ; i<grandl_lycee.length ; i++) {
             gl.put(grandl_lycee[i], String.valueOf(i)+"EGL.pdf");
-            Log.i("TEST", grandl_lycee[i]);
+           // Log.i("TEST", grandl_lycee[i]);
         }
         pl=new LinkedHashMap<>();
         String[] petti_lycee = getResources().getStringArray(R.array.pl);
@@ -239,7 +239,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
         this.query = query;
-        Log.i("e", query);
+       // Log.i("e", query);
         adapter.changeCursor(adapter.runQueryOnBackgroundThread(query));
         return true;
     }
@@ -256,7 +256,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     private void loadPdf(long id) {
         Cursor cursor = db.getPlace(id);
         if (cursor != null) {
-            Log.i("NULL", "CURSOR IS NULL");
+           // Log.i("NULL", "CURSOR IS NULL");
 
             cursor.moveToFirst();
             name.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)));

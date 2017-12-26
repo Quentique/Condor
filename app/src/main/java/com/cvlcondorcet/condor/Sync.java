@@ -160,7 +160,7 @@ public class Sync extends IntentService {
             params.putString(FirebaseAnalytics.Param.VALUE, "fail");
             progress = -1;
             progressMessage = continueSync;
-            Log.i("TESTSYNC", progressMessage);
+           // Log.i("TESTSYNC", progressMessage);
             displayProgress();
             handler.removeCallbacks(sendProgress);
             networkError = true;
@@ -170,7 +170,7 @@ public class Sync extends IntentService {
         if (!networkError) {
             try {
                 db.open();
-                Log.i("SYNC", "GENERAL SYNC");
+               // Log.i("SYNC", "GENERAL SYNC");
                 JSONArray maps = get(MAPS_URL);
                 db.updateMaps(maps);
                 JSONArray gen = get(GEN_URL);
@@ -182,21 +182,21 @@ public class Sync extends IntentService {
                     progress += 20 / liste.size();
                     changeProgress(progress, "Downloading file " + j + "/" + liste.size());
                     downloadFile(liste.get(j).toString());
-                    Log.i("SYNC", "DOWNLOADING FILE");
+                   // Log.i("SYNC", "DOWNLOADING FILE");
                 }
                 changeProgress(50, "News....");
                 JSONArray posts = get(POSTS_URL);
-                Log.i("SYNC", "POSTS SYNC");
+               // Log.i("SYNC", "POSTS SYNC");
                 db.updatePosts(posts);
                 changeProgress(70, "Events....");
                 JSONArray events = get(EVENTS_URL);
                 db.updateEvents(events);
                /* JSONArray profs = get(PROFS_URL);
-                Log.i("SYNC", "PROFS SYNC");*/
+               // Log.i("SYNC", "PROFS SYNC");*/
                 changeProgress(90, "Ending sync...");
               //  db.updateProfs(profs);
                 db.beginSync();
-                Log.i("SYNC", "END SYNC");
+              //  Log.i("SYNC", "END SYNC");
                 progressMessage = "Sync ended.";
                 progress = 100;
                 noti.setProgress(100, 100, false);
@@ -257,7 +257,7 @@ public class Sync extends IntentService {
             try {
                 connection = (HttpURLConnection) url.openConnection();
                 hello = connection.getResponseMessage();
-                Log.i("NETWORK ERROR", hello);
+              //  Log.i("NETWORK ERROR", hello);
             } catch (IOException e) {
                 progress = -1;
                 progressMessage = "An network error has occurred while syncing. Please try again later.";
@@ -276,7 +276,7 @@ public class Sync extends IntentService {
             } finally {
                 connection.disconnect();
             }
-            Log.i("E", answer);
+           // Log.i("E", answer);
             try {
                 tab = new JSONArray(answer);
             } catch (JSONException e) {
@@ -311,7 +311,7 @@ public class Sync extends IntentService {
             output.flush();
             output.close();
             input.close();
-            Log.i("EBUG", "File downloaded " + file);
+          //  Log.i("EBUG", "File downloaded " + file);
         } catch (IOException e) {
             e.printStackTrace();
         }

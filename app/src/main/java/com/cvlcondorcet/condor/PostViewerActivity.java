@@ -83,7 +83,7 @@ public class PostViewerActivity extends AppCompatActivity {
         } catch (NullPointerException e) {}
 
         String id = getIntent().getStringExtra("id");
-        Log.i("ID", "'" + id +"'");
+       // Log.i("ID", "'" + id +"'");
         if (!id.equals("0")) {
             if (getIntent().getExtras().containsKey("link")) {
 
