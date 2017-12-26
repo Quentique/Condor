@@ -144,7 +144,7 @@ public class PostsFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<List<Post>> loader, List<Post> data) {
         adapter.setData(data);
-        Log.i("HELLO", "LOAD FINISHED");
+       // Log.i("HELLO", "LOAD FINISHED");
         progress.setVisibility(GONE);
     }
 
@@ -204,7 +204,7 @@ public class PostsFragment extends Fragment
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
         this.query = query;
-        Log.i("e", "Query");
+       // Log.i("e", "Query");
         recycler.getRecycledViewPool().clear();
         adapter.filter(query);
         recycler.scrollToPosition(0);

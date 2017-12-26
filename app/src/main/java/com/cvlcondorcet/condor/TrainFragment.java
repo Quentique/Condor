@@ -83,7 +83,7 @@ public class TrainFragment extends Fragment {
         web_view.getSettings().setLoadWithOverviewMode(true);
         web_view.getSettings().setUseWideViewPort(true);
 
-        Log.i("g", "FRAMGNET STARTED");
+       // Log.i("g", "FRAMGNET STARTED");
         bar.setVisibility(View.VISIBLE);
         new Loading().execute(url);
     }
@@ -97,27 +97,27 @@ public class TrainFragment extends Fragment {
         private Elements element;
         @Override
         public Void doInBackground(String... args) {
-            Log.i("DO", "BACKGROUND");
+          //  Log.i("DO", "BACKGROUND");
             if (MainActivity.allowConnect(getActivity())) {
                 try {
                     element = new Elements();
-                    Log.i("e", user);
+                 //   Log.i("e", user);
                     Document doc = Jsoup.connect(args[0]).userAgent(user).header("Accept-Language", "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3").get();
                     doc.charset(Charset.forName("UTF-8"));
                     Element el = doc.select("head").first();
                     Element el2 = doc.select(".page-content").first();
                     element.add(el);
                     element.add(el2);
-                    Log.i("DO", "FOREGOUND");
+                  //  Log.i("DO", "FOREGOUND");
                 } catch (IOException e) {}
             }
             return null;
         }
         @Override
         public void onPostExecute(Void result) {
-            Log.i("START", "LOADING");
+           // Log.i("START", "LOADING");
             web_view.loadDataWithBaseURL("http://m.sncf.com", element.toString(), "text/html", "gzip", "");
-            Log.i("END", "LOADING");
+           // Log.i("END", "LOADING");
         }
     }
 
