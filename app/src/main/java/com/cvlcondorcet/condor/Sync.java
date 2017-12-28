@@ -4,18 +4,19 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.database.SQLException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.jsoup.Jsoup;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -127,7 +128,7 @@ public class Sync extends IntentService {
     public void onHandleIntent(Intent i)
     {
         progressMessage = "Syncing...";
-        Log.i("NOTI", "DDDDDONE");
+        //Log.i("NOTI", "DDDDDONE");
         CharSequence tickerText = getString(R.string.sync_notif_name);
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -145,19 +146,19 @@ public class Sync extends IntentService {
         if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(VISIBILITY_PUBLIC); }
 
         noti.setProgress(0, 0, true);
-        Log.i("NOTI", "DONE");
+       // Log.i("NOTI", "DONE");
 
         analytics = FirebaseAnalytics.getInstance(this);
         Bundle params = new Bundle();
-        params.putString(FirebaseAnalytics.Param.ITEM_ID, PreferenceManager.getDefaultSharedPreferences(this).getString("uniqueid", "0"));
+        params.putString("uniqueid", android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(this).getString("uniqueid", "0"));
         startForeground(5, noti.build());
 
         String continueSync = serverState();
         if (continueSync.contains("200")) {
             networkError = false;
-            params.putString(FirebaseAnalytics.Param.VALUE, "success");
+            params.putString("result", "success");
         } else {
-            params.putString(FirebaseAnalytics.Param.VALUE, "fail");
+            params.putString("result", "fail");
             progress = -1;
             progressMessage = continueSync;
            // Log.i("TESTSYNC", progressMessage);
@@ -166,7 +167,7 @@ public class Sync extends IntentService {
             networkError = true;
             displayProgress();
         }
-        analytics.logEvent("sync", params);
+        analytics.logEvent("performed_sync", params);
         if (!networkError) {
             try {
                 db.open();
@@ -185,6 +186,7 @@ public class Sync extends IntentService {
                    // Log.i("SYNC", "DOWNLOADING FILE");
                 }
                 changeProgress(50, "News....");
+                rssURL = db.timestamp("website") + "feed";
                 JSONArray posts = get(POSTS_URL);
                // Log.i("SYNC", "POSTS SYNC");
                 db.updatePosts(posts);
@@ -385,5 +387,17 @@ public class Sync extends IntentService {
         intent.putExtra("progress", progress);
         intent.putExtra("progressMessage", progressMessage);
         sendBroadcast(intent);
+        if (progress == -1) {
+            Intent newIntent = new Intent(this, MainActivity.class);
+            newIntent.putExtra("fragment", "sync");
+            PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            noti.setContentTitle(getResources().getString(R.string.error))
+                    .setContentText(Jsoup.parse(progressMessage).text())
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setOngoing(false)
+                    .setContentIntent(intent)
+                    .setProgress(0, 0, false);
+            manager.notify(10, noti.build());
+        }
     }
 }

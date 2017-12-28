@@ -78,6 +78,8 @@
     <string name="new_content">Neue Inhalte</string>
     <string name="at">" um "</string>
     <string name="cvl">CVL</string>
-    <string name="sync_firebase">Autosynchronisation</string>
-    <string name="sync_firebase_more">Automatisch synchronisierung, wenn ein Update verfügbar ist.</string>
+    <string name="sync_firebase">Selbstsynchronisation</string>
+    <string name="sync_firebase_more">Automatisch synchronisieren, wenn eine Aktualisierung verfügbar ist.</string>
+    <string name="error">Fehler</string>
+    <string name="plan_choice">Einen Plan auswählen</string>
 </resources>

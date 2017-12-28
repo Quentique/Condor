@@ -63,13 +63,17 @@ public class CanteenFragment extends Fragment {
                     Thread.sleep(1000);
                 }catch (InterruptedException e) { e.printStackTrace(); }
 
-                 getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.zoomWithAnimation(20, 710, 2.3f);
-
-                    }
-                });
+                 try {
+                     getActivity().runOnUiThread(new Runnable() {
+                         @Override
+                         public void run() {
+                             try {
+                                 view.zoomWithAnimation(20, 710, 2.3f);
+                             } catch (NullPointerException e) {
+                             }
+                         }
+                     });
+                 } catch (NullPointerException e) { }
             }
         }).start();
     }

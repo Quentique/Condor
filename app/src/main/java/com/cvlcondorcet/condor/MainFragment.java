@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,23 +145,29 @@ public class MainFragment extends Fragment {
         view.findViewById(R.id.twitter_logo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitter));
-                startActivity(intent);
+                if (!twitter.contentEquals("")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitter));
+                    startActivity(intent);
+                }
             }
         });
 
         view.findViewById(R.id.highschool_logo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(high));
-                startActivity(intent);
+                if (!high.contentEquals("")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(high));
+                    startActivity(intent);
+                }
             }
         });
         view.findViewById(R.id.ent_logo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ent));
-                startActivity(intent);
+                if (!ent.contentEquals("")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ent));
+                    startActivity(intent);
+                }
             }
         });
         view.findViewById(R.id.news_quick).setOnClickListener(new View.OnClickListener() {

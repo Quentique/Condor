@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.SslErrorHandler;
@@ -74,7 +73,11 @@ public class PostViewerActivity extends AppCompatActivity {
             }
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError err) {
-                handler.proceed();
+                if (err.getPrimaryError()  == SslError.SSL_EXPIRED) {
+                    handler.cancel();
+                } else {
+                    handler.proceed();
+                }
             }
         });
         setSupportActionBar(bar);

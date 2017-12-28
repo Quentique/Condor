@@ -1,15 +1,24 @@
 //noinspection GradleCompatible
 apply plugin: 'com.android.application'
-
+import com.android.build.OutputFile
 android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.cvlcondorcet.condor"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 2
-        versionName "1.0"
+        versionCode 9
+        versionName "0.9ba"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        checkReleaseBuilds false
+    }
+    splits {
+        abi {
+            enable true
+            universalApk true
+        }
     }
     buildTypes {
         release {
@@ -18,6 +27,26 @@ android {
         }
     }
 }
+
+/*ext.abiCodes = ['arm64-v8a':5, armeabi:3, 'armeabi-v7a':4, 'x86_64':7, x86:6]
+
+android.applicationVariants.all { variant ->
+    variant.outputs.each{ output ->
+        def baseAbiVersionCode =
+                project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+        if (baseAbiVersionCode != null) {
+            def code = android.defaultConfig.targetSdkVersion.apiLevel * 1000
+            code += baseAbiVersionCode *100
+            code += variant.versionCode
+            output.versionCodeOverride = code
+        } else {
+            def code = android.defaultConfig.targetSdkVersion.apiLevel * 1000
+            code += 1 *100
+            code += variant.versionCode
+            output.versionCodeOverride = code
+        }
+    }
+}*/
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
