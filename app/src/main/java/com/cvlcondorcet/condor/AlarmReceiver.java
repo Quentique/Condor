@@ -68,6 +68,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             noti.setContentTitle(Html.fromHtml(e.getName()))
                     .setContentText(content)
                     .setSmallIcon(R.drawable.ic_launcher)
+                    .setAutoCancel(true)
                     .setContentIntent(pendingIntent);
             if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(VISIBILITY_PUBLIC); }
             final int _id = Integer.decode(e.getId()) + 1025638;

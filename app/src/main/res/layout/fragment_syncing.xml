@@ -35,6 +35,7 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/textSizeProfs"
         android:padding="40dp"
+        android:textAlignment="center"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>
 </RelativeLayout>

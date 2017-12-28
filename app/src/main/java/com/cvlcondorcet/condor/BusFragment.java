@@ -125,7 +125,9 @@ public class BusFragment extends Fragment {
         @Override
         public void onPostExecute(Void result) {
             //Log.i("START", "LOADING");
-            web_view.loadDataWithBaseURL(null, element.toString(), "text/html", "UTF-8", url);
+            try {
+                web_view.loadDataWithBaseURL(null, element.toString(), "text/html", "UTF-8", url);
+            } catch (NullPointerException e) {}
             //Log.i("END", "LOADING");
         }
     }

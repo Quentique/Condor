@@ -19,4 +19,11 @@
         <item name="0EIN">Rez-de-chaussée</item>
         <item name="1EIN">1er Étage</item>
     </string-array>
+    <string-array name="cat">
+        <item name="2">Seconde</item>
+        <item name="1">Première</item>
+        <item name="T">Terminale</item>
+        <item name="BTS">BTS</item>
+        <item name="perso">Personnel</item>
+    </string-array>
 </resources>

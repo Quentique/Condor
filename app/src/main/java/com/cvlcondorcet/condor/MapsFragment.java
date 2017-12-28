@@ -12,7 +12,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -182,7 +181,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         title  = new ArrayList<>(total.keySet());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Select plan");
+        builder.setTitle(R.string.plan_choice);
 
         ExpandableListView list = new ExpandableListView(getActivity());
         CustomExpandableListAdapter adapter = new CustomExpandableListAdapter(getActivity(),
