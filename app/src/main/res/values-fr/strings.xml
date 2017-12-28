@@ -80,4 +80,6 @@
     <string name="cvl">CVL</string>
     <string name="sync_firebase">Synchronisation auto</string>
     <string name="sync_firebase_more">Synchroniser automatiquement quand une mise à jour est disponible.</string>
+    <string name="error">Erreur</string>
+    <string name="plan_choice">Choisir un plan</string>
 </resources>

@@ -9,7 +9,7 @@
         android:key="sync_app_start"
         android:title="@string/sync_app_start_title"
         android:summary="@string/sync_app_start"
-        android:defaultValue="true"/>
+        android:defaultValue="false"/>
     <CheckBoxPreference
         android:key="sync_when_notified"
         android:title="@string/sync_firebase"
