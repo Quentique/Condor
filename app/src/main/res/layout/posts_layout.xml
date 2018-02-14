@@ -41,6 +41,7 @@
                     android:id="@+id/post_title"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
+                    android:layout_gravity="center_vertical|right"
                     android:textSize="@dimen/BigTitle"/>
                 <TextView
                     android:layout_width="wrap_content"

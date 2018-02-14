@@ -119,6 +119,8 @@ public class BusFragment extends Fragment {
                     element.add(el2);
                     //Log.i("DO", "FOREGOUND");
                 } catch (IOException e) {}
+            } else {
+                progress.setVisibility(View.GONE);
             }
             return null;
         }
@@ -127,7 +129,7 @@ public class BusFragment extends Fragment {
             //Log.i("START", "LOADING");
             try {
                 web_view.loadDataWithBaseURL(null, element.toString(), "text/html", "UTF-8", url);
-            } catch (NullPointerException e) {}
+            } catch (NullPointerException e) {web_view.loadData("<html><body><strong style=\"font-size: 300%\">Vos paramètres ne permettent pas de charger cette page.</strong></body></html>", null, "utf-8");}
             //Log.i("END", "LOADING");
         }
     }

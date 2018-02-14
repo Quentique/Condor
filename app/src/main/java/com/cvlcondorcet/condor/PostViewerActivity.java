@@ -57,6 +57,8 @@ public class PostViewerActivity extends AppCompatActivity {
         progress.setVisibility(View.VISIBLE);
         view.getSettings().setSupportZoom(true);
         view.getSettings().setJavaScriptEnabled(true);
+        view.getSettings().setBuiltInZoomControls(true);
+        view.getSettings().setDisplayZoomControls(false);
         view.getSettings().setLoadWithOverviewMode(true);
         view.getSettings().setUseWideViewPort(true);
         view.getSettings().setTextZoom(250);
@@ -89,11 +91,10 @@ public class PostViewerActivity extends AppCompatActivity {
        // Log.i("ID", "'" + id +"'");
         if (!id.equals("0")) {
             if (getIntent().getExtras().containsKey("link")) {
-
-                view.loadUrl(getIntent().getStringExtra("link"));
-
                 view.getSettings().setDefaultFontSize(10);
                 view.getSettings().setTextZoom(100);
+
+                view.loadUrl(getIntent().getStringExtra("link"));
 
                 title.setVisibility(GONE);
                 date.setVisibility(GONE);
