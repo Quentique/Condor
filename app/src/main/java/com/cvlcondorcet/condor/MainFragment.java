@@ -5,11 +5,13 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,7 +19,12 @@ import android.widget.TextView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Home page of the application, displays some pictures and information:
@@ -27,6 +34,7 @@ import java.io.File;
 
 public class MainFragment extends Fragment {
     private Database db;
+    private WebView webview;
     //Button bouton;
 
     @Override
@@ -94,6 +102,12 @@ public class MainFragment extends Fragment {
         final String ent = db.timestamp("ent_link");
         db.close();
 
+        if (MainActivity.allowConnect(getActivity())) {
+            webview = view.findViewById(R.id.web_view_start);
+            webview.getSettings().setSupportZoom(false);
+            webview.getSettings().setJavaScriptEnabled(true);
+            new LoadingWeb().execute(high);
+        }
         (layout1.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -202,6 +216,26 @@ public class MainFragment extends Fragment {
             }
         });
 
+    }
+
+    private class LoadingWeb extends AsyncTask<String, Void, Void> {
+        String toDisplay = "";
+        String high = "";
+        protected Void doInBackground(String... args) {
+            try {
+                high = args[0];
+                Document doc = Jsoup.connect(args[0]).postDataCharset("UTF-8").get();
+                Element element2 = doc.getElementsByTag("head").first();
+                Element element = doc.getElementById("graphene-slider");
+                toDisplay = element2.toString();
+                toDisplay += element.toString();
+            } catch (IOException e) {}
+            return null;
+        }
+
+        protected void onPostExecute(Void nothing) {
+            webview.loadDataWithBaseURL(high, toDisplay, null,"utf-8", null);
+        }
     }
 
 }
