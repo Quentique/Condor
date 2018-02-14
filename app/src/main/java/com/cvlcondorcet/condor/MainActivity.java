@@ -23,6 +23,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
             builder2.setItems(null,null);
             builder2.setTitle("Félicitations !");
-            builder2.setMessage("Vous avez installé Condor avec succès et nous vous en remercions. Nous téléchargeons actuellement les derniers éléments nécessaires. Merci !\n<strong>En utilisant Condor, vous acceptez les CGU présentes dans la rubrique \"Aide\" de Condor.</strong>");
+            builder2.setMessage(Html.fromHtml("<) style=\"text-align: justify;\">Vous avez installé Condor avec succès et nous vous en remercions. Nous téléchargeons actuellement les derniers éléments nécessaires. Merci !</p><br/><br/><strong>En utilisant Condor, vous acceptez les CGU présentes dans la rubrique \"Aide\" de Condor.</strong>"));
             builder2.setCancelable(true);
             builder2.create().show();
         } else {
@@ -275,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("ID", fragmentClass.toString());
             try {
                 value = fragmentClass.getCanonicalName();
+                value = value.substring(24);
                 fragment = (Fragment) fragmentClass.newInstance();
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();

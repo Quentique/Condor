@@ -28,7 +28,7 @@ android {
     }
 }
 
-ext.abiCodes = ['arm64-v8a':5, armeabi:3, 'armeabi-v7a':4, 'x86_64':7, x86:6]
+/*ext.abiCodes = ['arm64-v8a':5, armeabi:3, 'armeabi-v7a':4, 'x86_64':7, x86:6]
 
 android.applicationVariants.all { variant ->
     variant.outputs.each{ output ->
@@ -46,7 +46,7 @@ android.applicationVariants.all { variant ->
             output.versionCodeOverride = code
         }
     }
-}
+}*/
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
