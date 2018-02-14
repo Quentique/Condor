@@ -33,7 +33,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 
 /*import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;*/
@@ -44,7 +43,6 @@ import com.google.android.gms.common.GoogleApiAvailability;*/
  */
 public class MainActivity extends AppCompatActivity {
 
-    static String uniqueid;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     //private ActionBarDrawerToggle drawerToggle;
@@ -93,11 +91,6 @@ public class MainActivity extends AppCompatActivity {
         db.open();
         if (db.timestamp("name").equals("")) {
             selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_sync));
-            String retrievedId = PreferenceManager.getDefaultSharedPreferences(this).getString("uniqueid", "0");
-            if (retrievedId.equals("0")){
-                uniqueid = UUID.randomUUID().toString();
-                PreferenceManager.getDefaultSharedPreferences(this).edit().putString("uniqueid", uniqueid).commit();
-            }
             final FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Catégorie");
@@ -141,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
                 db.close();
             } catch (SQLException e) {
             }
-            uniqueid = PreferenceManager.getDefaultSharedPreferences(this).getString("uniqueid", "0");
 
 
 
@@ -253,7 +245,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentClass = null;
         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
         Bundle params = new Bundle();
-        params.putString("uniqueid", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uniqueid", "0"));
 
         String value = "";
         if (item.getItemId() == R.id.nav_train) {
@@ -287,7 +278,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Log.i("11", value);
-        Log.i("22", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uniqueid", "0"));
         params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, value);
         analytics.logEvent("page", params);
         drawerLayout.closeDrawers();

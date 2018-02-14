@@ -150,7 +150,6 @@ public class Sync extends IntentService {
 
         analytics = FirebaseAnalytics.getInstance(this);
         Bundle params = new Bundle();
-        params.putString("uniqueid", android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(this).getString("uniqueid", "0"));
         startForeground(5, noti.build());
 
         String continueSync = serverState();
