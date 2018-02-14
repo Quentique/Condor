@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Condor</string>
+    <string name="app_name" translatable="false">Condor</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -79,11 +79,11 @@
     <string name="new_content">New Content</string>
     <string name="click_sync">Click to sync</string>
     <string name="at">" at "</string>
-    <string name="cvl">CVL</string>
+    <string name="cvl" translatable="false">CVL</string>
     <string name="sync_firebase">Sync when notified</string>
     <string name="sync_firebase_more">Automatically sync when an update is available.</string>
     <string name="error">Error</string>
-    <string name="plan_choice">Select plan</string>
+    <string name="plan_choice">Select a plan</string>
     <string name="cgu">GTU</string>
 
 </resources>
