@@ -13,9 +13,18 @@ public class LicensesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.licenses);
+        String name;
         setContentView(R.layout.activity_licenses);
         WebView view = (WebView) findViewById(R.id.view_license);
-        view.loadUrl("file:///android_asset/licenses.html");
+        try {
+            name = getIntent().getStringExtra("name");
+        } catch (Exception e) {name ="licenses";}
+        if (name.equals("licenses")) {
+            setTitle(R.string.licenses);
+            view.loadUrl("file:///android_asset/licenses.html");
+        } else {
+            setTitle("CGU");
+            view.loadUrl("file:///android_asset/cgu.html");
+        }
     }
 }

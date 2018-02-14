@@ -47,7 +47,7 @@
     <string name="to_single_day">" to "</string>
     <string name="client_default">There are no email clients installed.</string>
     <string name="licenses">LICENSES</string>
-    <string name="bug_send_feedback_here">Bug ? Send feedback here!</string>
+    <string name="bug_send_feedback_here">Bug? Suggestion? Send feedback here!</string>
     <string name="home">Home</string>
 
     <string-array name="language_choose">
@@ -84,5 +84,6 @@
     <string name="sync_firebase_more">Automatically sync when an update is available.</string>
     <string name="error">Error</string>
     <string name="plan_choice">Select plan</string>
+    <string name="cgu">GTU</string>
 
 </resources>

@@ -247,6 +247,19 @@ class Database {
         cursor.close();
     }
 
+    void deleteTable(String table) {
+        if (!table.equals("0")) {
+            database.delete(table, null, null);
+        }
+    }
+
+    void deleteAllTables() {
+        database.delete(DBOpenHelper.Maps.TABLE_NAME, null, null);
+        database.delete(DBOpenHelper.Events.TABLE_NAME, null, null);
+        database.delete(DBOpenHelper.Posts.TABLE_NAME, null, null);
+        database.delete(DBOpenHelper.General.TABLE_NAME, null, null);
+    }
+
     /**
      * Retrieves all rows from teachers absences tables
      * @return  {@link ArrayList Array} containing all rows

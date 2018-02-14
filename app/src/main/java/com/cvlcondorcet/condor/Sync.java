@@ -156,9 +156,9 @@ public class Sync extends IntentService {
         String continueSync = serverState();
         if (continueSync.contains("200")) {
             networkError = false;
-            params.putString("result", "success");
+            params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "success");
         } else {
-            params.putString("result", "fail");
+            params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "fail");
             progress = -1;
             progressMessage = continueSync;
            // Log.i("TESTSYNC", progressMessage);
