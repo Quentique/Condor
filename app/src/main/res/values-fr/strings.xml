@@ -59,7 +59,7 @@
     <string name="to_single_day">" à "</string>
     <string name="client_default">There are no email clients installed.</string>
     <string name="licenses">LICENCES</string>
-    <string name="bug_send_feedback_here">Bug ? Envoyez un rapport !</string>
+    <string name="bug_send_feedback_here">Bug ? Idée d\'amélioration ? Envoyez un rapport !</string>
     <string name="home">Accueil</string>
     <string name="help">Aide</string>
     <string name="maps">Plans</string>
@@ -82,4 +82,5 @@
     <string name="sync_firebase_more">Synchroniser automatiquement quand une mise à jour est disponible.</string>
     <string name="error">Erreur</string>
     <string name="plan_choice">Choisir un plan</string>
+    <string name="cgu">CGU</string>
 </resources>

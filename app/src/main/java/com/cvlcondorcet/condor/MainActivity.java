@@ -88,41 +88,6 @@ public class MainActivity extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
 
-        if (savedInstanceState != null){
-            try {
-                fragmentClass = (Class) savedInstanceState.getSerializable("class");
-                Fragment fg = (Fragment) fragmentClass.newInstance();
-                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fg).commit();
-              //  Log.i("INSTANCE", "Old instance exists");
-            } catch (NullPointerException e) {
-            } catch (IllegalAccessException e) {
-            } catch (InstantiationException e) {}
-        } else {
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_app_start", true) && allowConnect(this)) {
-                Intent servicee = new Intent(getApplicationContext(), Sync.class);
-                startService(servicee);
-               // Log.i("INSTANCE", "New start of app SYNCING");
-            }
-            if (getIntent().getExtras() != null) {
-                try {
-                    switch (getIntent().getStringExtra("fragment")) {
-                        case "sync":
-                            selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_sync));
-                            break;
-                        case "posts":
-                            selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
-                            break;
-                        case "events":
-                            selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_events));
-                            break;
-                    }
-                //    Log.i("INSTANCE", "NEW -- Starting Posts");
-                } catch (Exception e) {}
-            } else {
-                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
-              //  Log.i("INSTANCE", "ERROR -- Starting Home");
-            }
-        }
         Database db = new Database(this);
         db.open();
         if (db.timestamp("name").equals("")) {
@@ -165,28 +130,63 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
             builder2.setItems(null,null);
             builder2.setTitle("Félicitations !");
-            builder2.setMessage("Vous avez installé Condor avec succès et nous vous en remercions. Nous téléchargeons actuellement les derniers éléments nécessaires. Merci !");
+            builder2.setMessage("Vous avez installé Condor avec succès et nous vous en remercions. Nous téléchargeons actuellement les derniers éléments nécessaires. Merci !\n<strong>En utilisant Condor, vous acceptez les CGU présentes dans la rubrique \"Aide\" de Condor.</strong>");
             builder2.setCancelable(true);
             builder2.create().show();
+        } else {
+            try {
+                db.open();
+                Sync.rssURL = db.timestamp("website") + "feed";
+                db.close();
+            } catch (SQLException e) {
+            }
+            uniqueid = PreferenceManager.getDefaultSharedPreferences(this).getString("uniqueid", "0");
+
+
+
+            if (savedInstanceState != null) {
+                try {
+                    fragmentClass = (Class) savedInstanceState.getSerializable("class");
+                    Fragment fg = (Fragment) fragmentClass.newInstance();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fg).commit();
+                } catch (NullPointerException e) {
+                } catch (IllegalAccessException e) {
+                } catch (InstantiationException e) {
+                }
+            } else {
+                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_app_start", true) && allowConnect(this)) {
+                    Intent servicee = new Intent(getApplicationContext(), Sync.class);
+                    startService(servicee);
+                }
+                if (getIntent().getExtras() != null) {
+                    try {
+                        switch (getIntent().getStringExtra("fragment")) {
+                            case "sync":
+                                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_sync));
+                                break;
+                            case "posts":
+                                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
+                                break;
+                            case "events":
+                                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_events));
+                                break;
+                        }
+                    } catch (Exception e) {
+                    }
+                } else {
+                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
+                }
+            }
         }
-        try {
-            db.open();
-            Sync.rssURL = db.timestamp("website") + "feed";
-          //  Log.i("TEST", Sync.rssURL);
-        } catch( SQLException e) { }
-        uniqueid = PreferenceManager.getDefaultSharedPreferences(this).getString("uniqueid", "0");
-       // Log.i("TEST", uniqueid);
-        db.close();
-       // Log.i("Test2", getApplicationContext().getFilesDir().toString());
         FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");
 
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
-                Log.i("BACKSTACK", "je joue");
                 navigationView.setCheckedItem((Integer) getKeyFromValue(correspondance,getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().size()-1).getClass()));
             }
         });
+        db.close();
     }
 
     /**
@@ -247,12 +247,13 @@ public class MainActivity extends AppCompatActivity {
      * @param item  menu item clicked
      * @see #setupDrawerContent(NavigationView)
      */
-    private void selectDrawerItem(MenuItem item) {
+    public void selectDrawerItem(MenuItem item) {
         Fragment fragment = null;
         fragmentClass = null;
         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
         Bundle params = new Bundle();
-        params.putString("uniqueid", uniqueid);
+        params.putString("uniqueid", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uniqueid", "0"));
+
         String value = "";
         if (item.getItemId() == R.id.nav_train) {
             if (getPackageManager().getLaunchIntentForPackage("com.sncf.fusion") == null) {
@@ -273,69 +274,19 @@ public class MainActivity extends AppCompatActivity {
         if (fragmentClass != null) {
             Log.i("ID", fragmentClass.toString());
             try {
-
+                value = fragmentClass.getCanonicalName();
                 fragment = (Fragment) fragmentClass.newInstance();
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
                 navigationView.setCheckedItem(item.getItemId());
-                Log.i("TEST - ID", String.valueOf(item.getItemId()));
 
             } catch (Exception e) {
             }
         }
-        /*switch(item.getItemId()) {
-            case R.id.nav_posts:
-                fragmentClass = PostsFragment.class;
-                value="posts";
-                break;
-            case R.id.nav_teachers:
-                fragmentClass = TeachersFragment.class;
-                break;
-            case R.id.nav_canteen:
-                fragmentClass = CanteenFragment.class;
-                value="canteen";
-                break;
-            case R.id.nav_settings:
-                fragmentClass = PreferencesFragment.class;
-                value="settings";
-                break;
-            case R.id.nav_train:
 
-                break;
-            case R.id.nav_bus:
-                fragmentClass = BusFragment.class;
-                value="bus";
-                break;
-            case R.id.nav_sync:
-                value="sync";
-                fragmentClass = SyncingFragment.class;
-                break;
-            case R.id.nav_help:
-                value="help";
-                fragmentClass = HelpFragment.class;
-                break;
-            case R.id.nav_home:
-                value="home";
-                fragmentClass = MainFragment.class;
-                break;
-            case R.id.nav_maps:
-                value="maps";
-                fragmentClass = MapsFragment.class;
-                break;
-            case R.id.nav_events:
-                value="events";
-                fragmentClass = EventsFragment.class;
-                break;
-            case R.id.nav_cvl:
-                value="cvl";
-                fragmentClass = CVLFragment.class;
-                break;
-            default:
-               // Log.i("PATATE", "CHAUDE");
-                value="default_error";
-                break;
-        }*/
-
-        params.putString("type", value);
+        Log.i("11", value);
+        Log.i("22", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("uniqueid", "0"));
+        params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, value);
         analytics.logEvent("page", params);
         drawerLayout.closeDrawers();
     }

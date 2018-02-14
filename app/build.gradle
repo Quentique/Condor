@@ -7,8 +7,8 @@ android {
         applicationId "com.cvlcondorcet.condor"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 9
-        versionName "0.9ba"
+        versionCode 11
+        versionName "0.9bd"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
@@ -28,7 +28,7 @@ android {
     }
 }
 
-/*ext.abiCodes = ['arm64-v8a':5, armeabi:3, 'armeabi-v7a':4, 'x86_64':7, x86:6]
+ext.abiCodes = ['arm64-v8a':5, armeabi:3, 'armeabi-v7a':4, 'x86_64':7, x86:6]
 
 android.applicationVariants.all { variant ->
     variant.outputs.each{ output ->
@@ -46,7 +46,7 @@ android.applicationVariants.all { variant ->
             output.versionCodeOverride = code
         }
     }
-}*/
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
