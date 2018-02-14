@@ -8,10 +8,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -106,6 +108,21 @@ public class MainFragment extends Fragment {
             webview = view.findViewById(R.id.web_view_start);
             webview.getSettings().setSupportZoom(false);
             webview.getSettings().setJavaScriptEnabled(true);
+            webview.setBackgroundColor(Color.TRANSPARENT);
+            webview.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    if (url.startsWith(high)) {
+                        Intent intent = new Intent(getActivity(), PostViewerActivity.class);
+                        intent.putExtra("id", "0");
+                        intent.putExtra("link", url);
+                        startActivity(intent);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
             new LoadingWeb().execute(high);
         }
         (layout1.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
@@ -228,7 +245,9 @@ public class MainFragment extends Fragment {
                 Element element2 = doc.getElementsByTag("head").first();
                 Element element = doc.getElementById("graphene-slider");
                 toDisplay = element2.toString();
+                toDisplay +="<style>.carousel { background: transparent; width: 100%; margin: auto;} head, body, div { background: transparent; margin: auto;}</style>";
                 toDisplay += element.toString();
+                Log.i("test", element.toString());
             } catch (IOException e) {}
             return null;
         }
