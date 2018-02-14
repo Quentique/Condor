@@ -14,7 +14,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
-        findPreference("uniqueid").setVisible(false);
         getActivity().setTitle(R.string.settings);
     }
 

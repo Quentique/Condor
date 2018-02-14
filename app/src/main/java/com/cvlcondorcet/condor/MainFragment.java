@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -174,18 +175,30 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new PostsFragment()).addToBackStack("").commit();
+                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getActivity());
+                Bundle params = new Bundle();
+                params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "PostsFragment");
+                analytics.logEvent("page", params);
             }
         });
         view.findViewById(R.id.events_quick).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new EventsFragment()).addToBackStack("").commit();
+                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getActivity());
+                Bundle params = new Bundle();
+                params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "EventsFragment");
+                analytics.logEvent("page", params);
             }
         });
         view.findViewById(R.id.canteen_quick).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, new CanteenFragment()).addToBackStack("").commit();
+                FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getActivity());
+                Bundle params = new Bundle();
+                params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "CanteenFragment");
+                analytics.logEvent("page", params);
             }
         });
 
