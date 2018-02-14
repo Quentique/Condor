@@ -27,8 +27,4 @@
         android:title="@string/rss_display_title"
         android:summary="@string/rss_display_summary"
         android:defaultValue="true"/>
-    <Preference
-        android:key="uniqueid"
-        android:defaultValue="0"
-        android:title="ID unique"/>
 </PreferenceScreen>
