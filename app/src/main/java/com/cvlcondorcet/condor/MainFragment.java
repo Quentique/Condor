@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -247,7 +246,6 @@ public class MainFragment extends Fragment {
                 toDisplay = element2.toString();
                 toDisplay +="<style>.carousel { background: transparent; width: 100%; margin: auto;} head, body, div { background: transparent; margin: auto;}</style>";
                 toDisplay += element.toString();
-                Log.i("test", element.toString());
             } catch (IOException e) {}
             return null;
         }
