@@ -219,6 +219,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         desc = view.findViewById(R.id.text_maps_desc);
         place = view.findViewById(R.id.text_maps_acces);
         layout.setVisibility(GONE);
+
         loadPdf("GEN.pdf");
         pdf.zoomWithAnimation(3.0f);
     }
