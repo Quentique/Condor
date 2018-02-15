@@ -29,6 +29,9 @@ public class CVLFragment extends Fragment {
         db = new Database(getActivity());
         db.open();
         Wview = view.findViewById(R.id.web_view_train);
+        Wview.getSettings().setSupportZoom(true);
+        Wview.getSettings().setBuiltInZoomControls(true);
+        Wview.getSettings().setDisplayZoomControls(false);
         Wview.loadUrl("file:///"+getActivity().getApplicationContext().getFilesDir().toString()+"/"+db.timestamp("cvl"));
         db.close();
         ((ProgressBar)view.findViewById(R.id.loading_layout)).setVisibility(View.GONE);
