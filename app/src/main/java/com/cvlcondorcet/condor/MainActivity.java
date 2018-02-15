@@ -161,6 +161,12 @@ public class MainActivity extends AppCompatActivity {
                             case "events":
                                 selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_events));
                                 break;
+                            case "maps":
+                                Bundle bundle = new Bundle();
+                                bundle.putString("place", getIntent().getStringExtra("place"));
+                                Fragment fragment = MapsFragment.class.newInstance();
+                                fragment.setArguments(bundle);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
                         }
                     } catch (Exception e) {
                         Log.i("TEST", getIntent().getExtras().toString());
