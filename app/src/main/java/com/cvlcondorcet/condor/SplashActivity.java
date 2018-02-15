@@ -41,6 +41,9 @@ public class SplashActivity extends AppCompatActivity {
                         intent.putExtra("place", list.get(1));
                         startActivity(intent);
                     }
+                default:
+                    startActivity(intent);
+                    break;
             }
         } catch (NullPointerException e) {
             startActivity(intent);

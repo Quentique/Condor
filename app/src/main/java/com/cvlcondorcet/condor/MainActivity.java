@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-    //private ActionBarDrawerToggle drawerToggle;
     private Class fragmentClass;
     public static String locale;
     public Map<Integer, Class> correspondance;
@@ -74,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         correspondance.put(R.id.nav_sync, SyncingFragment.class);
         correspondance.put(R.id.nav_train, TrainFragment.class);
 
-       // Log.i("E", locale);
         setContentView(R.layout.activity_main);
         Event.format = getString(R.string.date_format);
         Event.format2 = getString(R.string.hour_format);
@@ -338,23 +336,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public Context loadLanguage(Context c) {
-        /*Resources res = getResources();
-        Locale localeChosen;
-        if (PreferenceManager.getDefaultSharedPreferences(this).getString("language", "default").equals("default")) {
-            if (Build.VERSION.SDK_INT >= 24) {
-                localeChosen = res.getConfiguration().getLocales().get(0);
-            } else {
-                localeChosen = res.getConfiguration().locale;
-            }
-        } else {
-            DisplayMetrics dm = res.getDisplayMetrics();
-            android.content.res.Configuration conf = res.getConfiguration();
-            localeChosen = new Locale(PreferenceManager.getDefaultSharedPreferences(this).getString("language", "fr"));
-            conf.setLocale(localeChosen); // API 17+ only.
-            res.updateConfiguration(conf, dm);
-        }
-        locale = localeChosen.getISO3Language();*/
-        Log.i("TEST", "LOAD LANGUAGE");
         if (PreferenceManager.getDefaultSharedPreferences(c).getString("language", "default").equals("default")) {
             return c;
         } else {
