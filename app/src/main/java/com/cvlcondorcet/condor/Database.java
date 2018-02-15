@@ -447,6 +447,16 @@ class Database {
         return database.query(table, columns, clause, null, null, null, null);
     }
 
+    long getPlaceId(String name) {
+       Cursor cursor = database.query(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_NAME},  DBOpenHelper.Maps.COLUMN_NAME + " = \""+ name+"\"", null, null, null, null);
+        if (cursor != null && cursor.getCount() >0 ) {
+            cursor.moveToFirst();
+            return cursor.getLong(0);
+        } else {
+            return 0l;
+        }
+    }
+
     /**
      * Static method that parses a JSON String and returning it into an ArrayList
      * @param categories    the JSON String

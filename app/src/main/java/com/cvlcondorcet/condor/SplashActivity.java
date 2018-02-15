@@ -19,9 +19,6 @@ public class SplashActivity extends AppCompatActivity {
         try {
             List<String> list = getIntent().getData().getPathSegments();
             switch (list.get(0)) {
-                case "maps":
-
-                    break;
                 case "post":
                     if (!list.get(1).equals("")) {
                         Intent intent2 = new Intent(this, PostViewerActivity.class);
@@ -38,6 +35,12 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(intent2);
                     }
                     break;
+                case "maps":
+                    if(!list.get(1).equals("")) {
+                        intent.putExtra("fragment", "maps");
+                        intent.putExtra("place", list.get(1));
+                        startActivity(intent);
+                    }
             }
         } catch (NullPointerException e) {
             startActivity(intent);
