@@ -135,8 +135,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (SQLException e) {
             }
 
-
-
             if (savedInstanceState != null) {
                 try {
                     fragmentClass = (Class) savedInstanceState.getSerializable("class");
@@ -151,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent servicee = new Intent(getApplicationContext(), Sync.class);
                     startService(servicee);
                 }
-                if (getIntent().getExtras() != null) {
+                if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("fragment")) {
                     try {
                         switch (getIntent().getStringExtra("fragment")) {
                             case "sync":
@@ -165,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                         }
                     } catch (Exception e) {
+                        Log.i("TEST", getIntent().getExtras().toString());
+                        selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
                     }
                 } else {
                     selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));

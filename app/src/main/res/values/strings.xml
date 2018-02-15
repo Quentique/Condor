@@ -85,5 +85,6 @@
     <string name="error">Error</string>
     <string name="plan_choice">Select a plan</string>
     <string name="cgu">GTU</string>
+    <string name="asset_statements" translatable="false">[{\n  \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n  \"target\": {\n    \"namespace\": \"web\",\n    \"site\": \"https://app.cvlcondorcet.fr\",\n  }\n}]</string>
 
 </resources>
