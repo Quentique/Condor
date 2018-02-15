@@ -12,6 +12,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -125,7 +126,22 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             }
         });
 
+        String test;
+        try {
+            test = getArguments().getString("place");
+        } catch (Exception e) { test = ""; }
 
+        if (test.equals("")) {
+            loadPdf("GEN.pdf");
+            pdf.zoomWithAnimation(3.0f);
+        } else {
+            if (test.endsWith(".pdf")) {
+                loadPdf(test);
+            } else {
+                Log.i("TEST", test);
+                loadPdf(db.getPlaceId(test));
+            }
+        }
     }
 
     @Override
@@ -220,8 +236,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         place = view.findViewById(R.id.text_maps_acces);
         layout.setVisibility(GONE);
 
-        loadPdf("GEN.pdf");
-        pdf.zoomWithAnimation(3.0f);
     }
 
     @Override
@@ -254,6 +268,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     private void loadPdf(long id) {
+        Log.i("TEST", String.valueOf(id));
         Cursor cursor = db.getPlace(id);
         if (cursor != null) {
            // Log.i("NULL", "CURSOR IS NULL");
