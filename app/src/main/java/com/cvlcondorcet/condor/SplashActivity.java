@@ -18,6 +18,7 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         try {
             List<String> list = getIntent().getData().getPathSegments();
+
             switch (list.get(0)) {
                 case "post":
                     if (!list.get(1).equals("")) {
@@ -39,7 +40,10 @@ public class SplashActivity extends AppCompatActivity {
                     if(!list.get(1).equals("")) {
                         intent.putExtra("fragment", "maps");
                         intent.putExtra("place", list.get(1));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_DEBUG_LOG_RESOLUTION);
                         startActivity(intent);
+
+                        //NavUtils.navigateUpTo(this, intent);
                     }
                 default:
                     startActivity(intent);
