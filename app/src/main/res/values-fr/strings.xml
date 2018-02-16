@@ -81,4 +81,5 @@
     <string name="error">Erreur</string>
     <string name="plan_choice">Choisir un plan</string>
     <string name="cgu">CGU</string>
+    <string name="plan">PLAN</string>
 </resources>

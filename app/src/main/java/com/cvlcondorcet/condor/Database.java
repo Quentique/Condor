@@ -38,7 +38,9 @@ class Database {
         ctx = context;
     }
 
-    boolean isOpen() { if (database != null) return database.isOpen(); else return false;}
+    boolean isOpen() {
+        return database != null && database.isOpen();
+    }
 
 
     void open() throws SQLException { database = helper.getWritableDatabase(); }
@@ -365,7 +367,7 @@ class Database {
     }
 
     CursorAdapter getSuggestions() {
-        Cursor cursor = null;
+        Cursor cursor;
         try {
              cursor = database.query(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME}, null, null, null, null, null);
             return new SimpleCursorAdapter(ctx, android.R.layout.simple_list_item_1, cursor, new String[]{DBOpenHelper.Maps.COLUMN_DPNAME}, new int[]{android.R.id.text1}, 0);
@@ -453,7 +455,7 @@ class Database {
             cursor.moveToFirst();
             return cursor.getLong(0);
         } else {
-            return 0l;
+            return 0L;
         }
     }
 

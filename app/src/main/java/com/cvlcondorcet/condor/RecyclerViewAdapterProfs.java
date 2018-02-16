@@ -22,14 +22,14 @@ import java.util.List;
 class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<TeachersAbsence> list, filteredList;
-    private final int SINGLE = 0, SEVERAL = 1, SINGLE_SPE = 2;
+    private final int SINGLE = 0;
+    private final int SEVERAL = 1;
     private final Context ctx;
 
     RecyclerViewAdapterProfs(Context ctx, List<TeachersAbsence> items, int item) {
         this.ctx = ctx;
         this.list = items;
         this.filteredList = items;
-        int itemsLayout = item;
     }
 
     /**
@@ -115,7 +115,9 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
         {
             Log.i("DE", "SEVERAL");
             return SEVERAL;
-        } else if (filteredList.get(position).getDate() == null){ Log.i("de", "SINGLE"); return SINGLE; } else { Log.i("DE", "SINGLE SPE"); return SINGLE_SPE; }
+        } else if (filteredList.get(position).getDate() == null){ Log.i("de", "SINGLE"); return SINGLE; } else { Log.i("DE", "SINGLE SPE");
+            int SINGLE_SPE = 2;
+            return SINGLE_SPE; }
     }
 
     /**

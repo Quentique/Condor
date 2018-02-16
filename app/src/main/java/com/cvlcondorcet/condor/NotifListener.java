@@ -35,7 +35,7 @@ public class NotifListener extends FirebaseMessagingService {
                     NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     Notification.Builder noti;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        NotificationChannel chanell = new NotificationChannel("channel1", "Condor", 1);
+                        NotificationChannel chanell = new NotificationChannel("channel1", "Condor", NotificationManager.IMPORTANCE_DEFAULT);
                         manager.createNotificationChannel(chanell);
                         noti = new Notification.Builder(this, "channel1");
                     } else {

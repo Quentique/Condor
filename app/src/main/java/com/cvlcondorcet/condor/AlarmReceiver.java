@@ -13,7 +13,6 @@ import android.text.Html;
 import java.util.Calendar;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
-import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
 
 /**
  * Receives alarm broadcasts of the application and displays the appropriate notification
@@ -28,9 +27,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Event.format = ctx.getResources().getString(R.string.date_format);
         Event.format2 = ctx.getResources().getString(R.string.hour_format);
-        if (intent.getExtras() != null) {
-//            Toast.makeText(ctx, intent.getStringExtra("id"), Toast.LENGTH_SHORT).show();
-        }
+
         if (intent.getExtras().containsKey("id") && !intent.getStringExtra("id").equals("")) {
             Database db = new Database(ctx);
             db.open();
@@ -41,7 +38,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Notification.Builder noti;
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel chanell = new NotificationChannel("channel1", "Condor", 1);
+                NotificationChannel chanell = new NotificationChannel("channel1", "Condor", NotificationManager.IMPORTANCE_DEFAULT);
                 manager.createNotificationChannel(chanell);
                 noti = new Notification.Builder(ctx, "channel1");
             } else {
@@ -70,7 +67,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent);
-            if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(VISIBILITY_PUBLIC); }
+            if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(Notification.VISIBILITY_PUBLIC); }
             final int _id = Integer.decode(e.getId()) + 1025638;
             manager.notify(_id, noti.build());
         }

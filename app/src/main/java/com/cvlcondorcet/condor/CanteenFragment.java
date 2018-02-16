@@ -39,7 +39,7 @@ public class CanteenFragment extends Fragment {
         getActivity().setTitle(getString(R.string.canteen_menu));
         Database db = new Database(getActivity());
         db.open();
-        this.view = (PDFView) view.findViewById(R.id.pdfView);
+        this.view = view.findViewById(R.id.pdfView);
         file = new File(getActivity().getFilesDir().toString() + "/" + db.timestamp("canteen"));
         db.close();
         loadPdf();

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_select"
         android:icon="@drawable/ic_list_black_24dp"
-        android:title="PLAN"
+        android:title="@string/plan"
         app:showAsAction="ifRoom"/>
     <item
         android:title="@string/search"

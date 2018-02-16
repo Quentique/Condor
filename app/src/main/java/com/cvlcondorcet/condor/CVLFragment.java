@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.ProgressBar;
 
 /**
  * Simple WebView Fragment, displays CVL information (by a web page)
@@ -15,8 +14,8 @@ import android.widget.ProgressBar;
 
 public class CVLFragment extends Fragment {
 
-    WebView Wview;
-    Database db;
+    private WebView Wview;
+    private Database db;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -34,6 +33,6 @@ public class CVLFragment extends Fragment {
         Wview.getSettings().setDisplayZoomControls(false);
         Wview.loadUrl("file:///"+getActivity().getApplicationContext().getFilesDir().toString()+"/"+db.timestamp("cvl"));
         db.close();
-        ((ProgressBar)view.findViewById(R.id.loading_layout)).setVisibility(View.GONE);
+        view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
     }
 }
