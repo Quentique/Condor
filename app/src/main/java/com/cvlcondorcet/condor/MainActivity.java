@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                                 bundle.putString("place", getIntent().getStringExtra("place"));
                                 Fragment fragment = MapsFragment.class.newInstance();
                                 fragment.setArguments(bundle);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).commit();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
                         }
                     } catch (Exception e) {
                         Log.i("TEST", getIntent().getExtras().toString());
@@ -294,6 +294,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         FragmentManager manager = getSupportFragmentManager();
         Fragment fg = manager.getFragments().get(manager.getFragments().size()-1);
+        Log.i("TEST", "Back pressed");
+        Log.i("TEST2", String.valueOf(manager.getBackStackEntryCount()));
         if (drawerLayout.isDrawerOpen(navigationView)) {
             drawerLayout.closeDrawers();
         } else if (fg != null && fg.getClass() == BusFragment.class) {
@@ -352,6 +354,22 @@ public class MainActivity extends AppCompatActivity {
                 res.updateConfiguration(conf, res.getDisplayMetrics());
             }
             return c;
+        }
+    }
+
+    @Override
+    public void onNewIntent(Intent newIntent) {
+        if (newIntent.getExtras().containsKey("fragment") && newIntent.getStringExtra("fragment").equals("maps")) {
+            Bundle bundle = new Bundle();
+            bundle.putString("place", newIntent.getStringExtra("place"));
+            Fragment fragment = null;
+            try {
+                fragment = MapsFragment.class.newInstance();
+            } catch (InstantiationException e) {
+            } catch (IllegalAccessException e) {
+            }
+            fragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
         }
     }
 }
