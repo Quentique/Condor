@@ -344,14 +344,15 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            pdf.resetZoom();
-                            pdf.zoomWithAnimation((float) x, (float) y, 2.5f);
-                        }
-                    });
+                    try {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                pdf.resetZoom();
+                                pdf.zoomWithAnimation((float) x, (float) y, 2.5f);
+                            }
+                        });
+                    } catch(NullPointerException e) {}
                 }
             }).start();
             layout.setVisibility(View.VISIBLE);
