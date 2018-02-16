@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,8 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
         Post post = filteredList.get(position);
        // Log.i("DEBUGGGGG", "ICH BIN DA");
 
-        ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setText(post.getName());
+        ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setText(Jsoup.parse(post.getName()).text());
+        Log.i("GT", post.getName());
         ((RecyclerViewAdapterPosts.ViewHolder) holder).content.setText(Jsoup.parse(post.getContent()).text());
         ((RecyclerViewAdapterPosts.ViewHolder) holder).date.setText(post.getFormatedDate());
         ((ViewHolder) holder).categories.setText(post.getFormatedCategories());
