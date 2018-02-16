@@ -77,12 +77,12 @@ public class MainActivity extends AppCompatActivity {
         Event.format = getString(R.string.date_format);
         Event.format2 = getString(R.string.hour_format);
 
-        Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar bar = findViewById(R.id.toolbar);
         setSupportActionBar(bar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.nvView);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
 
         Database db = new Database(this);
@@ -244,8 +244,8 @@ public class MainActivity extends AppCompatActivity {
      * @param item  menu item clicked
      * @see #setupDrawerContent(NavigationView)
      */
-    public void selectDrawerItem(MenuItem item) {
-        Fragment fragment = null;
+    private void selectDrawerItem(MenuItem item) {
+        Fragment fragment;
         fragmentClass = null;
         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
         Bundle params = new Bundle();
@@ -337,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    public Context loadLanguage(Context c) {
+    private Context loadLanguage(Context c) {
         if (PreferenceManager.getDefaultSharedPreferences(c).getString("language", "default").equals("default")) {
             return c;
         } else {

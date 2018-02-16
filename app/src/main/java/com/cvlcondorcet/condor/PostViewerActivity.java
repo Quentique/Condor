@@ -47,13 +47,13 @@ public class PostViewerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_viewer);
         db = new Database(this);
         db.open();
-        view = (WebView) findViewById(R.id.post_view);
+        view = findViewById(R.id.post_view);
 
-        title = (TextView) findViewById(R.id.post_display_title);
-        date = (TextView) findViewById(R.id.post_date_display);
-        cat = (TextView) findViewById(R.id.post_display_cat);
-        Toolbar bar = (Toolbar) findViewById(R.id.toolbar_viewer_post);
-        progress = (ProgressBar) findViewById(R.id.loading_layout);
+        title = findViewById(R.id.post_display_title);
+        date = findViewById(R.id.post_date_display);
+        cat = findViewById(R.id.post_display_cat);
+        Toolbar bar = findViewById(R.id.toolbar_viewer_post);
+        progress = findViewById(R.id.loading_layout);
         progress.setVisibility(View.VISIBLE);
         view.getSettings().setSupportZoom(true);
         view.getSettings().setJavaScriptEnabled(true);

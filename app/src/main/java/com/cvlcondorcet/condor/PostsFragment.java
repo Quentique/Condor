@@ -1,5 +1,6 @@
 package com.cvlcondorcet.condor;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -72,6 +73,7 @@ public class PostsFragment extends Fragment
 
           getSupportLoaderManager().initLoader(2, null, this);
       }*/
+    @SuppressLint("InflateParams")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         setHasOptionsMenu(true);

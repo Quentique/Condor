@@ -15,7 +15,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         android:popupTheme="@style/ThemeOverlay.AppCompat.Dark"/>
 
-<ScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar_viewer_post"
@@ -36,6 +36,7 @@
                     android:layout_alignParentLeft="true"
                     android:paddingTop="10dp"
                     android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:textSize="@dimen/BigTitle"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -43,6 +44,7 @@
                     android:layout_below="@+id/post_display_title"
                     android:id="@+id/post_date_display"
                     android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:paddingBottom="5dp"
                     android:textStyle="italic"/>
                 <TextView
@@ -51,7 +53,8 @@
                     android:layout_below="@+id/post_display_title"
                     android:layout_toEndOf="@+id/post_date_display"
                     android:id="@+id/post_display_cat"
-                    android:paddingLeft="15dp"/>
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"/>
             </RelativeLayout>
             <WebView
                 android:layout_width="match_parent"

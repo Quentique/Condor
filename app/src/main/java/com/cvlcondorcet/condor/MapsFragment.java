@@ -1,5 +1,6 @@
 package com.cvlcondorcet.condor;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Canvas;
@@ -49,7 +50,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     private RelativeLayout layout;
     private SimpleCursorAdapter adapter;
     private LinkedHashMap<String, String> gl, pl, in, ge;
-    private LinkedHashMap<String, List<String>> total;
     private List<String> title;
     private AlertDialog dialog;
     private PDFView pdf;
@@ -65,12 +65,13 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
+    @SuppressLint("RestrictedApi")
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_maps, menu);
         final MenuItem item = menu.findItem(R.id.action_search_maps);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-        SearchView.SearchAutoComplete searchAutoCompleteTextView = (SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
+        SearchView.SearchAutoComplete searchAutoCompleteTextView = searchView.findViewById(R.id.search_src_text);
         searchAutoCompleteTextView.setThreshold(1);
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
@@ -86,11 +87,10 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         adapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
             public Cursor runQuery(CharSequence charSequence) {
-                Cursor cursor = db.getQuery(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME},
-                        DBOpenHelper.Maps.COLUMN_DPNAME +" LIKE '%"+query+"%'" );
-               // Log.i("COUNT", String.valueOf(cursor.getCount()));
+                // Log.i("COUNT", String.valueOf(cursor.getCount()));
               //  Log.i("QUERY", query);
-                return cursor;
+                return db.getQuery(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME},
+                        DBOpenHelper.Maps.COLUMN_DPNAME +" LIKE '%"+query+"%'" );
             }
         });
         searchView.setSuggestionsAdapter(adapter);
@@ -189,11 +189,11 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         for (int i = 0 ; i<general.length ; i++) {
             ge.put(general[i], "GEN.pdf");
         }
-        total = new LinkedHashMap<>();
-        total.put("GENERAL", new ArrayList<String>(ge.keySet()));
-        total.put("GRAND LYCEE", new ArrayList<String>(gl.keySet()));
-        total.put("PETIT LYCEE", new ArrayList<String>(pl.keySet()));
-        total.put("INTERNAT", new ArrayList<String>(in.keySet()));
+        LinkedHashMap<String, List<String>> total = new LinkedHashMap<>();
+        total.put("GENERAL", new ArrayList<>(ge.keySet()));
+        total.put("GRAND LYCEE", new ArrayList<>(gl.keySet()));
+        total.put("PETIT LYCEE", new ArrayList<>(pl.keySet()));
+        total.put("INTERNAT", new ArrayList<>(in.keySet()));
         title  = new ArrayList<>(total.keySet());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -383,6 +383,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             return expandedListPosition;
         }
 
+        @SuppressLint("InflateParams")
         @Override
         public View getChildView(int listPosition, final int expandedListPosition,
                                  boolean isLastChild, View convertView, ViewGroup parent) {
@@ -392,7 +393,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = layoutInflater.inflate(R.layout.list_item, null);
             }
-            TextView expandedListTextView = (TextView) convertView
+            TextView expandedListTextView = convertView
                     .findViewById(R.id.expandedListItem);
             expandedListTextView.setText(expandedListText);
             return convertView;
@@ -419,6 +420,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             return listPosition;
         }
 
+        @SuppressLint("InflateParams")
         @Override
         public View getGroupView(int listPosition, boolean isExpanded,
                                  View convertView, ViewGroup parent) {
@@ -428,7 +430,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = layoutInflater.inflate(R.layout.list_group, null);
             }
-            TextView listTitleTextView = (TextView) convertView
+            TextView listTitleTextView = convertView
                     .findViewById(R.id.listTitle);
             listTitleTextView.setTypeface(null, Typeface.BOLD);
             listTitleTextView.setText(listTitle);

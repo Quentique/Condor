@@ -16,10 +16,10 @@ import android.view.ViewGroup;
  */
 
 public class EventsFragment extends Fragment {
-
-    private RecyclerView recycler;
     private RecyclerViewAdapterEvents adapter;
     private Database db;
+    private RecyclerView recycler;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.events_fragment, parent, false);

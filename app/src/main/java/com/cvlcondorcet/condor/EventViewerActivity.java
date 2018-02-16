@@ -20,10 +20,6 @@ import com.squareup.picasso.Picasso;
 
 public class EventViewerActivity extends AppCompatActivity {
 
-    private Database db;
-    private TextView name, desc, when, where;
-    private ImageView image;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,20 +28,20 @@ public class EventViewerActivity extends AppCompatActivity {
         Event.format = getString(R.string.date_format);
         Event.format2 = getString(R.string.hour_format);
 
-        name = (TextView) findViewById(R.id.name_event);
-        desc = (TextView) findViewById(R.id.desc_event);
-        when = (TextView) findViewById(R.id.when_event);
-        where = (TextView) findViewById(R.id.where_event);
-        image = (ImageView) findViewById(R.id.image_event);
+        TextView name = findViewById(R.id.name_event);
+        TextView desc = findViewById(R.id.desc_event);
+        TextView when = findViewById(R.id.when_event);
+        TextView where = findViewById(R.id.where_event);
+        ImageView image = findViewById(R.id.image_event);
 
-        Toolbar toolbar = (Toolbar)  findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(getString(R.string.event));
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } catch( NullPointerException e) {}
 
-        db = new Database(this);
+        Database db = new Database(this);
         db.open();
         String id = getIntent().getStringExtra("id");
         Event event = db.getEvent(id);

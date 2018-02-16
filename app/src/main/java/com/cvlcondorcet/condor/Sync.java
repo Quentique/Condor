@@ -30,8 +30,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static android.support.v4.app.NotificationCompat.VISIBILITY_PUBLIC;
-
 /**
  * Background service, used for syncing internal database of the application.
  *
@@ -61,8 +59,6 @@ public class Sync extends IntentService {
     private final Handler handler = new Handler();
     private NotificationManager manager;
     private Notification.Builder noti;
-
-    private FirebaseAnalytics analytics;
 
     private Intent intent;
 
@@ -132,7 +128,7 @@ public class Sync extends IntentService {
         CharSequence tickerText = getString(R.string.sync_notif_name);
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", 1);
+            NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", NotificationManager.IMPORTANCE_DEFAULT);
             manager.createNotificationChannel(chanell);
             noti = new Notification.Builder(this, "channel1");
         } else {
@@ -143,12 +139,12 @@ public class Sync extends IntentService {
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setOngoing(true)
                 .setTicker(getString(R.string.sync_start_ticker));
-        if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(VISIBILITY_PUBLIC); }
+        if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(Notification.VISIBILITY_PUBLIC); }
 
         noti.setProgress(0, 0, true);
        // Log.i("NOTI", "DONE");
 
-        analytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
         Bundle params = new Bundle();
         startForeground(5, noti.build());
 
@@ -254,10 +250,8 @@ public class Sync extends IntentService {
             }
 
             HttpURLConnection connection = null;
-            String hello;
             try {
                 connection = (HttpURLConnection) url.openConnection();
-                hello = connection.getResponseMessage();
               //  Log.i("NETWORK ERROR", hello);
             } catch (IOException e) {
                 progress = -1;
@@ -293,7 +287,7 @@ public class Sync extends IntentService {
      * Downloads the file given in parameter.
      * @param file  the file name that must be downloaded
      */
-    void downloadFile(String file) {
+    private void downloadFile(String file) {
         try {
             URL url = new URL(base_URL + uploads + file);
             HttpURLConnection connection = (HttpURLConnection)url.openConnection();
@@ -330,7 +324,7 @@ public class Sync extends IntentService {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        HttpURLConnection connection = null;
+        HttpURLConnection connection;
         try {
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(20000);

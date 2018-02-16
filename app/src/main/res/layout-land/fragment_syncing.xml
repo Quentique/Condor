@@ -38,7 +38,8 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/contact"
-        android:layout_above="@+id/sync_display_step"/>
+        android:layout_above="@+id/sync_display_step"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/sync_display_step"
