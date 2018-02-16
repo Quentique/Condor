@@ -64,12 +64,10 @@
             android:textSize="@dimen/contact"
             android:id="@+id/where_event" />
         </LinearLayout>
-        <TextView
+        <WebView
             android:id="@+id/desc_event"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/contact"
-            android:textStyle="italic" />
+            android:layout_height="wrap_content" />
     <ImageView
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"

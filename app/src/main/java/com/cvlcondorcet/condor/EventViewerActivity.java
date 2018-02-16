@@ -2,12 +2,14 @@ package com.cvlcondorcet.condor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,12 +26,13 @@ public class EventViewerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_viewer);
+        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
 
         Event.format = getString(R.string.date_format);
         Event.format2 = getString(R.string.hour_format);
 
         TextView name = findViewById(R.id.name_event);
-        TextView desc = findViewById(R.id.desc_event);
+        WebView desc = findViewById(R.id.desc_event);
         TextView when = findViewById(R.id.when_event);
         TextView where = findViewById(R.id.where_event);
         ImageView image = findViewById(R.id.image_event);
@@ -47,7 +50,7 @@ public class EventViewerActivity extends AppCompatActivity {
         Event event = db.getEvent(id);
         db.close();
         name.setText(Html.fromHtml(event.getName()));
-        desc.setText(Html.fromHtml(event.getDesc()));
+        desc.loadData(event.getDesc(), null, "utf-8");
         where.setText(Html.fromHtml(event.getPlace()));
         String date;
         if (event.getDateBegin().equals(event.getDateEnd())) {

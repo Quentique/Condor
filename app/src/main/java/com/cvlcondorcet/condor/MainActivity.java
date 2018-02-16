@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onNewIntent(Intent newIntent) {
-        if (newIntent.getExtras().containsKey("fragment") && newIntent.getStringExtra("fragment").equals("maps")) {
+        if (newIntent.getExtras() != null && newIntent.getExtras().containsKey("fragment") && newIntent.getStringExtra("fragment").equals("maps")) {
             Bundle bundle = new Bundle();
             bundle.putString("place", newIntent.getStringExtra("place"));
             Fragment fragment = null;
