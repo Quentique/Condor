@@ -11,7 +11,7 @@ import java.util.Date;
  * @see RecyclerViewAdapterEvents#events
  */
 
-public class Event {
+class Event {
     private String name, desc, place, picture, id;
     private Date begin, end;
     public static String format, format2;

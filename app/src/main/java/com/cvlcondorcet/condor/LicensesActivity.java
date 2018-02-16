@@ -15,7 +15,7 @@ public class LicensesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         String name;
         setContentView(R.layout.activity_licenses);
-        WebView view = (WebView) findViewById(R.id.view_license);
+        WebView view = findViewById(R.id.view_license);
         try {
             name = getIntent().getStringExtra("name");
         } catch (Exception e) {name ="licenses";}

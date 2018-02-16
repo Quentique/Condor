@@ -81,4 +81,5 @@
     <string name="error">Fehler</string>
     <string name="plan_choice">Einen Plan auswählen</string>
     <string name="cgu">ANB</string>
+    <string name="plan">PLAN</string>
 </resources>
