@@ -55,7 +55,7 @@ class TeachersAbsence {
      */
     private void analyseDate() {
         try {
-            multipleDays = (beginning.startsWith(end.substring(0, 10))) ? false : true;
+            multipleDays = !beginning.startsWith(end.substring(0, 10));
         }catch (Exception e ) { multipleDays = false; }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
