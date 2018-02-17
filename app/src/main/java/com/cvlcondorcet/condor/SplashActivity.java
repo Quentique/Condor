@@ -47,6 +47,7 @@ public class SplashActivity extends AppCompatActivity {
 
                         //NavUtils.navigateUpTo(this, intent);
                     }
+                    break;
                 case "cgu":
                     Intent intent2 = new Intent(this, LicensesActivity.class);
                     intent2.putExtra("name", "cgu");
