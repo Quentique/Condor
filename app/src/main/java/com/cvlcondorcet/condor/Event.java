@@ -23,8 +23,8 @@ class Event {
         this.place = place;
         this.picture = picture;
         try {
-            this.begin = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(begin);
-            this.end = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(end);
+            this.begin = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(begin);
+            this.end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(end);
         } catch (ParseException e) {e.printStackTrace(); }
     }
 
