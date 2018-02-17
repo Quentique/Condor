@@ -1,5 +1,6 @@
 package com.cvlcondorcet.condor;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -55,6 +56,7 @@ class Database {
      * @see Sync#get(String)
      * @see Sync#downloadFile(String)
      */
+    @SuppressWarnings("unchecked")
     ArrayList updateGen(JSONArray array) {
         ArrayList toBeDownloaded = new ArrayList();
         boolean logo = false;
@@ -366,6 +368,7 @@ class Database {
         return toReturn;
     }
 
+    @SuppressLint("Recycle")
     CursorAdapter getSuggestions() {
         Cursor cursor;
         try {
@@ -417,14 +420,18 @@ class Database {
                 null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
-            return new Event(
-                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_ID)),
-                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_DESC)),
-                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_PLACE)),
-                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_PICT)),
-                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_START)),
-                    cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_END)));
+            try {
+                return new Event(
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_NAME)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_DESC)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_PLACE)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_PICT)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_START)),
+                        cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_END)));
+            } finally {
+                cursor.close();
+            }
 
         } else {
             return null;
@@ -453,7 +460,11 @@ class Database {
        Cursor cursor = database.query(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_NAME},  DBOpenHelper.Maps.COLUMN_NAME + " = \""+ name+"\"", null, null, null, null);
         if (cursor != null && cursor.getCount() >0 ) {
             cursor.moveToFirst();
-            return cursor.getLong(0);
+            try {
+                return cursor.getLong(0);
+            } finally {
+                cursor.close();
+            }
         } else {
             return 0L;
         }

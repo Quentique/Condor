@@ -16,9 +16,6 @@ import android.view.ViewGroup;
  */
 
 public class EventsFragment extends Fragment {
-    private RecyclerViewAdapterEvents adapter;
-    private Database db;
-    private RecyclerView recycler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -28,12 +25,12 @@ public class EventsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         getActivity().setTitle(R.string.events);
-        recycler = view.findViewById(R.id.recycler_events);
+        RecyclerView recycler = view.findViewById(R.id.recycler_events);
 
-        db= new Database(getActivity());
+        Database db = new Database(getActivity());
         db.open();
 
-        adapter = new RecyclerViewAdapterEvents(db.getEvents(), getActivity());
+        RecyclerViewAdapterEvents adapter = new RecyclerViewAdapterEvents(db.getEvents(), getActivity());
         recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
 
         recycler.setAdapter(adapter);

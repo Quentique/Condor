@@ -1,6 +1,7 @@
 package com.cvlcondorcet.condor;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -47,6 +48,7 @@ public class TrainFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_train, container, false);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         getActivity().setTitle(R.string.sncf);
@@ -92,6 +94,7 @@ public class TrainFragment extends Fragment {
      * Loads the website inside the WebView and filters elements to display only main content.
      * @author Quentin DE MUYNCK
      */
+    @SuppressLint("StaticFieldLeak")
     private class Loading extends AsyncTask<String, Void, Void> {
         private Elements element;
         @Override

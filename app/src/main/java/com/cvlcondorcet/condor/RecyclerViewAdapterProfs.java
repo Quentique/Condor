@@ -116,8 +116,7 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
             Log.i("DE", "SEVERAL");
             return SEVERAL;
         } else if (filteredList.get(position).getDate() == null){ Log.i("de", "SINGLE"); return SINGLE; } else { Log.i("DE", "SINGLE SPE");
-            int SINGLE_SPE = 2;
-            return SINGLE_SPE; }
+            return 2; }
     }
 
     /**
