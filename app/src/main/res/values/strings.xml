@@ -87,5 +87,7 @@
     <string name="cgu">GTU</string>
     <string name="asset_statements" translatable="false">[{\n  \"relation\": [\"delegate_permission/common.handle_all_urls\"],\n  \"target\": {\n    \"namespace\": \"web\",\n    \"site\": \"https://app.cvlcondorcet.fr\",\n  }\n}]</string>
     <string name="plan">MAP</string>
+    <string name="decline">DECLINE</string>
+    <string name="accept">AGREE</string>
 
 </resources>

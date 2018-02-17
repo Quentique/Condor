@@ -3,6 +3,7 @@ package com.cvlcondorcet.condor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = new Intent(this, MainActivity.class);
+        Log.i("OPENING", "SPLASH ACITIVTY");
         try {
             List<String> list = getIntent().getData().getPathSegments();
 
@@ -45,13 +47,22 @@ public class SplashActivity extends AppCompatActivity {
 
                         //NavUtils.navigateUpTo(this, intent);
                     }
+                case "cgu":
+                    Intent intent2 = new Intent(this, LicensesActivity.class);
+                    intent2.putExtra("name", "cgu");
+                    Log.i("TEST", "CGU");
+                    startActivity(intent2);
+                    break;
+
                 default:
+                    Log.i("TEST", "DEFAULT CASE");
                     startActivity(intent);
                     break;
             }
         } catch (NullPointerException e) {
+            Log.i("ERROR", "CATCH EXCEPTION");
             startActivity(intent);
+            //finish();
         }
-
     }
 }
