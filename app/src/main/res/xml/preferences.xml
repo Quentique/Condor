@@ -4,7 +4,7 @@
         android:key="mobile_data_usage"
         android:title="@string/sync_mobile_data_title"
         android:summary="@string/sync_mobile_data"
-        android:defaultValue="false"/>
+        android:defaultValue="true"/>
     <CheckBoxPreference
         android:key="sync_app_start"
         android:title="@string/sync_app_start_title"
@@ -14,7 +14,7 @@
         android:key="sync_when_notified"
         android:title="@string/sync_firebase"
         android:summary="@string/sync_firebase_more"
-        android:defaultValue="false"/>
+        android:defaultValue="true"/>
     <ListPreference
         android:key="language"
         android:title="@string/language"

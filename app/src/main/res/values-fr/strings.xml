@@ -82,4 +82,6 @@
     <string name="plan_choice">Choisir un plan</string>
     <string name="cgu">CGU</string>
     <string name="plan">PLAN</string>
+    <string name="decline">REFUSER</string>
+    <string name="accept">ACCEPTER</string>
 </resources>
