@@ -70,7 +70,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_maps, menu);
         final MenuItem item = menu.findItem(R.id.action_search_maps);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        @SuppressWarnings("deprecation") final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         SearchView.SearchAutoComplete searchAutoCompleteTextView = searchView.findViewById(R.id.search_src_text);
         searchAutoCompleteTextView.setThreshold(1);
         searchView.setOnQueryTextListener(this);

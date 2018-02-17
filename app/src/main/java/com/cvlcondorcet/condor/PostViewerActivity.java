@@ -1,5 +1,6 @@
 package com.cvlcondorcet.condor;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -41,6 +42,7 @@ public class PostViewerActivity extends AppCompatActivity {
      * Sets up activity, starts loading post.
      * @param savedInstanceState    old state of activity
      */
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +132,7 @@ public class PostViewerActivity extends AppCompatActivity {
      * Loads post from web (high-school website) (comes from RSS feed).
      * Uses the supplied stylesheet.
      */
+    @SuppressLint("StaticFieldLeak")
     private class LoadingWeb extends AsyncTask<String, Void, Void> {
         String toDisplay = "";
         protected Void doInBackground(String... args) {
@@ -155,6 +158,7 @@ public class PostViewerActivity extends AppCompatActivity {
      * @see Database#getPost(String)
      * @see Post
      */
+    @SuppressLint("StaticFieldLeak")
     private class Loading extends AsyncTask<String, Void, Void> {
         String type;
         Post post;

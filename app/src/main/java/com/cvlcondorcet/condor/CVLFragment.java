@@ -14,8 +14,6 @@ import android.webkit.WebView;
 
 public class CVLFragment extends Fragment {
 
-    private WebView Wview;
-    private Database db;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -25,13 +23,13 @@ public class CVLFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(getString(R.string.cvl));
-        db = new Database(getActivity());
+        Database db = new Database(getActivity());
         db.open();
-        Wview = view.findViewById(R.id.web_view_train);
-        Wview.getSettings().setSupportZoom(true);
-        Wview.getSettings().setBuiltInZoomControls(true);
-        Wview.getSettings().setDisplayZoomControls(false);
-        Wview.loadUrl("file:///"+getActivity().getApplicationContext().getFilesDir().toString()+"/"+db.timestamp("cvl"));
+        WebView wview = view.findViewById(R.id.web_view_train);
+        wview.getSettings().setSupportZoom(true);
+        wview.getSettings().setBuiltInZoomControls(true);
+        wview.getSettings().setDisplayZoomControls(false);
+        wview.loadUrl("file:///"+getActivity().getApplicationContext().getFilesDir().toString()+"/"+ db.timestamp("cvl"));
         db.close();
         view.findViewById(R.id.loading_layout).setVisibility(View.GONE);
     }
