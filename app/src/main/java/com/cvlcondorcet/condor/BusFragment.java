@@ -1,5 +1,6 @@
 package com.cvlcondorcet.condor;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,6 +35,7 @@ public class BusFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_bus, container, false);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         getActivity().setTitle(R.string.optymo);
@@ -95,6 +97,7 @@ public class BusFragment extends Fragment {
     /**
      * Loads the website, cleans it and removes useless parts
      */
+    @SuppressLint("StaticFieldLeak")
     private class Loading extends AsyncTask<String, Void, Void> {
         private Elements element;
         private String url;
