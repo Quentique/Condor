@@ -29,8 +29,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -51,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     public static String locale;
     public Map<Integer, Class> correspondance;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
-
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     /**
      * Sets up activity, loading language and locale.
@@ -61,6 +65,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettings(configSettings);
+        mFirebaseRemoteConfig.setDefaults(R.xml.defaults_remote_param);
+
+        mFirebaseRemoteConfig.fetch(0)
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.i("FIREBASE", "TEST");
+                        if (task.isSuccessful()) {
+                            Log.i("FIREBASE", "PASSAGE");
+                            mFirebaseRemoteConfig.activateFetched();
+                        }
+                    }
+                });
+
 
         correspondance = new HashMap<>();
         correspondance.put(R.id.nav_posts, PostsFragment.class);
@@ -202,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         db.close();
+        Log.i("FIREBASE", String.valueOf(mFirebaseRemoteConfig.getBoolean("posts")));
     }
 
     /**
@@ -246,6 +271,14 @@ public class MainActivity extends AppCompatActivity {
      * @param nav   navigation view that must be set up
      */
     private void setupDrawerContent(NavigationView nav) {
+        String[] params = {"posts", "events", "maps", "train", "cvl", "bus", "canteen"};
+        int[] id = {R.id.nav_posts, R.id.nav_events, R.id.nav_maps, R.id.nav_train, R.id.nav_cvl, R.id.nav_bus, R.id.nav_canteen};
+        for (int i = 0 ; i <id.length ; i++) {
+            if (!mFirebaseRemoteConfig.getBoolean(params[i])) {
+                nav.getMenu().findItem(id[i]).setVisible(false);
+            }
+        }
+
         nav.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
