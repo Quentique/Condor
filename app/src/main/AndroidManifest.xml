@@ -18,6 +18,15 @@
         <meta-data
             android:name="asset_statements"
             android:resource="@string/asset_statements" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/secondaryColor" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="channel1"/>
 
         <activity android:name=".MainActivity" android:launchMode="singleTask"/>
         <activity android:name=".SplashActivity" android:theme="@style/SplashTheme" android:noHistory="true">
