@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
@@ -27,6 +28,8 @@ import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.IOException;
+
+import static android.view.View.GONE;
 
 /**
  * Home page of the application, displays some pictures and information:
@@ -37,6 +40,7 @@ import java.io.IOException;
 public class MainFragment extends Fragment {
     private Database db;
     private WebView webview;
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,9 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.app_name);
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        mFirebaseRemoteConfig.setDefaults(R.xml.defaults_remote_param);
+
         TextView title = view.findViewById(R.id.cover_title);
         TextView adress = view.findViewById(R.id.adress_highschool);
         ImageView cover = view.findViewById(R.id.cover_image);
@@ -103,7 +110,7 @@ public class MainFragment extends Fragment {
         final String ent = db.timestamp("ent_link");
         db.close();
 
-        if (MainActivity.allowConnect(getActivity())) {
+        if (MainActivity.allowConnect(getActivity()) && mFirebaseRemoteConfig.getBoolean("website")) {
             webview = view.findViewById(R.id.web_view_start);
             webview.getSettings().setSupportZoom(false);
             webview.getSettings().setJavaScriptEnabled(true);
@@ -229,7 +236,15 @@ public class MainFragment extends Fragment {
                 analytics.logEvent("page", params);
             }
         });
-
+        if (!mFirebaseRemoteConfig.getBoolean("posts")) {
+            view.findViewById(R.id.news_quick).setVisibility(GONE);
+        }
+        if (!mFirebaseRemoteConfig.getBoolean("events")) {
+            view.findViewById(R.id.events_quick).setVisibility(GONE);
+        }
+        if (!mFirebaseRemoteConfig.getBoolean("canteen")) {
+            view.findViewById(R.id.canteen_quick).setVisibility(GONE);
+        }
     }
 
     private class LoadingWeb extends AsyncTask<String, Void, Void> {
