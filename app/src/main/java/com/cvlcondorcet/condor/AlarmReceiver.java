@@ -33,43 +33,46 @@ public class AlarmReceiver extends BroadcastReceiver {
             db.open();
             Event e = db.getEvent(intent.getStringExtra("id"));
             db.close();
+            if (e != null) {
+                NotificationManager manager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
+                Notification.Builder noti;
 
-            NotificationManager manager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
-            Notification.Builder noti;
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel chanell = new NotificationChannel("channel1", "Condor", NotificationManager.IMPORTANCE_DEFAULT);
-                manager.createNotificationChannel(chanell);
-                noti = new Notification.Builder(ctx, "channel1");
-            } else {
-                noti = new Notification.Builder(ctx);
-            }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel chanell = new NotificationChannel("channel1", "Condor", NotificationManager.IMPORTANCE_DEFAULT);
+                    manager.createNotificationChannel(chanell);
+                    noti = new Notification.Builder(ctx, "channel1");
+                } else {
+                    noti = new Notification.Builder(ctx);
+                }
 
 
-            Intent newIntent = new Intent(ctx, EventViewerActivity.class);
-            newIntent.putExtra("id", e.getId());
-            newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent newIntent = new Intent(ctx, EventViewerActivity.class);
+                newIntent.putExtra("id", e.getId());
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            String content;
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(e.getDateBeginDate());
-            cal.roll(Calendar.DAY_OF_MONTH, false);
+                PendingIntent pendingIntent = PendingIntent.getActivity(ctx, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                String content;
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(e.getDateBeginDate());
+                cal.roll(Calendar.DAY_OF_MONTH, false);
 
-            if (cal.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
-                content = ctx.getResources().getString(R.string.tomorrow) + e.getHourBegin();
-            } else {
-                content =  ctx.getResources().getString(R.string.began) + e.getDateBegin() + ctx.getResources().getString(R.string.at) + e.getHourBegin();
-            }
+                if (cal.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
+                    content = ctx.getResources().getString(R.string.tomorrow) + e.getHourBegin();
+                } else {
+                    content = ctx.getResources().getString(R.string.began) + e.getDateBegin() + ctx.getResources().getString(R.string.at) + e.getHourBegin();
+                }
 //            Toast.makeText(ctx, e.getDateBegin(), Toast.LENGTH_LONG).show();
-            noti.setContentTitle(Html.fromHtml(e.getName()))
-                    .setContentText(content)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent);
-            if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(Notification.VISIBILITY_PUBLIC); }
-            final int _id = Integer.decode(e.getId()) + 1025638;
-            manager.notify(_id, noti.build());
+                noti.setContentTitle(Html.fromHtml(e.getName()))
+                        .setContentText(content)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent);
+                if (Build.VERSION.SDK_INT >= 21) {
+                    noti.setVisibility(Notification.VISIBILITY_PUBLIC);
+                }
+                final int _id = Integer.decode(e.getId()) + 1025638;
+                manager.notify(_id, noti.build());
+            }
         }
     }
 }
