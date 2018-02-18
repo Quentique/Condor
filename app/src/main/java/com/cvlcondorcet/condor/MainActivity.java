@@ -337,9 +337,9 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         try {
-            if (!settings.getBoolean("mobile_data_usage", false) && networkInfo != null & networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            if (!settings.getBoolean("mobile_data_usage", true) && networkInfo != null & networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                 return true;
-            } else return settings.getBoolean("mobile_data_usage", false) && networkInfo != null;
+            } else return settings.getBoolean("mobile_data_usage", true) && networkInfo != null;
         } catch (NullPointerException e) {
             return false;
         }
