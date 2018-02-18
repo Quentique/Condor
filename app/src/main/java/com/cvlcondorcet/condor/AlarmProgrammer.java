@@ -4,10 +4,12 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Programs the different alarms, which order displaying notification for events
@@ -27,13 +29,16 @@ public class AlarmProgrammer {
         AlarmManager manager = (AlarmManager)ctx.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startEvent);
+        Log.i("CALENDAR1", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))+"/"+String.valueOf(calendar.get(Calendar.MONTH))+"/"+String.valueOf(calendar.get(Calendar.YEAR))+ " - "+String.valueOf(calendar.get(Calendar.HOUR_OF_DAY))+":"+String.valueOf(Calendar.MINUTE));
+
         calendar.set(Calendar.HOUR_OF_DAY, 18);
         calendar.set(Calendar.MINUTE, 5);
         calendar.roll(Calendar.DAY_OF_MONTH, false);
+        Log.i("CALENDAR", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))+"/"+String.valueOf(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.FRANCE))+"/"+String.valueOf(calendar.get(Calendar.YEAR))+ " - "+String.valueOf(calendar.get(Calendar.HOUR_OF_DAY))+":"+String.valueOf(Calendar.MINUTE));
         Intent newIntent = new Intent(ctx, AlarmReceiver.class);
         newIntent.putExtra("id", id);
         final int _id = (int) System.currentTimeMillis();
-        PendingIntent intent = PendingIntent.getBroadcast(ctx, _id, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent intent = PendingIntent.getBroadcast(ctx, Integer.parseInt(id), newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
 //        Log.i("ALarm", calendar.toString());
 //        Log.i("ALARM", Calendar.getInstance().getTime().toString());
@@ -46,13 +51,24 @@ public class AlarmProgrammer {
      * @see Database#getEvents()
      */
     static void scheduleAllAlarms(Context ctx) {
+
+        Intent deleteIntent = new Intent(ctx, AlarmReceiver.class);
+
+        AlarmManager manager = (AlarmManager)ctx.getSystemService(Context.ALARM_SERVICE);
+
         Database db = new Database(ctx);
         db.open();
         ArrayList<Event> list = db.getEvents();
         db.close();
         for (Event event : list) {
+            PendingIntent intent = PendingIntent.getService(ctx, Integer.parseInt(event.getId()), deleteIntent, 0);
+            try {
+                manager.cancel(intent);
+            } catch (Exception e) {}
             setAlarm(ctx, event.getId(), event.getDateBeginDate());
+            Log.i("D", event.getDateBegin().toString());
         }
+        Log.i("TEST", Event.format);
 //        Log.i("SCHEDULED", "ALL ALARMS");
     }
 }

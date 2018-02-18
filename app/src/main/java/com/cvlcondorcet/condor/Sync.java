@@ -388,6 +388,7 @@ public class Sync extends IntentService {
                     .setContentText(Jsoup.parse(progressMessage).text())
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setOngoing(false)
+                    .setAutoCancel(true)
                     .setContentIntent(intent)
                     .setProgress(0, 0, false);
             manager.notify(10, noti.build());
