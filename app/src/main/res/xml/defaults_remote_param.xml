@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>posts</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>events</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>maps</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>canteen</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>cvl</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>train</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>bus</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>website</key>
+        <value>true</value>
+    </entry>
+</defaultsMap>
