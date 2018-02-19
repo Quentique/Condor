@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("11", value);
         params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, value);
-        analytics.logEvent("page", params);
+        analytics.logEvent("fragment", params);
         drawerLayout.closeDrawers();
     }
 
