@@ -37,12 +37,8 @@ public class AlarmProgrammer {
         Log.i("CALENDAR", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))+"/"+String.valueOf(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.FRANCE))+"/"+String.valueOf(calendar.get(Calendar.YEAR))+ " - "+String.valueOf(calendar.get(Calendar.HOUR_OF_DAY))+":"+String.valueOf(Calendar.MINUTE));
         Intent newIntent = new Intent(ctx, AlarmReceiver.class);
         newIntent.putExtra("id", id);
-        final int _id = (int) System.currentTimeMillis();
         PendingIntent intent = PendingIntent.getBroadcast(ctx, Integer.parseInt(id), newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
-//        Log.i("ALarm", calendar.toString());
-//        Log.i("ALARM", Calendar.getInstance().getTime().toString());
-//        Log.i("ALARM", "Alarm has been set");
     }
 
     /**
@@ -69,6 +65,5 @@ public class AlarmProgrammer {
             Log.i("D", event.getDateBegin().toString());
         }
         Log.i("TEST", Event.format);
-//        Log.i("SCHEDULED", "ALL ALARMS");
     }
 }
