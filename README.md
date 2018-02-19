@@ -1,8 +1,8 @@
 # Condor
-Condorcet CVL app
+Application de la MDL du Lycée Condorcet de Belfort
 
-Android app for the CVL of the Condorcet high-school.
-Allows students to get teacher absences, canteen menu, posts, etc.
+Android app for the Condorcet, high-school in Belfort (France) by the Student Council of the Condorcet High-School.
+Allows students to get news, canteen menu, maps, events etc.
 
 ** Link to doc : https://quentique.github.io/Condor/index.html
 
