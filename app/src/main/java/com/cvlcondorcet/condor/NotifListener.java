@@ -24,8 +24,6 @@ public class NotifListener extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage message) {
         String messageT = message.getFrom();
         String what = message.getData().get("what");
-       // Log.d("TEST", "From: " + messageT);
-        Toast.makeText(this, "Message received", Toast.LENGTH_LONG).show();
         if (messageT.startsWith("/topics/condor")) {
             if (what.equals("sync")) {
                 if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_when_notified", false)){
@@ -51,7 +49,7 @@ public class NotifListener extends FirebaseMessagingService {
                             .setContentIntent(intent);
                     noti.setAutoCancel(true);
                     manager.notify(1, noti.build());
-                }                // Log.i("TEST", "NOTIFICATION RECEIVED");
+                }
             } else if (what.startsWith("delete")) {
                 String table;
                 switch (what) {
