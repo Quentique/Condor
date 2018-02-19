@@ -10,7 +10,6 @@ import android.database.SQLException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -121,7 +120,6 @@ public class Sync extends IntentService {
     public void onHandleIntent(Intent i)
     {
         progressMessage = "Syncing...";
-        //Log.i("NOTI", "DDDDDONE");
         CharSequence tickerText = getString(R.string.sync_notif_name);
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
