@@ -13,7 +13,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,9 +57,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     private double initialX, initialY, x, y;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
@@ -87,8 +84,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         adapter.setFilterQueryProvider(new FilterQueryProvider() {
             @Override
             public Cursor runQuery(CharSequence charSequence) {
-                // Log.i("COUNT", String.valueOf(cursor.getCount()));
-              //  Log.i("QUERY", query);
                 return db.getQuery(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME},
                         DBOpenHelper.Maps.COLUMN_DPNAME +" LIKE '%"+query+"%'" );
             }
@@ -98,18 +93,14 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
             @Override
             public boolean onSuggestionSelect(int position) {
-               // Log.i("TESTT", String.valueOf(adapter.getItemId(position)));
                 return false;
             }
 
             @Override
             public boolean onSuggestionClick(int position) {
-               // Log.i("TESTT", String.valueOf(adapter.getItemId(position)));
 
                 searchView.clearFocus();
                 Cursor cursor =(Cursor)adapter.getItem(position);
-               // Log.i("TESTT", "C" +cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_ID)));
-               // Log.i("TESTT", adapter.getCursor().getString(position));
                 loadPdf(adapter.getItemId(position));
                 searchView.setQuery(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)), true);
 
@@ -138,7 +129,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             if (test.endsWith(".pdf")) {
                 loadPdf(test);
             } else {
-                Log.i("TEST", test);
                 loadPdf(db.getPlaceId(test));
             }
         }
@@ -172,7 +162,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         String[] grandl_lycee = getResources().getStringArray(R.array.gl);
         for (int i = 0 ; i<grandl_lycee.length ; i++) {
             gl.put(grandl_lycee[i], String.valueOf(i)+"EGL.pdf");
-           // Log.i("TEST", grandl_lycee[i]);
         }
         pl=new LinkedHashMap<>();
         String[] petti_lycee = getResources().getStringArray(R.array.pl);
@@ -253,7 +242,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
         this.query = query;
-       // Log.i("e", query);
         adapter.changeCursor(adapter.runQueryOnBackgroundThread(query));
         return true;
     }
@@ -268,11 +256,8 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     private void loadPdf(long id) {
-        Log.i("TEST", String.valueOf(id));
         Cursor cursor = db.getPlace(id);
         if (cursor != null) {
-           // Log.i("NULL", "CURSOR IS NULL");
-
             cursor.moveToFirst();
             name.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)));
             desc.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DESC)));

@@ -41,44 +41,12 @@ public class PostsFragment extends Fragment
     private Task loader;
     private String query;
     private RelativeLayout lay;
-    // private MenuItem item;
     private boolean rssAllowed;
 
-    /*  @Override
-      protected void onCreate(Bundle savedInstanceState) {
-          super.onCreate(savedInstanceState);
-          setContentView(R.layout.fragment_posts);
-          recycler = (RecyclerView) findViewById(R.id.recycler_posts);
-          adapter = new RecyclerViewAdapterPosts(this, null, R.layout.posts_layout);
-          recycler.setAdapter(adapter);
-          recycler.setLayoutManager(new LinearLayoutManager(this));
-          recycler.setHasFixedSize(true);
-          Toolbar bar = (Toolbar) findViewById(R.id.toolbar);
-          setSupportActionBar(bar);
-          spinner = (MultiSelectionSpinner) findViewById(R.id.spinner_post);
-          new Thread(new Runnable() {
-              @Override
-              public void run() {
-                  try {
-                      db = new Database(getApplicationContext());
-                      db.open();
-                      spinner.setItems(db.getCategories());
-                      db.close();
-                      spinner.setSelection(0);
-                  } catch (ArrayIndexOutOfBoundsException e ) { }
-                  catch (SQLException e) {}
-              }
-          }).start();
-          spinner.setListener(this);
-
-          getSupportLoaderManager().initLoader(2, null, this);
-      }*/
     @SuppressLint("InflateParams")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        //setRetainInstance(true);
-        // Defines the xml file for the fragment
         lay = (RelativeLayout) inflater.inflate(R.layout.multispinner, null);
         spinner = lay.findViewById(R.id.spinner_post);
         return inflater.inflate(R.layout.fragment_posts, parent, false);
@@ -144,7 +112,6 @@ public class PostsFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<List<Post>> loader, List<Post> data) {
         adapter.setData(data);
-       // Log.i("HELLO", "LOAD FINISHED");
         progress.setVisibility(GONE);
     }
 
@@ -163,8 +130,6 @@ public class PostsFragment extends Fragment
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_activity_profs, menu);
         SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
-       // item = menu.findItem(R.id.action_search);
-        //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         search.setOnQueryTextListener(this);
         search.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
@@ -173,20 +138,7 @@ public class PostsFragment extends Fragment
                 return false;
             }
         });
-        /*item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
 
-            @Override-&é+a
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                // TODO Auto-generated method stub
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                query = search.getQuery().toString();
-                return true;
-            }
-        });*/
     }
 
     @Override
@@ -204,7 +156,6 @@ public class PostsFragment extends Fragment
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
         this.query = query;
-       // Log.i("e", "Query");
         recycler.getRecycledViewPool().clear();
         adapter.filter(query);
         recycler.scrollToPosition(0);
@@ -212,7 +163,6 @@ public class PostsFragment extends Fragment
     }
     @Override
     public void selectedIndices(List<Integer> indices) {
-        //Log.i("hey", "hello");
     }
 
     /**
@@ -223,9 +173,7 @@ public class PostsFragment extends Fragment
      */
     @Override
     public void selectedStrings(List<String> strings) {
-        //Toast.makeText(this, strings.toString(), Toast.LENGTH_LONG).show();
         recycler.getRecycledViewPool().clear();
-        // Log.i("EEEE", query);
         adapter.filterByCategories(strings, query);
         recycler.scrollToPosition(0);
     }

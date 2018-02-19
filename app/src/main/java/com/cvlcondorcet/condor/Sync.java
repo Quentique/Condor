@@ -78,7 +78,6 @@ public class Sync extends IntentService {
      */
     public Sync() {
         super("Sync");
-        Log.i("EEEE", "SERVICE CONSTRUCTED");
     }
 
     /**
@@ -88,7 +87,6 @@ public class Sync extends IntentService {
     public void onCreate() {
         super.onCreate();
         intent = new Intent(broadcast_URI);
-        Log.i("EEEE", "SERVICE CONSTRUCTED");
     }
 
     /**
@@ -100,7 +98,6 @@ public class Sync extends IntentService {
     public void onStart(Intent intent, int startId) {
         handler.removeCallbacks(sendProgress);
         handler.postDelayed(sendProgress, 500);
-        Log.i("EEEE", "SERVICE CONSTRUCTED");
         super.onStart(intent, startId);
     }
 
@@ -142,7 +139,6 @@ public class Sync extends IntentService {
         if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(Notification.VISIBILITY_PUBLIC); }
 
         noti.setProgress(0, 0, true);
-       // Log.i("NOTI", "DONE");
 
         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
         Bundle params = new Bundle();
@@ -156,7 +152,6 @@ public class Sync extends IntentService {
             params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "fail");
             progress = -1;
             progressMessage = continueSync;
-           // Log.i("TESTSYNC", progressMessage);
             displayProgress();
             handler.removeCallbacks(sendProgress);
             networkError = true;
@@ -166,7 +161,6 @@ public class Sync extends IntentService {
         if (!networkError) {
             try {
                 db.open();
-               // Log.i("SYNC", "GENERAL SYNC");
                 JSONArray maps = get(MAPS_URL);
                 db.updateMaps(maps);
                 JSONArray gen = get(GEN_URL);
@@ -178,22 +172,16 @@ public class Sync extends IntentService {
                     progress += 20 / liste.size();
                     changeProgress(progress, "Downloading file " + j + "/" + liste.size());
                     downloadFile(liste.get(j).toString());
-                   // Log.i("SYNC", "DOWNLOADING FILE");
                 }
                 changeProgress(50, "News....");
                 rssURL = db.timestamp("website") + "feed";
                 JSONArray posts = get(POSTS_URL);
-               // Log.i("SYNC", "POSTS SYNC");
                 db.updatePosts(posts);
                 changeProgress(70, "Events....");
                 JSONArray events = get(EVENTS_URL);
                 db.updateEvents(events);
-               /* JSONArray profs = get(PROFS_URL);
-               // Log.i("SYNC", "PROFS SYNC");*/
                 changeProgress(90, "Ending sync...");
-              //  db.updateProfs(profs);
                 db.beginSync();
-              //  Log.i("SYNC", "END SYNC");
                 progressMessage = "Sync ended.";
                 progress = 100;
                 noti.setProgress(100, 100, false);
@@ -209,7 +197,6 @@ public class Sync extends IntentService {
             noti.setAutoCancel(true);
             noti.setTicker(getString(R.string.end_sync_ticker));
             manager.notify(2, noti.build());
-            //manager.cancel(1);
             handler.removeCallbacks(sendProgress);
             displayProgress();
             if (Build.VERSION.SDK_INT >= 26) {
@@ -252,7 +239,6 @@ public class Sync extends IntentService {
             HttpURLConnection connection = null;
             try {
                 connection = (HttpURLConnection) url.openConnection();
-              //  Log.i("NETWORK ERROR", hello);
             } catch (IOException e) {
                 progress = -1;
                 progressMessage = "An network error has occurred while syncing. Please try again later.";
@@ -271,7 +257,6 @@ public class Sync extends IntentService {
             } finally {
                 connection.disconnect();
             }
-           // Log.i("E", answer);
             try {
                 tab = new JSONArray(answer);
             } catch (JSONException e) {
@@ -306,7 +291,6 @@ public class Sync extends IntentService {
             output.flush();
             output.close();
             input.close();
-          //  Log.i("EBUG", "File downloaded " + file);
         } catch (IOException e) {
             e.printStackTrace();
         }
