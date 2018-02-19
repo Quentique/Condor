@@ -213,7 +213,7 @@ public class MainFragment extends Fragment {
                 FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getActivity());
                 Bundle params = new Bundle();
                 params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "PostsFragment");
-                analytics.logEvent("page", params);
+                analytics.logEvent("fragment", params);
             }
         });
         view.findViewById(R.id.events_quick).setOnClickListener(new View.OnClickListener() {
@@ -223,7 +223,7 @@ public class MainFragment extends Fragment {
                 FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getActivity());
                 Bundle params = new Bundle();
                 params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "EventsFragment");
-                analytics.logEvent("page", params);
+                analytics.logEvent("fragment", params);
             }
         });
         view.findViewById(R.id.canteen_quick).setOnClickListener(new View.OnClickListener() {
@@ -233,7 +233,7 @@ public class MainFragment extends Fragment {
                 FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getActivity());
                 Bundle params = new Bundle();
                 params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "CanteenFragment");
-                analytics.logEvent("page", params);
+                analytics.logEvent("fragment", params);
             }
         });
         if (!mFirebaseRemoteConfig.getBoolean("posts")) {
