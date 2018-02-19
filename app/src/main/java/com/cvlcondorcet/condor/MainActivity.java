@@ -73,13 +73,11 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseRemoteConfig.setConfigSettings(configSettings);
         mFirebaseRemoteConfig.setDefaults(R.xml.defaults_remote_param);
 
-        mFirebaseRemoteConfig.fetch(0)
+        mFirebaseRemoteConfig.fetch(7200)
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.i("FIREBASE", "TEST");
                         if (task.isSuccessful()) {
-                            Log.i("FIREBASE", "PASSAGE");
                             mFirebaseRemoteConfig.activateFetched();
                         }
                     }
@@ -209,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
                                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
                         }
                     } catch (Exception e) {
-                        Log.i("TEST", getIntent().getExtras().toString());
                         selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
                     }
                 } else {
@@ -226,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         db.close();
-        Log.i("FIREBASE", String.valueOf(mFirebaseRemoteConfig.getBoolean("posts")));
     }
 
     /**
@@ -319,7 +315,6 @@ public class MainActivity extends AppCompatActivity {
             fragmentClass = correspondance.get(item.getItemId());
         }
         if (fragmentClass != null) {
-            Log.i("ID", fragmentClass.toString());
             try {
                 value = fragmentClass.getCanonicalName();
                 value = value.substring(24);
@@ -327,12 +322,10 @@ public class MainActivity extends AppCompatActivity {
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
                 navigationView.setCheckedItem(item.getItemId());
-
             } catch (Exception e) {
             }
         }
 
-        Log.i("11", value);
         params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, value);
         analytics.logEvent("fragment", params);
         drawerLayout.closeDrawers();
@@ -345,8 +338,6 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         FragmentManager manager = getSupportFragmentManager();
         Fragment fg = manager.getFragments().get(manager.getFragments().size()-1);
-        Log.i("TEST", "Back pressed");
-        Log.i("TEST2", String.valueOf(manager.getBackStackEntryCount()));
         if (drawerLayout.isDrawerOpen(navigationView)) {
             drawerLayout.closeDrawers();
         } else if (fg != null && fg.getClass() == BusFragment.class) {
@@ -383,7 +374,6 @@ public class MainActivity extends AppCompatActivity {
             if (hm.get(o).equals(value)) {
                 return o;
             }
-            Log.i("TEST", String.valueOf(o));
         }
         return null;
     }
@@ -422,9 +412,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 fragment.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
-            } else if (newIntent.getExtras().containsKey("name") && newIntent.getStringExtra("name").equals("cgu")) {
-                //Intent intent2 = new Intent(this, LicensesActivity.class);
-               // intent2.putExtra()
             }
         }
     }

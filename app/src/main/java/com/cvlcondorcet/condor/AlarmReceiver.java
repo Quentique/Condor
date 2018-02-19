@@ -45,7 +45,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                     noti = new Notification.Builder(ctx);
                 }
 
-
                 Intent newIntent = new Intent(ctx, EventViewerActivity.class);
                 newIntent.putExtra("id", e.getId());
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -61,7 +60,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 } else {
                     content = ctx.getResources().getString(R.string.began) + e.getDateBegin() + ctx.getResources().getString(R.string.at) + e.getHourBegin();
                 }
-//            Toast.makeText(ctx, e.getDateBegin(), Toast.LENGTH_LONG).show();
                 noti.setContentTitle(Html.fromHtml(e.getName()))
                         .setContentText(content)
                         .setSmallIcon(R.drawable.ic_launcher)

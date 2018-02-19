@@ -29,12 +29,10 @@ public class AlarmProgrammer {
         AlarmManager manager = (AlarmManager)ctx.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startEvent);
-        Log.i("CALENDAR1", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))+"/"+String.valueOf(calendar.get(Calendar.MONTH))+"/"+String.valueOf(calendar.get(Calendar.YEAR))+ " - "+String.valueOf(calendar.get(Calendar.HOUR_OF_DAY))+":"+String.valueOf(Calendar.MINUTE));
 
         calendar.set(Calendar.HOUR_OF_DAY, 18);
         calendar.set(Calendar.MINUTE, 5);
         calendar.roll(Calendar.DAY_OF_MONTH, false);
-        Log.i("CALENDAR", String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))+"/"+String.valueOf(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.FRANCE))+"/"+String.valueOf(calendar.get(Calendar.YEAR))+ " - "+String.valueOf(calendar.get(Calendar.HOUR_OF_DAY))+":"+String.valueOf(Calendar.MINUTE));
         Intent newIntent = new Intent(ctx, AlarmReceiver.class);
         newIntent.putExtra("id", id);
         PendingIntent intent = PendingIntent.getBroadcast(ctx, Integer.parseInt(id), newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -62,8 +60,6 @@ public class AlarmProgrammer {
                 manager.cancel(intent);
             } catch (Exception e) {}
             setAlarm(ctx, event.getId(), event.getDateBeginDate());
-            Log.i("D", event.getDateBegin().toString());
         }
-        Log.i("TEST", Event.format);
     }
 }

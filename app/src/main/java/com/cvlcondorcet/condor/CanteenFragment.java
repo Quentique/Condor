@@ -23,7 +23,6 @@ public class CanteenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        // Defines the xml file for the fragment
         return inflater.inflate(R.layout.fragment_canteen, parent, false);
     }
 

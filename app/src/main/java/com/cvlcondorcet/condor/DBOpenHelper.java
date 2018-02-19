@@ -57,7 +57,6 @@ class DBOpenHelper extends SQLiteOpenHelper {
 
     DBOpenHelper(Context context) {
         super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
-       // Log.i("UPGRADE", "WANT TO UPDATE DB3");
     }
 
     /**
@@ -66,7 +65,6 @@ class DBOpenHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-       // Log.i("UPGRADE", "WANT TO UPDATE DB2");
         db.execSQL(POSTS_TABLE);
         db.execSQL(PROFS_TABLE);
         db.execSQL(GEN_TABLE);
@@ -82,7 +80,6 @@ class DBOpenHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //Log.i("UPGRADE", "WANT TO UPDATE DB");
         db.execSQL("DROP TABLE IF EXISTS " + Posts.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Profs.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + General.TABLE_NAME);

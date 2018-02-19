@@ -125,7 +125,6 @@ class Database {
                 values.put(DBOpenHelper.Posts.COLUMN_NAME, element.getString("name"));
                 values.put(DBOpenHelper.Posts.COLUMN_CONTENT, element.getString("content"));
                 values.put(DBOpenHelper.Posts.COLUMN_DATE, element.getString("date"));
-               // Log.i("DEBUG", element.getString("state"));
                 if (element.getString("state").contains("deleted")) {
                     values.put(DBOpenHelper.Posts.COLUMN_STATE, 1);
                 } else { values.put(DBOpenHelper.Posts.COLUMN_STATE, 0); }
@@ -224,7 +223,6 @@ class Database {
         if (cursor != null && cursor.getCount()>0) {
             try {
                 cursor.moveToFirst();
-               // Log.i("DEBUGONCE", cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
                 return cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE));
             } finally {
                 cursor.close();
@@ -361,11 +359,9 @@ class Database {
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_START)),
                         cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_END)));
                 toReturn.add(event);
-                //Log.i("EVENT", event.getPlace());
             }
         }
         cursor.close();
-        //Log.i("START", String.valueOf(toReturn.size()));
         return toReturn;
     }
 
@@ -375,9 +371,7 @@ class Database {
         try {
              cursor = database.query(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME}, null, null, null, null, null);
             return new SimpleCursorAdapter(ctx, android.R.layout.simple_list_item_1, cursor, new String[]{DBOpenHelper.Maps.COLUMN_DPNAME}, new int[]{android.R.id.text1}, 0);
-        } finally {
-           // cursor.close();
-        }
+        } catch (Exception e) { return null; }
     }
 
     /**
@@ -444,8 +438,6 @@ class Database {
                 new String[] {DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_FILE, DBOpenHelper.Maps.COLUMN_DESC, DBOpenHelper.Maps.COLUMN_POS, DBOpenHelper.Maps.COLUMN_MARK},
                 DBOpenHelper.Maps.COLUMN_ID + " = " + String.valueOf(id),
                 null, null, null, null);
-       // Log.i("DB", String.valueOf(id));
-       // Log.i("DB", String.valueOf(cursor.getCount()));
             if (cursor != null && cursor.getCount() > 0) {
                 return cursor;
             } else {

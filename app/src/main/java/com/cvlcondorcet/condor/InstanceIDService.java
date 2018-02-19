@@ -13,12 +13,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 public class InstanceIDService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
             String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-           // Log.d("TEST", "Refreshed token: " + refreshedToken);
             subscribeTopic(refreshedToken);
     }
     private void subscribeTopic(String token) {
        FirebaseMessaging.getInstance().subscribeToTopic("***REMOVED***");
-
-        //Log.i("TEST", "SUBSCRIBED TOPIC");
     }
 }
