@@ -31,7 +31,6 @@ public class BusFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bus, container, false);
     }
 
@@ -50,10 +49,8 @@ public class BusFragment extends Fragment {
              */
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                Log.i("E", "OVERRIDE");
                 if (url.contains("optymo")) {
                     progress.setVisibility(View.VISIBLE);
-//                    Log.i("E", "INSIDE");
                     new Loading().execute(url);
                     return true;
                 } else { return false; }
@@ -77,7 +74,6 @@ public class BusFragment extends Fragment {
         web_view.getSettings().setUseWideViewPort(true);
         web_view.getSettings().setDefaultTextEncodingName("utf-8");
 
-//        Log.i("g", "FRAMGNET STARTED");
         new Loading().execute(url);
     }
 
@@ -108,19 +104,15 @@ public class BusFragment extends Fragment {
         }
         @Override
         public Void doInBackground(String... args) {
-//            Log.i("DO", "BACKGROUND");
             if (MainActivity.allowConnect(getActivity())) {
                 try {
                     url = args[0];
                     element = new Elements();
-                    //Log.i("e", user);
                     Document doc = Jsoup.connect(url).userAgent(user).header("Accept-Language", "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").get();
                     Element el = doc.select("head").first();
                     Element el2 = doc.select("#go-to-main").first();
-                   // Log.i("HELLO", el2.toString());
                     element.add(el);
                     element.add(el2);
-                    //Log.i("DO", "FOREGOUND");
                 } catch (IOException e) {}
             } else {
                 progress.setVisibility(View.GONE);
@@ -129,11 +121,9 @@ public class BusFragment extends Fragment {
         }
         @Override
         public void onPostExecute(Void result) {
-            //Log.i("START", "LOADING");
             try {
                 web_view.loadDataWithBaseURL(null, element.toString(), "text/html", "UTF-8", url);
             } catch (NullPointerException e) {web_view.loadData("<html><body><strong style=\"font-size: 300%\">Vos paramètres ne permettent pas de charger cette page.</strong></body></html>", null, "utf-8");}
-            //Log.i("END", "LOADING");
         }
     }
 
