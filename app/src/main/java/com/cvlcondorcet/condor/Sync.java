@@ -41,7 +41,7 @@ public class Sync extends IntentService {
 
     public final static String broadcast_URI = "com.cvlcondorcet.condor.broadcast.progress";
 
-    private static final String base_URL = "https://cvlcondorcet.fr/";
+    private static final String base_URL = "https://debug.cvlcondorcet.fr/";
     private static final String uploads = "uploads/";
     private static final String check_URL = "check.php";
     private static final String GEN_URL = "gen_deliver.php";
