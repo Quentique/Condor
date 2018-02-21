@@ -114,5 +114,4 @@ public class TrainFragment extends Fragment {
             web_view.loadDataWithBaseURL("http://m.sncf.com", element.toString(), "text/html", "gzip", "");
         }
     }
-
 }
