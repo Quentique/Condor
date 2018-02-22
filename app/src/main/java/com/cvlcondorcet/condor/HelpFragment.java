@@ -41,7 +41,7 @@ public class HelpFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 click++;
-                if (click == 7) {
+                if (click == 9) {
 				   final Toast toast = Toast.makeText(getActivity(), "« S'enfuir, se retrouver, s'ouvrir, s'embrasser, s'émanciper, s'acharner, se découvrir, s'associer, se compromettre, se confronter. »", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_HORIZONTAL| Gravity.TOP, 0, 70);
                     toast.show();
