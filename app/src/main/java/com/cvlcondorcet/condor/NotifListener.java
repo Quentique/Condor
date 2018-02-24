@@ -26,7 +26,7 @@ public class NotifListener extends FirebaseMessagingService {
         String what = message.getData().get("what");
         if (messageT.startsWith("/topics/condor")) {
             if (what.equals("sync")) {
-                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_when_notified", false)){
+                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_when_notified", true)){
                     Intent servicee = new Intent(this, Sync.class);
                     startService(servicee);
                 } else {
@@ -39,10 +39,12 @@ public class NotifListener extends FirebaseMessagingService {
                     } else {
                         noti = new Notification.Builder(this);
                     }
-                    Intent newIntent = new Intent(this, MainActivity.class);
+                   /* Intent newIntent = new Intent(this, MainActivity.class);
                     newIntent.putExtra("fragment", "sync");
                     newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);*/
+                   Intent newIntent = new Intent(this, Sync.class);
+                   PendingIntent intent = PendingIntent.getService(this, 1, newIntent, 0);
                     noti.setContentTitle(getString(R.string.new_content))
                             .setSmallIcon(R.drawable.ic_launcher)
                             .setContentText(getString(R.string.click_sync))

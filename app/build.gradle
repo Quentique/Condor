@@ -7,8 +7,8 @@ android {
         applicationId "com.cvlcondorcet.condor"
         minSdkVersion 18
         targetSdkVersion 26
-        versionCode 12
-        versionName "0.9be"
+        versionCode 15
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
@@ -29,19 +29,19 @@ android {
     }
 }
 
-ext.abiCodes = ['arm64-v8a':5, armeabi:3, 'armeabi-v7a':4, 'x86_64':7, x86:6]
+ext.abiCodes = ['arm64-v8a':10, armeabi:8, 'armeabi-v7a':9, 'x86_64':12, x86:11]
 
 android.applicationVariants.all { variant ->
     variant.outputs.each{ output ->
         def baseAbiVersionCode =
                 project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
         if (baseAbiVersionCode != null) {
-            def code = android.defaultConfig.targetSdkVersion.apiLevel * 1000
+            def code = android.defaultConfig.targetSdkVersion.apiLevel * 10000
             code += baseAbiVersionCode *100
             code += variant.versionCode
             output.versionCodeOverride = code
         } else {
-            def code = android.defaultConfig.targetSdkVersion.apiLevel * 1000
+            def code = android.defaultConfig.targetSdkVersion.apiLevel * 10000
             code += 1 *100
             code += variant.versionCode
             output.versionCodeOverride = code
