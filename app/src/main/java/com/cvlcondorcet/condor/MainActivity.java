@@ -282,9 +282,13 @@ public class MainActivity extends AppCompatActivity {
         nav.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        selectDrawerItem(item);
-                        return false;
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        if (item == null) {
+                            return true;
+                        } else {
+                            selectDrawerItem(item);
+                            return false;
+                        }
                     }
                 }
         );
