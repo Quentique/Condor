@@ -118,8 +118,10 @@ public class TrainFragment extends Fragment {
         @Override
         public void onPostExecute(Void result) {
            // Log.i("START", "LOADING");
-            web_view.loadDataWithBaseURL("http://m.sncf.com", element.toString(), "text/html", "gzip", "");
-           // Log.i("END", "LOADING");
+            try {
+                web_view.loadDataWithBaseURL("http://m.sncf.com", element.toString(), "text/html", "gzip", "");
+                // Log.i("END", "LOADING");
+            } catch(NullPointerException e) {  }
         }
     }
 
