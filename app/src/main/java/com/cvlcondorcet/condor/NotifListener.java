@@ -29,7 +29,11 @@ public class NotifListener extends FirebaseMessagingService {
             if (what.equals("sync")) {
                 if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_when_notified", false)){
                     Intent servicee = new Intent(this, Sync.class);
-                    startService(servicee);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(servicee);
+                    } else {
+                        startService(servicee);
+                    }
                 } else {
                     NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                     Notification.Builder noti;
