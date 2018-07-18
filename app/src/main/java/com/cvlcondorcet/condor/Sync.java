@@ -244,7 +244,10 @@ public class Sync extends IntentService {
                 } else {
                     machin = db.timestamp("last_sync");
                 }
+                machin = machin.replaceAll("\\s", "T");
+                Log.i("CONDOR", machin);
                 url = new URL(base_URL + content + KEY + "&timestamp=" + machin);
+                Log.i("TEST", url.toString());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

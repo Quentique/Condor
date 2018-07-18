@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -25,7 +24,7 @@ public class NotifListener extends FirebaseMessagingService {
         String messageT = message.getFrom();
         String what = message.getData().get("what");
        // Log.d("TEST", "From: " + messageT);
-        Toast.makeText(this, "Message received", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "Message received", Toast.LENGTH_LONG).show();
         if (messageT.startsWith("/topics/condor")) {
             if (what.equals("sync")) {
                 if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_when_notified", false)){
