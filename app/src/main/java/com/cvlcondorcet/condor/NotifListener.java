@@ -7,12 +7,14 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * Receives the topic message from the web & shows notification to advise user of new content
@@ -49,7 +51,11 @@ public class NotifListener extends FirebaseMessagingService {
                         Intent newIntent = new Intent(this, MainActivity.class);
                         newIntent.putExtra("fragment", "sync");
                         newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                        stackBuilder.addNextIntentWithParentStack(newIntent);
+                        // PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                       // PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                         noti.setContentTitle(getString(R.string.new_content))
                                 .setSmallIcon(R.drawable.ic_launcher)
                                 .setContentText(getString(R.string.click_sync))
@@ -85,7 +91,40 @@ public class NotifListener extends FirebaseMessagingService {
                     deleteDir(new File(getApplicationInfo().dataDir));
                 }
             } else {
-                Log.i("CONDOR", message.getData().toString());
+                if (message.getNotification() != null) {
+                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    Notification.Builder noti;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel chanell = new NotificationChannel("channel1", "Condor", NotificationManager.IMPORTANCE_DEFAULT);
+                        manager.createNotificationChannel(chanell);
+                        noti = new Notification.Builder(this, "channel1");
+                    } else {
+                        noti = new Notification.Builder(this);
+                    }
+                    noti.setContentTitle(message.getNotification().getTitle()).setContentText(message.getNotification().getBody()).setSmallIcon(R.drawable.ic_launcher);
+                    Intent newIntent;
+                    if (message.getData().containsKey("posts")) {
+                        newIntent = new Intent(this, PostViewerActivity.class);
+                        newIntent.putExtra("id", message.getData().get("posts"));
+                    } else if (message.getData().containsKey("events")) {
+                        newIntent = new Intent(this, EventViewerActivity.class);
+                        newIntent.putExtra("id", message.getData().get("events"));
+                    } else {
+                        newIntent = new Intent(this, MainActivity.class);
+                        for (Map.Entry<String, String> entry : message.getData().entrySet()) {
+                            newIntent.putExtra(entry.getKey(), entry.getValue());
+                            Log.i("CONDOR", entry.getKey() + " / " + entry.getValue());
+                        }
+                    }
+                    newIntent.setFlags(Intent.FLAG_DEBUG_LOG_RESOLUTION);
+                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                    stackBuilder.addNextIntentWithParentStack(newIntent);
+                   // PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                    noti.setContentIntent(intent);
+                    noti.setAutoCancel(true);
+                    manager.notify(5, noti.build());
+                }
             }
         }
     }
