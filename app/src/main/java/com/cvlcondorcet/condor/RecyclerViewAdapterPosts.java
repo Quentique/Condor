@@ -70,7 +70,6 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Post post = filteredList.get(position);
        // Log.i("DEBUGGGGG", "ICH BIN DA");
-
         ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setText(Jsoup.parse(post.getName()).text());
         Log.i("GT", post.getName());
         ((RecyclerViewAdapterPosts.ViewHolder) holder).content.setText(Jsoup.parse(post.getContent()).text());

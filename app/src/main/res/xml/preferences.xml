@@ -25,6 +25,5 @@
     <CheckBoxPreference
         android:key="rss_display"
         android:title="@string/rss_display_title"
-        android:summary="@string/rss_display_summary"
-        android:defaultValue="true"/>
+        android:summary="@string/rss_display_summary"/>
 </PreferenceScreen>
