@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
@@ -172,8 +173,7 @@ public class MainActivity extends AppCompatActivity {
                 db.open();
                 Sync.rssURL = db.timestamp("website") + "feed";
                 db.close();
-            } catch (SQLException e) {
-            }
+            } catch (SQLException e) { }
 
             if (savedInstanceState != null) {
                 try {
@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent servicee = new Intent(getApplicationContext(), Sync.class);
                     startService(servicee);
                 }
+                //Log.i("CONDOR", getIntent().getExtras().toString());
                 if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("fragment")) {
                     try {
                         switch (getIntent().getStringExtra("fragment")) {
@@ -217,7 +218,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");
+        FirebaseMessaging.getInstance().subscribeToTopic("condor641951236");
+        Log.i("CONDOR", "\""+FirebaseInstanceId.getInstance().getId()+"\"");
 
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
