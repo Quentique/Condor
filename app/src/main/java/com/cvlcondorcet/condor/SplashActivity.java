@@ -13,10 +13,11 @@ import java.util.List;
  */
 
 public class SplashActivity extends AppCompatActivity {
+    protected Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, MainActivity.class);
+        intent = new Intent(this, MainActivity.class);
         Log.i("OPENING", "SPLASH ACITIVTY");
         try {
             List<String> list = getIntent().getData().getPathSegments();
@@ -24,18 +25,12 @@ public class SplashActivity extends AppCompatActivity {
                 switch (list.get(0)) {
                     case "posts":
                         if (!list.get(1).equals("")) {
-                            Intent intent2 = new Intent(this, PostViewerActivity.class);
-                            intent2.putExtra("id", list.get(1));
-                            startActivity(intent);
-                            startActivity(intent2);
+                           launchPosts(list.get(1));
                         }
                         break;
                     case "events":
                         if (!list.get(1).equals("")) {
-                            Intent intent2 = new Intent(this, EventViewerActivity.class);
-                            intent2.putExtra("id", list.get(1));
-                            startActivity(intent);
-                            startActivity(intent2);
+                           launchEvents(list.get(1));
                         }
                         break;
                     case "maps":
@@ -65,8 +60,32 @@ public class SplashActivity extends AppCompatActivity {
             }
         } catch (NullPointerException e) {
             Log.i("ERROR", "CATCH EXCEPTION");
-            startActivity(intent);
-            //finish();
+            if (getIntent().getExtras() != null ) {
+                if (getIntent().getExtras().containsKey("posts")) {
+                    launchPosts(getIntent().getExtras().getString("posts"));
+                } else if (getIntent().getExtras().containsKey("events")) {
+                    launchEvents(getIntent().getExtras().getString("events"));
+                } else {
+                    intent.putExtras(getIntent().getExtras());
+                    startActivity(intent);
+                }
+            } else {
+                startActivity(intent);
+            }
         }
+    }
+
+    protected void launchPosts(String id) {
+        Intent intent2 = new Intent(this, PostViewerActivity.class);
+        intent2.putExtra("id", id);
+        startActivity(intent);
+        startActivity(intent2);
+    }
+
+    protected void launchEvents(String id) {
+        Intent intent2 = new Intent(this, EventViewerActivity.class);
+        intent2.putExtra("id", id);
+        startActivity(intent);
+        startActivity(intent2);
     }
 }
