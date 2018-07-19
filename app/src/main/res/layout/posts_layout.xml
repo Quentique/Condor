@@ -3,9 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="6sp"
     android:animateLayoutChanges="true">
+
+
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -17,9 +20,7 @@
         android:foreground="?attr/selectableItemBackground"
         android:animateLayoutChanges="true"
         app:cardPreventCornerOverlap="true"
-        android:stateListAnimator="@animator/lift_on_touch"
-        >
-
+        android:stateListAnimator="@animator/lift_on_touch">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

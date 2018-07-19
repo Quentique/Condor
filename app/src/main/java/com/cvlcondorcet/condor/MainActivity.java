@@ -434,7 +434,6 @@ public class MainActivity extends AppCompatActivity {
         icon.mutate();
         icon.setDrawableByLayerId(R.id.ic_badge, badge);
         icon.setDrawableByLayerId(R.id.ic_main_icon, mainIcon);
-
         return icon;
     }
 
