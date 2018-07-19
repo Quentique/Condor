@@ -10,6 +10,7 @@ import android.database.SQLException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -134,10 +135,18 @@ public class Sync extends IntentService {
         } else {
             noti = new Notification.Builder(this);
         }
+        Intent newIntent = new Intent(this, MainActivity.class);
+        newIntent.putExtra("fragment", "sync");
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(newIntent);
+        // PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
         noti.setContentTitle(getResources().getString(R.string.sync_app_start_title))
                 .setContentText(tickerText)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setOngoing(true)
+                .setContentIntent(intent)
                 .setTicker(getString(R.string.sync_start_ticker));
         if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(Notification.VISIBILITY_PUBLIC); }
 
@@ -384,15 +393,11 @@ public class Sync extends IntentService {
         intent.putExtra("progressMessage", progressMessage);
         sendBroadcast(intent);
         if (progress == -1) {
-            Intent newIntent = new Intent(this, MainActivity.class);
-            newIntent.putExtra("fragment", "sync");
-            PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             noti.setContentTitle(getResources().getString(R.string.error))
                     .setContentText(Jsoup.parse(progressMessage).text())
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setOngoing(false)
                     .setAutoCancel(true)
-                    .setContentIntent(intent)
                     .setProgress(0, 0, false);
             manager.notify(10, noti.build());
         }
