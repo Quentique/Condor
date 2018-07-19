@@ -9,4 +9,5 @@
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
     <color name="place">#b71c1c</color>
+    <color name="counter">#f44336</color>
 </resources>

@@ -9,14 +9,18 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.SQLException;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -106,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar bar = findViewById(R.id.toolbar);
         setSupportActionBar(bar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+      //  getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+        getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_menu_black_24dp, 2));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nvView);
@@ -280,6 +285,8 @@ public class MainActivity extends AppCompatActivity {
                 nav.getMenu().findItem(id[i]).setVisible(false);
             }
         }
+        nav.getMenu().findItem(R.id.nav_posts).setActionView(R.layout.menu_counter);
+        setMenuCounter(R.id.nav_posts, 2);
 
         nav.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -412,6 +419,23 @@ public class MainActivity extends AppCompatActivity {
             }
             return c;
         }
+    }
+
+    private void setMenuCounter(@IdRes int itemId, int count) {
+        TextView view = (TextView) navigationView.getMenu().findItem(itemId).getActionView().findViewById(R.id.testtt);
+        view.setText(count > 0 ? String.valueOf(count) : null);
+    }
+
+    private Drawable setBadgeCount(Context context, int res, int badgeCount){
+        LayerDrawable icon = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.ic_counter_hamburger);
+        Drawable mainIcon = ContextCompat.getDrawable(context, res);
+        BadgeDrawable badge = new BadgeDrawable(context);
+        badge.setCount(String.valueOf(badgeCount));
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
+        icon.setDrawableByLayerId(R.id.ic_main_icon, mainIcon);
+
+        return icon;
     }
 
     @Override
