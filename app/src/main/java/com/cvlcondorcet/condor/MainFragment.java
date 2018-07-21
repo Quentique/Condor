@@ -253,13 +253,15 @@ public class MainFragment extends Fragment {
         protected Void doInBackground(String... args) {
             try {
                 try {
-                    high = args[0];
-                    Document doc = Jsoup.connect(args[0]).postDataCharset("UTF-8").get();
-                    Element element2 = doc.getElementsByTag("head").first();
-                    Element element = doc.getElementById("graphene-slider");
-                    toDisplay = element2.toString();
-                    toDisplay += "<style>.carousel { background: transparent; width: 100%; margin: auto;} head, body, div { background: transparent; margin: auto;}</style>";
-                    toDisplay += element.toString();
+                    try {
+                        high = args[0];
+                        Document doc = Jsoup.connect(args[0]).postDataCharset("UTF-8").get();
+                        Element element2 = doc.getElementsByTag("head").first();
+                        Element element = doc.getElementById("graphene-slider");
+                        toDisplay = element2.toString();
+                        toDisplay += "<style>.carousel { background: transparent; width: 100%; margin: auto;} head, body, div { background: transparent; margin: auto;}</style>";
+                        toDisplay += element.toString();
+                    } catch (IllegalArgumentException e) {}
                 } catch (NullPointerException e) {}
             } catch (IOException e) {}
             return null;

@@ -258,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         loadLanguage(this);
+        Log.i("CONFIGURATION", "CONFIGURATION CHANGED CALLED");
         recreate();
     }
     /**
@@ -291,10 +292,13 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences pref = getSharedPreferences("notifications", 0);
         int posts_count  = pref.getInt("posts_count", 0);
         int events_count = pref.getInt("events_count", 0);
+        Log.i("START", String.valueOf(posts_count));
+        Log.i("START", String.valueOf(events_count));
         boolean cvl = pref.getBoolean("cvl", false);
         boolean maps = pref.getBoolean("maps", false);
         boolean canteen = pref.getBoolean("canteen", false);
         int count = posts_count+events_count;
+        Log.i("START", String.valueOf(count));
         if (posts_count > 0) {
             nav.getMenu().findItem(R.id.nav_posts).setActionView(R.layout.menu_counter);
             setMenuCounter(R.id.nav_posts, posts_count);
@@ -303,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
             nav.getMenu().findItem(R.id.nav_events).setActionView(R.layout.menu_counter);
             setMenuCounter(R.id.nav_events, events_count);
         }
-        if (!cvl) {
+        if (cvl) {
             nav.getMenu().findItem(R.id.nav_cvl).setActionView(R.layout.menu_counter);
             count++;
         }
@@ -469,6 +473,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onNewIntent(Intent newIntent) {
+        Log.i("MAIN", "New intent received");
         if (newIntent.getExtras() != null) {
             if (newIntent.getExtras().containsKey("fragment") && newIntent.getStringExtra("fragment").equals("maps")) {
                 Bundle bundle = new Bundle();
@@ -485,6 +490,8 @@ public class MainActivity extends AppCompatActivity {
                 //Intent intent2 = new Intent(this, LicensesActivity.class);
                // intent2.putExtra()
             }
+        } else {
+            recreate();
         }
     }
 }

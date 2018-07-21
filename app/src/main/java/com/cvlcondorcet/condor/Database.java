@@ -48,13 +48,16 @@ class Database {
     }
 
     void initialiseSync() {
+        Log.i("SYNC", "Initalising function called");
         canteen = cvl = maps = false;
         SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
         try {
             events = new JSONArray(pref.getString("events", ""));
+            Log.i("SYNC", events.toString());
         } catch (JSONException e) { events = new JSONArray(); }
         try {
             posts = new JSONArray(pref.getString("posts", ""));
+            Log.i("SYNC", posts.toString());
         } catch (JSONException e) { posts = new JSONArray(); }
     }
 
@@ -505,13 +508,14 @@ class Database {
         return results;
     }
     boolean endingSync() {
+        Log.i("SYNC", "Ending sync function called");
         if (events.length() == 0 && posts.length() == 0 && !maps & !cvl & !canteen) {
             return false;
         } else {
             SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
             SharedPreferences.Editor editor = pref.edit();
-            editor.putInt("posts_count", pref.getInt("posts_count",0)+posts.length());
-            editor.putInt("events_count", pref.getInt("events_count", 0)+events.length());
+            editor.putInt("posts_count", posts.length());
+            editor.putInt("events_count", events.length());
             editor.putBoolean("cvl", cvl);
             editor.putBoolean("maps", maps);
             editor.putBoolean("canteen", canteen);
@@ -519,7 +523,6 @@ class Database {
             editor.putString("posts", posts.toString());
             Log.i("SYNC", posts.toString());
             editor.apply();
-
             return true;
         }
     }

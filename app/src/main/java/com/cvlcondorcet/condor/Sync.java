@@ -42,7 +42,7 @@ public class Sync extends IntentService {
 
     public final static String broadcast_URI = "com.cvlcondorcet.condor.broadcast.progress";
 
-    private static final String base_URL = "https://cvlcondorcet.fr/";
+    private static final String base_URL = "https://debug.cvlcondorcet.fr/";
     private static final String uploads = "uploads/";
     private static final String check_URL = "check.php";
     private static final String GEN_URL = "gen_deliver.php";
@@ -124,6 +124,10 @@ public class Sync extends IntentService {
     @Override
     public void onHandleIntent(Intent i)
     {
+        String act = "none";
+        if (i.getExtras() != null && i.getExtras().containsKey("from")) {
+            act = i.getStringExtra("from");
+        }
         progressMessage = "Syncing...";
         //Log.i("NOTI", "DDDDDONE");
         CharSequence tickerText = getString(R.string.sync_notif_name);
@@ -175,6 +179,7 @@ public class Sync extends IntentService {
         if (!networkError) {
             try {
                 db.open();
+                db.initialiseSync();
                // Log.i("SYNC", "GENERAL SYNC");
                 JSONArray maps = get(MAPS_URL);
                 db.updateMaps(maps);
@@ -208,6 +213,14 @@ public class Sync extends IntentService {
                 noti.setProgress(100, 100, false);
                 noti.setContentText(getString(R.string.sync_end));
                 manager.notify(5, noti.build());
+                Log.i("SYNC", "ABOUT TO CALL CONFIGURATION");
+
+                if (db.endingSync() && act.equals("activity")) {
+                    Log.i("SYNC", "CALLED CONFIGURATION");
+                    Intent restart = new Intent(this, MainActivity.class);
+                    restart.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(restart);
+                }
                 db.close();
             } catch(SQLException e){
                 progress = -2;
