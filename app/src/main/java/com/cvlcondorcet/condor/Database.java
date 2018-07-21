@@ -518,6 +518,8 @@ class Database {
             editor.putString("events", events.toString());
             editor.putString("posts", posts.toString());
             Log.i("SYNC", posts.toString());
+            editor.apply();
+
             return true;
         }
     }
