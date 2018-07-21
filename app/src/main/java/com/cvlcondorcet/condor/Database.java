@@ -37,6 +37,7 @@ class Database {
     private final Context ctx;
     private ArrayList<Integer> posts, events;
     private boolean canteen, cvl, maps;
+    private int hasbeendeleted;
 
     /**
      * Default constructor.
@@ -58,6 +59,7 @@ class Database {
             Log.i("SYNC", events.toString());
             posts = parsePrefNot("posts", ctx);
             Log.i("SYNC", posts.toString());
+        hasbeendeleted = 0;
     }
 
     void open() throws SQLException { database = helper.getWritableDatabase(); }
@@ -230,7 +232,7 @@ class Database {
             }
         }
         database.delete(DBOpenHelper.Events.TABLE_NAME, DBOpenHelper.Events.COLUMN_STATE + " = 'deleted'", null);
-        database.delete(DBOpenHelper.Events.TABLE_NAME, DBOpenHelper.Events.COLUMN_END + " < CURRENT_TIMESTAMP", null);
+       // database.delete(DBOpenHelper.Events.TABLE_NAME, DBOpenHelper.Events.COLUMN_END + " < CURRENT_TIMESTAMP", null);
         AlarmProgrammer.scheduleAllAlarms(ctx);
     }
 
@@ -372,7 +374,7 @@ class Database {
 
     ArrayList<Event> getEvents() {
         ArrayList<Event> toReturn = new ArrayList<>();
-        Cursor cursor = database.query(DBOpenHelper.Events.TABLE_NAME, new String[] { DBOpenHelper.Events.COLUMN_ID, DBOpenHelper.Events.COLUMN_NAME, DBOpenHelper.Events.COLUMN_DESC, DBOpenHelper.Events.COLUMN_START, DBOpenHelper.Events.COLUMN_END, DBOpenHelper.Events.COLUMN_PICT, DBOpenHelper.Events.COLUMN_PLACE}, DBOpenHelper.Events.COLUMN_STATE + " = ?", new String[]{"published"}, null, null, DBOpenHelper.Events.COLUMN_START);
+        Cursor cursor = database.query(DBOpenHelper.Events.TABLE_NAME, new String[] { DBOpenHelper.Events.COLUMN_ID, DBOpenHelper.Events.COLUMN_NAME, DBOpenHelper.Events.COLUMN_DESC, DBOpenHelper.Events.COLUMN_START, DBOpenHelper.Events.COLUMN_END, DBOpenHelper.Events.COLUMN_PICT, DBOpenHelper.Events.COLUMN_PLACE}, DBOpenHelper.Events.COLUMN_STATE + " = ?", new String[]{"published"}, null, null, DBOpenHelper.Events.COLUMN_START+" DESC");
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 Event event = new Event(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Events.COLUMN_ID)),
@@ -528,7 +530,7 @@ class Database {
         SharedPreferences.Editor editor=  pref.edit();
         editor.putString(key, gson.toJson(array));
         //Log.i("TESTTTT", String.valueOf(pref.getInt(key,0)-1));
-        editor.putInt(key+"_count", pref.getInt(key+"_count", 0)-1);
+        editor.putInt(key+"_count", array.size());
         editor.apply();
     }
     boolean endingSync() {

@@ -251,6 +251,13 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("class", fragmentClass);
+        Log.i("CONDOR", "Saving instance State");
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        setupDrawerContent(navigationView);
     }
 
     @Override
@@ -306,23 +313,23 @@ public class MainActivity extends AppCompatActivity {
         if (posts_count > 0) {
             nav.getMenu().findItem(R.id.nav_posts).setActionView(R.layout.menu_counter);
             setMenuCounter(R.id.nav_posts, posts_count);
-        }
+        } else { nav.getMenu().findItem(R.id.nav_posts).setActionView(null); }
         if (events_count > 0) {
             nav.getMenu().findItem(R.id.nav_events).setActionView(R.layout.menu_counter);
             setMenuCounter(R.id.nav_events, events_count);
-        }
+        } else { nav.getMenu().findItem(R.id.nav_events).setActionView(null);  }
         if (cvl) {
             nav.getMenu().findItem(R.id.nav_cvl).setActionView(R.layout.menu_counter);
             count++;
-        }
+        } else { nav.getMenu().findItem(R.id.nav_cvl).setActionView(null);  }
         if (maps) {
             nav.getMenu().findItem(R.id.nav_maps).setActionView(R.layout.menu_counter);
             count++;
-        }
+        } else { nav.getMenu().findItem(R.id.nav_maps).setActionView(null);  }
         if (canteen) {
             nav.getMenu().findItem(R.id.nav_canteen).setActionView(R.layout.menu_counter);
             count++;
-        }
+        } else { nav.getMenu().findItem(R.id.nav_canteen).setActionView(null);  }
         getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_menu_black_24dp, count));
 
 
@@ -479,23 +486,25 @@ public class MainActivity extends AppCompatActivity {
     public void onNewIntent(Intent newIntent) {
         Log.i("MAIN", "New intent received");
         if (newIntent.getExtras() != null) {
-            if (newIntent.getExtras().containsKey("fragment") && newIntent.getStringExtra("fragment").equals("maps")) {
-                Bundle bundle = new Bundle();
-                bundle.putString("place", newIntent.getStringExtra("place"));
-                Fragment fragment = null;
-                try {
-                    fragment = MapsFragment.class.newInstance();
-                } catch (InstantiationException e) {
-                } catch (IllegalAccessException e) {
+            if (newIntent.getExtras().containsKey("fragment")) {
+                if (newIntent.getStringExtra("fragment").equals("maps")) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("place", newIntent.getStringExtra("place"));
+                    Fragment fragment = null;
+                    try {
+                        fragment = MapsFragment.class.newInstance();
+                    } catch (InstantiationException e) {
+                    } catch (IllegalAccessException e) {
+                    }
+                    fragment.setArguments(bundle);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
+                } else if (newIntent.getStringExtra("fragment").equals("nav")) {
+                    setupDrawerContent(navigationView);
                 }
-                fragment.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
             } else if (newIntent.getExtras().containsKey("name") && newIntent.getStringExtra("name").equals("cgu")) {
                 //Intent intent2 = new Intent(this, LicensesActivity.class);
                 // intent2.putExtra()
             }
         }
-        recreate();
-
     }
 }
