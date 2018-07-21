@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /* Initialising Firebase and remote control */
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
+        /* Setting general parameters*/
         correspondance = new HashMap<>();
         correspondance.put(R.id.nav_posts, PostsFragment.class);
         correspondance.put(R.id.nav_bus, BusFragment.class);
@@ -108,15 +109,17 @@ public class MainActivity extends AppCompatActivity {
         Event.format = getString(R.string.date_format);
         Event.format2 = getString(R.string.hour_format);
 
+        /* Setting up the toolbar and the navigation drawer */
         Toolbar bar = findViewById(R.id.toolbar);
         setSupportActionBar(bar);
       //  getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-        getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_menu_black_24dp, 2));
+        getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_menu_black_24dp, 0));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
 
+        /* Getting data from db and detect if first use or not */
         Database db = new Database(this);
         db.open();
         if (db.timestamp("name").equals("")) {
@@ -145,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
                             analytics.setUserProperty("category", "Personnels");
                             break;
                     }
-
                 }
             });
             builder.create().show();
@@ -277,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
      * Sets up the navigation drawer and handling click.
      * @param nav   navigation view that must be set up
      */
-    private void setupDrawerContent(NavigationView nav) {
+    public void setupDrawerContent(NavigationView nav) {
         String[] params = {"posts", "events", "maps", "train", "cvl", "bus", "canteen"};
         int[] id = {R.id.nav_posts, R.id.nav_events, R.id.nav_maps, R.id.nav_train, R.id.nav_cvl, R.id.nav_bus, R.id.nav_canteen};
         for (int i = 0 ; i <id.length ; i++) {
@@ -285,8 +287,36 @@ public class MainActivity extends AppCompatActivity {
                 nav.getMenu().findItem(id[i]).setVisible(false);
             }
         }
-        nav.getMenu().findItem(R.id.nav_posts).setActionView(R.layout.menu_counter);
-        setMenuCounter(R.id.nav_posts, 2);
+
+        SharedPreferences pref = getSharedPreferences("notifications", 0);
+        int posts_count  = pref.getInt("posts_count", 0);
+        int events_count = pref.getInt("events_count", 0);
+        boolean cvl = pref.getBoolean("cvl", false);
+        boolean maps = pref.getBoolean("maps", false);
+        boolean canteen = pref.getBoolean("canteen", false);
+        int count = posts_count+events_count;
+        if (posts_count > 0) {
+            nav.getMenu().findItem(R.id.nav_posts).setActionView(R.layout.menu_counter);
+            setMenuCounter(R.id.nav_posts, posts_count);
+        }
+        if (events_count > 0) {
+            nav.getMenu().findItem(R.id.nav_events).setActionView(R.layout.menu_counter);
+            setMenuCounter(R.id.nav_events, events_count);
+        }
+        if (!cvl) {
+            nav.getMenu().findItem(R.id.nav_cvl).setActionView(R.layout.menu_counter);
+            count++;
+        }
+        if (maps) {
+            nav.getMenu().findItem(R.id.nav_maps).setActionView(R.layout.menu_counter);
+            count++;
+        }
+        if (canteen) {
+            nav.getMenu().findItem(R.id.nav_canteen).setActionView(R.layout.menu_counter);
+            count++;
+        }
+        getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_menu_black_24dp, count));
+
 
         nav.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {

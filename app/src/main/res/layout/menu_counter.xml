@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="match_parent" android:layout_width="match_parent" android:gravity="center_vertical" android:orientation="vertical">
 <TextView
     android:id="@+id/testtt"
-    android:layout_width="20dp"
-    android:layout_height="20dp"
+    android:layout_width="17dp"
+    android:layout_height="17dp"
     android:textAlignment="center"
     android:gravity="center_vertical"
     android:textColor="@color/secondaryTextColor"
