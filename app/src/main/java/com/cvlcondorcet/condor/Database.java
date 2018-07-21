@@ -12,11 +12,15 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -31,7 +35,7 @@ class Database {
     private SQLiteDatabase database;
     private final DBOpenHelper helper;
     private final Context ctx;
-    private JSONArray posts, events;
+    private ArrayList<Integer> posts, events;
     private boolean canteen, cvl, maps;
 
     /**
@@ -51,14 +55,16 @@ class Database {
         Log.i("SYNC", "Initalising function called");
         canteen = cvl = maps = false;
         SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
-        try {
-            events = new JSONArray(pref.getString("events", ""));
+        Gson gson = new Gson();
+        Type founder = new TypeToken<ArrayList<Integer>>(){}.getType();
+            events = gson.fromJson(pref.getString("events", ""), founder);
+            if (events == null)
+                events = new ArrayList<>();
             Log.i("SYNC", events.toString());
-        } catch (JSONException e) { events = new JSONArray(); }
-        try {
-            posts = new JSONArray(pref.getString("posts", ""));
+            posts = gson.fromJson(pref.getString("posts", ""), founder);
+            if (posts == null)
+                posts = new ArrayList<>();
             Log.i("SYNC", posts.toString());
-        } catch (JSONException e) { posts = new JSONArray(); }
     }
 
     void open() throws SQLException { database = helper.getWritableDatabase(); }
@@ -136,7 +142,8 @@ class Database {
             try {
                 JSONObject element = array.getJSONObject(i);
                 ContentValues values = new ContentValues();
-                posts.put(element.getInt("id"));
+                if (!posts.contains(element.getInt("id")))
+                    posts.add(element.getInt("id"));
                 values.put(DBOpenHelper.Posts.COLUMN_ID, element.getInt("id"));
                 values.put(DBOpenHelper.Posts.COLUMN_NAME, element.getString("name"));
                 values.put(DBOpenHelper.Posts.COLUMN_CONTENT, element.getString("content"));
@@ -144,6 +151,7 @@ class Database {
                // Log.i("DEBUG", element.getString("state"));
                 if (element.getString("state").contains("deleted")) {
                     values.put(DBOpenHelper.Posts.COLUMN_STATE, 1);
+                    posts.remove(element.getInt("id"));
                 } else { values.put(DBOpenHelper.Posts.COLUMN_STATE, 0); }
                 values.put(DBOpenHelper.Posts.COLUMN_CAT, element.getString("categories"));
                 values.put(DBOpenHelper.Posts.COLUMN_PIC, element.getString("picture"));
@@ -211,7 +219,8 @@ class Database {
             try {
                 JSONObject element = array.getJSONObject(i);
                 ContentValues values = new ContentValues();
-                events.put(element.getInt("id"));
+                if(!events.contains(element.getInt("id")))
+                    events.add(element.getInt("id"));
                 values.put(DBOpenHelper.Events.COLUMN_ID, element.getInt("id"));
                 values.put(DBOpenHelper.Events.COLUMN_NAME , element.getString("name"));
                 values.put(DBOpenHelper.Events.COLUMN_DESC, element.getString("description"));
@@ -219,6 +228,8 @@ class Database {
                 values.put(DBOpenHelper.Events.COLUMN_END, element.getString("end"));
                 values.put(DBOpenHelper.Events.COLUMN_PLACE, element.getString("place"));
                 values.put(DBOpenHelper.Events.COLUMN_STATE, element.getString("state"));
+                if (element.getString("state") == "deleted")
+                    events.remove(element.getInt("id"));
                 values.put(DBOpenHelper.Events.COLUMN_PICT, element.getString("picture"));
                 database.replace(DBOpenHelper.Events.TABLE_NAME, null, values);
             } catch (JSONException e) {
@@ -509,19 +520,20 @@ class Database {
     }
     boolean endingSync() {
         Log.i("SYNC", "Ending sync function called");
-        if (events.length() == 0 && posts.length() == 0 && !maps & !cvl & !canteen) {
+        if (events.size() == 0 && posts.size() == 0 && !maps & !cvl & !canteen) {
             return false;
         } else {
+            Gson gson = new Gson();
             SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
             SharedPreferences.Editor editor = pref.edit();
-            editor.putInt("posts_count", posts.length());
-            editor.putInt("events_count", events.length());
+            editor.putInt("posts_count", posts.size());
+            editor.putInt("events_count", events.size());
             editor.putBoolean("cvl", cvl);
             editor.putBoolean("maps", maps);
             editor.putBoolean("canteen", canteen);
-            editor.putString("events", events.toString());
-            editor.putString("posts", posts.toString());
-            Log.i("SYNC", posts.toString());
+            editor.putString("events", gson.toJson(events));
+            editor.putString("posts", gson.toJson(posts));
+            Log.i("SYNC", gson.toJson(events));
             editor.apply();
             return true;
         }
