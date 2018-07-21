@@ -54,16 +54,9 @@ class Database {
     void initialiseSync() {
         Log.i("SYNC", "Initalising function called");
         canteen = cvl = maps = false;
-        SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
-        Gson gson = new Gson();
-        Type founder = new TypeToken<ArrayList<Integer>>(){}.getType();
-            events = gson.fromJson(pref.getString("events", ""), founder);
-            if (events == null)
-                events = new ArrayList<>();
+            events = parsePrefNot("events", ctx);
             Log.i("SYNC", events.toString());
-            posts = gson.fromJson(pref.getString("posts", ""), founder);
-            if (posts == null)
-                posts = new ArrayList<>();
+            posts = parsePrefNot("posts", ctx);
             Log.i("SYNC", posts.toString());
     }
 
@@ -151,7 +144,7 @@ class Database {
                // Log.i("DEBUG", element.getString("state"));
                 if (element.getString("state").contains("deleted")) {
                     values.put(DBOpenHelper.Posts.COLUMN_STATE, 1);
-                    posts.remove(element.getInt("id"));
+                    posts.remove(Integer.valueOf(element.getInt("id")));
                 } else { values.put(DBOpenHelper.Posts.COLUMN_STATE, 0); }
                 values.put(DBOpenHelper.Posts.COLUMN_CAT, element.getString("categories"));
                 values.put(DBOpenHelper.Posts.COLUMN_PIC, element.getString("picture"));
@@ -229,7 +222,7 @@ class Database {
                 values.put(DBOpenHelper.Events.COLUMN_PLACE, element.getString("place"));
                 values.put(DBOpenHelper.Events.COLUMN_STATE, element.getString("state"));
                 if (element.getString("state") == "deleted")
-                    events.remove(element.getInt("id"));
+                    events.remove(Integer.valueOf(element.getInt("id")));
                 values.put(DBOpenHelper.Events.COLUMN_PICT, element.getString("picture"));
                 database.replace(DBOpenHelper.Events.TABLE_NAME, null, values);
             } catch (JSONException e) {
@@ -517,6 +510,26 @@ class Database {
         } catch (JSONException e) { e.printStackTrace(); }
 
         return results;
+    }
+
+    static ArrayList<Integer> parsePrefNot(String key, Context ctx) {
+        ArrayList<Integer> toReturn;
+        Gson gson = new Gson();
+        Type founder = new TypeToken<ArrayList<Integer>>(){}.getType();
+        toReturn = gson.fromJson(ctx.getSharedPreferences("notifications", 0).getString(key, ""), founder);
+        if (toReturn == null) toReturn = new ArrayList<>();
+        Log.i("DATABASE", "ACTION DEMANDED : "+toReturn.toString());
+        return toReturn;
+    }
+
+    static void updatePrefValue(String key, ArrayList<Integer> array, Context ctx) {
+        Gson gson = new Gson();
+        SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
+        SharedPreferences.Editor editor=  pref.edit();
+        editor.putString(key, gson.toJson(array));
+        //Log.i("TESTTTT", String.valueOf(pref.getInt(key,0)-1));
+        editor.putInt(key+"_count", pref.getInt(key+"_count", 0)-1);
+        editor.apply();
     }
     boolean endingSync() {
         Log.i("SYNC", "Ending sync function called");

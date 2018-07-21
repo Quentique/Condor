@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                             analytics.setUserProperty("category", "Personnels");
                             break;
                     }
+                    recreate();
                 }
             });
             builder.create().show();
@@ -491,10 +492,10 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
             } else if (newIntent.getExtras().containsKey("name") && newIntent.getStringExtra("name").equals("cgu")) {
                 //Intent intent2 = new Intent(this, LicensesActivity.class);
-               // intent2.putExtra()
+                // intent2.putExtra()
             }
-        } else {
-            recreate();
         }
+        recreate();
+
     }
 }
