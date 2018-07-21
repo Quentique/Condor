@@ -3,6 +3,7 @@ package com.cvlcondorcet.condor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,10 +14,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,12 +35,17 @@ import java.util.List;
 
 class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Post> list, filteredList, catList;
+    private ArrayList<Integer> newArt;
     private final Context ctx;
 
     public RecyclerViewAdapterPosts(Context ctx, List<Post> items, int item) {
         this.ctx = ctx;
         this.list = items;
         this.filteredList = items;
+        ;
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<Integer>>(){}.getType();
+        newArt = Database.parsePrefNot("posts", ctx);
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewtype){
@@ -70,6 +79,14 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Post post = filteredList.get(position);
        // Log.i("DEBUGGGGG", "ICH BIN DA");
+        if (newArt.contains(Integer.valueOf(post.getId()))) {
+            ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setTypeface(null, Typeface.BOLD);
+            Log.i("POSTS", "WORKED");
+        } else {
+            ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setTypeface(null, Typeface.NORMAL);
+            Log.i("POSTS", "DIDN't WORKED");
+        }
+        Log.i("POSTS", "ID:"+post.getId());
         ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setText(Jsoup.parse(post.getName()).text());
         Log.i("GT", post.getName());
         ((RecyclerViewAdapterPosts.ViewHolder) holder).content.setText(Jsoup.parse(post.getContent()).text());
@@ -227,7 +244,11 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (post.getId().equals("0")) {
                     intent.putExtra("link", post.getLink());
                 }
+                Log.i("POSTS", "ABOUT TO EXECUTE");
                 context.startActivity(intent);
+                newArt.remove(Integer.valueOf(post.getId()));
+                Database.updatePrefValue("posts", newArt, ctx);
+                Log.i("POSTS", "EXECUTED");
             }
         }
     }
