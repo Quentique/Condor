@@ -3,12 +3,14 @@ package com.cvlcondorcet.condor;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +31,8 @@ class Database {
     private SQLiteDatabase database;
     private final DBOpenHelper helper;
     private final Context ctx;
+    private JSONArray posts, events;
+    private boolean canteen, cvl, maps;
 
     /**
      * Default constructor.
@@ -43,6 +47,16 @@ class Database {
         return database != null && database.isOpen();
     }
 
+    void initialiseSync() {
+        canteen = cvl = maps = false;
+        SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
+        try {
+            events = new JSONArray(pref.getString("events", ""));
+        } catch (JSONException e) { events = new JSONArray(); }
+        try {
+            posts = new JSONArray(pref.getString("posts", ""));
+        } catch (JSONException e) { posts = new JSONArray(); }
+    }
 
     void open() throws SQLException { database = helper.getWritableDatabase(); }
     void close() {
@@ -61,8 +75,6 @@ class Database {
         ArrayList toBeDownloaded = new ArrayList();
         boolean logo = false;
         boolean cover = false;
-        boolean canteen = false;
-        boolean cvl = false;
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject element = array.getJSONObject(i);
@@ -121,6 +133,7 @@ class Database {
             try {
                 JSONObject element = array.getJSONObject(i);
                 ContentValues values = new ContentValues();
+                posts.put(element.getInt("id"));
                 values.put(DBOpenHelper.Posts.COLUMN_ID, element.getInt("id"));
                 values.put(DBOpenHelper.Posts.COLUMN_NAME, element.getString("name"));
                 values.put(DBOpenHelper.Posts.COLUMN_CONTENT, element.getString("content"));
@@ -186,6 +199,7 @@ class Database {
                     e.printStackTrace();
                 }
             }
+            maps=true;
         }
     }
 
@@ -194,6 +208,7 @@ class Database {
             try {
                 JSONObject element = array.getJSONObject(i);
                 ContentValues values = new ContentValues();
+                events.put(element.getInt("id"));
                 values.put(DBOpenHelper.Events.COLUMN_ID, element.getInt("id"));
                 values.put(DBOpenHelper.Events.COLUMN_NAME , element.getString("name"));
                 values.put(DBOpenHelper.Events.COLUMN_DESC, element.getString("description"));
@@ -488,6 +503,23 @@ class Database {
         } catch (JSONException e) { e.printStackTrace(); }
 
         return results;
+    }
+    boolean endingSync() {
+        if (events.length() == 0 && posts.length() == 0 && !maps & !cvl & !canteen) {
+            return false;
+        } else {
+            SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putInt("posts_count", pref.getInt("posts_count",0)+posts.length());
+            editor.putInt("events_count", pref.getInt("events_count", 0)+events.length());
+            editor.putBoolean("cvl", cvl);
+            editor.putBoolean("maps", maps);
+            editor.putBoolean("canteen", canteen);
+            editor.putString("events", events.toString());
+            editor.putString("posts", posts.toString());
+            Log.i("SYNC", posts.toString());
+            return true;
+        }
     }
 }
 
