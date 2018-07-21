@@ -115,6 +115,7 @@ public class PostsFragment extends Fragment
         bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         bar.setDisplayHomeAsUpEnabled(true);
         bar.setCustomView(lay);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -218,7 +218,7 @@ public class Sync extends IntentService {
                 if (db.endingSync() && act.equals("activity")) {
                     Log.i("SYNC", "CALLED CONFIGURATION");
                     Intent restart = new Intent(this, MainActivity.class);
-                    restart.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    restart.putExtra("fragment", "nav");
                     startActivity(restart);
                 }
                 db.close();

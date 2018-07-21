@@ -10,17 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,14 +36,13 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<Post> list, filteredList, catList;
     private ArrayList<Integer> newArt;
     private final Context ctx;
+    private final Animation anim;
 
     public RecyclerViewAdapterPosts(Context ctx, List<Post> items, int item) {
         this.ctx = ctx;
         this.list = items;
         this.filteredList = items;
-        ;
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<Integer>>(){}.getType();
+        this.anim = AnimationUtils.loadAnimation(ctx, R.anim.blink);
         newArt = Database.parsePrefNot("posts", ctx);
     }
 
@@ -81,9 +79,11 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
        // Log.i("DEBUGGGGG", "ICH BIN DA");
         if (newArt.contains(Integer.valueOf(post.getId()))) {
             ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setTypeface(null, Typeface.BOLD);
+            ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setAnimation(anim);
             Log.i("POSTS", "WORKED");
         } else {
             ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setTypeface(null, Typeface.NORMAL);
+            ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setAnimation(null);
             Log.i("POSTS", "DIDN't WORKED");
         }
         Log.i("POSTS", "ID:"+post.getId());

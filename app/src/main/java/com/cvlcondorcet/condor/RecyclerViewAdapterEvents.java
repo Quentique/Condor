@@ -2,13 +2,18 @@ package com.cvlcondorcet.condor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,10 +27,14 @@ class RecyclerViewAdapterEvents extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private List<Event> events;
     private Context ctx;
+    private ArrayList<Integer> newEvents;
+    private Animation anim;
 
     public RecyclerViewAdapterEvents(List<Event> events, Context ctx) {
         this.events = events;
         this.ctx = ctx;
+        this.newEvents = Database.parsePrefNot("events", ctx);
+        anim = AnimationUtils.loadAnimation(ctx, R.anim.blink);
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int view_type) {
@@ -36,7 +45,17 @@ class RecyclerViewAdapterEvents extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemCount() { return (events != null) ? events.size() : 0; }
 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.i("EVENTS", "BindViewHolder");
         Event event = events.get(position);
+       if (newEvents.contains(Integer.valueOf(event.getId()))) {
+            ((ViewHolder) holder).name.setTypeface(null, Typeface.BOLD);
+            ((ViewHolder) holder).name.setAnimation(anim);
+            Log.i("POSTS", "WORKED");
+        } else {
+            ((ViewHolder) holder).name.setTypeface(null, Typeface.NORMAL);
+            ((ViewHolder) holder).name.setAnimation(null);
+            Log.i("POSTS", "DIDN't WORKED");
+        }
         ((ViewHolder) holder).name.setText(Html.fromHtml(event.getName()));
         String date;
         if (event.getDateBegin().equals(event.getDateEnd())) {
@@ -67,6 +86,9 @@ class RecyclerViewAdapterEvents extends RecyclerView.Adapter<RecyclerView.ViewHo
                 Intent intent = new Intent(ctx, EventViewerActivity.class);
                 intent.putExtra("id", e.getId());
                 ctx.startActivity(intent);
+                newEvents.remove(Integer.valueOf(e.getId()));
+                Database.updatePrefValue("events", newEvents, ctx);
+                Log.i("EVENTS", "EXECUTED");
             }
         }
     }

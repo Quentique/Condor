@@ -112,6 +112,7 @@ public class PostViewerActivity extends AppCompatActivity {
 
     }
 
+
     /**
      * Comes back to main activity (when home button pressed).
      * @param item  Item clicked by menu (home only)

@@ -58,7 +58,6 @@ public class SyncingFragment extends Fragment {
                     bar.setVisibility(VISIBLE);
                     message.setText("Syncing general settings...");
                     servicee = new Intent(getActivity(), Sync.class);
-                    servicee.putExtra("from", "activity");
                     getActivity().startService(servicee);
                 }
             }
@@ -111,6 +110,9 @@ public class SyncingFragment extends Fragment {
                 button.setVisibility(VISIBLE);
                 bar.setVisibility(GONE);
                 sync = false;
+                Intent intentt = new Intent(getContext(), MainActivity.class);
+                intentt.putExtra("fragment", "nav");
+                startActivity(intentt);
                 break;
         }
         message.setText(Html.fromHtml(intent.getStringExtra("progressMessage")));
