@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_app_start", true) && allowConnect(this)) {
                     Intent servicee = new Intent(getApplicationContext(), Sync.class);
+                    servicee.putExtra("from", "activity");
                     startService(servicee);
                 }
                 //Log.i("CONDOR", getIntent().getExtras().toString());
@@ -231,7 +232,9 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
-                navigationView.setCheckedItem((Integer) getKeyFromValue(correspondance,getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().size()-1).getClass()));
+                try {
+                    navigationView.setCheckedItem((Integer) getKeyFromValue(correspondance, getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().size() - 1).getClass()));
+                } catch(NullPointerException e ) {}
             }
         });
         db.close();
