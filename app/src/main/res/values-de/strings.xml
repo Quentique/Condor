@@ -74,7 +74,7 @@
     <string name="date_format">dd.MM</string>
     <string name="hour_format">H.mm</string>
     <string name="click_sync">Klicken Sie um zu synchronisieren</string>
-    <string name="new_content">Neue Inhalte</string>
+    <string name="new_content">Neuer Inhalt zum Herunterladen verfügbar</string>
     <string name="at">" um "</string>
     <string name="sync_firebase">Selbstsynchronisation</string>
     <string name="sync_firebase_more">Automatisch synchronisieren, wenn eine Aktualisierung verfügbar ist.</string>
@@ -84,4 +84,5 @@
     <string name="plan">PLAN</string>
     <string name="decline">ABLEHNEN</string>
     <string name="accept">ANNEHMEN</string>
+    <string name="new_content_toread">Neuer Inhalt!</string>
 </resources>

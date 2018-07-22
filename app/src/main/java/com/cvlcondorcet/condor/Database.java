@@ -1,12 +1,16 @@
 package com.cvlcondorcet.condor;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +28,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+
 
 /**
  * Class for handling database operations.
@@ -37,7 +43,6 @@ class Database {
     private final Context ctx;
     private ArrayList<Integer> posts, events;
     private boolean canteen, cvl, maps;
-    private int hasbeendeleted;
 
     /**
      * Default constructor.
@@ -59,7 +64,6 @@ class Database {
             Log.i("SYNC", events.toString());
             posts = parsePrefNot("posts", ctx);
             Log.i("SYNC", posts.toString());
-        hasbeendeleted = 0;
     }
 
     void open() throws SQLException { database = helper.getWritableDatabase(); }
@@ -157,29 +161,31 @@ class Database {
         }
     }
 
-    /**
-     * Updates teacher absences from data got from sync.
-     * @param array Updated data
-     *              @see Sync#get(String)
-     */
-    void updateProfs(JSONArray array) {
-        for (int i = 0; i < array.length(); i++) {
-            try {
-                JSONObject element = array.getJSONObject(i);
-                ContentValues values = new ContentValues();
-                values.put(DBOpenHelper.Profs.COLUMN_ID, element.getInt("id"));
-                values.put(DBOpenHelper.Profs.COLUMN_TITLE, element.getString("title"));
-                values.put(DBOpenHelper.Profs.COLUMN_NAME, element.getString("name"));
-                values.put(DBOpenHelper.Profs.COLUMN_BEGIN, element.getString("begin_date"));
-                values.put(DBOpenHelper.Profs.COLUMN_END, element.getString("end_date"));
-                values.put(DBOpenHelper.Profs.COLUMN_DELETED, element.getString("deleted"));
-                database.replace(DBOpenHelper.Profs.TABLE_NAME, null, values);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        database.delete(DBOpenHelper.Profs.TABLE_NAME, DBOpenHelper.Profs.COLUMN_END + " < CURRENT_TIMESTAMP", null);
-    }
+// --Commented out by Inspection START (21/07/2018 11:44):
+//    /**
+//     * Updates teacher absences from data got from sync.
+//     * @param array Updated data
+//     *              @see Sync#get(String)
+//     */
+//    void updateProfs(JSONArray array) {
+//        for (int i = 0; i < array.length(); i++) {
+//            try {
+//                JSONObject element = array.getJSONObject(i);
+//                ContentValues values = new ContentValues();
+//                values.put(DBOpenHelper.Profs.COLUMN_ID, element.getInt("id"));
+//                values.put(DBOpenHelper.Profs.COLUMN_TITLE, element.getString("title"));
+//                values.put(DBOpenHelper.Profs.COLUMN_NAME, element.getString("name"));
+//                values.put(DBOpenHelper.Profs.COLUMN_BEGIN, element.getString("begin_date"));
+//                values.put(DBOpenHelper.Profs.COLUMN_END, element.getString("end_date"));
+//                values.put(DBOpenHelper.Profs.COLUMN_DELETED, element.getString("deleted"));
+//                database.replace(DBOpenHelper.Profs.TABLE_NAME, null, values);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        database.delete(DBOpenHelper.Profs.TABLE_NAME, DBOpenHelper.Profs.COLUMN_END + " < CURRENT_TIMESTAMP", null);
+//    }
+// --Commented out by Inspection STOP (21/07/2018 11:44)
 
     /**
      * Updates maps table, empty it and refill it with new datas.
@@ -223,7 +229,7 @@ class Database {
                 values.put(DBOpenHelper.Events.COLUMN_END, element.getString("end"));
                 values.put(DBOpenHelper.Events.COLUMN_PLACE, element.getString("place"));
                 values.put(DBOpenHelper.Events.COLUMN_STATE, element.getString("state"));
-                if (element.getString("state") == "deleted")
+                if (element.getString("state").equals("deleted"))
                     events.remove(Integer.valueOf(element.getInt("id")));
                 values.put(DBOpenHelper.Events.COLUMN_PICT, element.getString("picture"));
                 database.replace(DBOpenHelper.Events.TABLE_NAME, null, values);
@@ -269,11 +275,12 @@ class Database {
         }
 
         if (id.isEmpty()) {
-            database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + "VALUES ('last_sync', datetime('now', 'localtime'))");
+            database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + " VALUES ('last_sync', datetime('now', 'localtime'))");
         } else {
-            database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_ID + ", " + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + "VALUES (" + id + ",'last_sync', datetime('now', 'localtime'))");
+            database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_ID + ", " + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + " VALUES (" + id + ",'last_sync', datetime('now', 'localtime'))");
         }
         cursor.close();
+        Log.i("DB", "INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_ID + ", " + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + " VALUES (" + id + ",'last_sync', datetime('now', 'localtime'))");
     }
 
     void deleteTable(String table) {
@@ -315,12 +322,12 @@ class Database {
                     cursor.close();
                 }
             }
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException ignored) {}
         return results;
     }
 
     /**
-     * Retrievies all posts.
+     * Retrieves all posts.
      * @return {@link ArrayList Array} containing all posts.
      * @see DBOpenHelper#POSTS_TABLE
      */
@@ -365,10 +372,12 @@ class Database {
                         results.add(jObject.getString(key));
                     }
                 }
-            } catch (JSONException e) {
+            } catch (JSONException ignored) {
             }
         }
-        cursor.close();
+        try {
+            cursor.close();
+        } catch (NullPointerException ignored) {}
         return results;
     }
 
@@ -388,7 +397,9 @@ class Database {
                 //Log.i("EVENT", event.getPlace());
             }
         }
-        cursor.close();
+        try {
+            cursor.close();
+        } catch (NullPointerException ignored) {}
         //Log.i("START", String.valueOf(toReturn.size()));
         return toReturn;
     }
@@ -396,12 +407,8 @@ class Database {
     @SuppressLint("Recycle")
     CursorAdapter getSuggestions() {
         Cursor cursor;
-        try {
-             cursor = database.query(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME}, null, null, null, null, null);
-            return new SimpleCursorAdapter(ctx, android.R.layout.simple_list_item_1, cursor, new String[]{DBOpenHelper.Maps.COLUMN_DPNAME}, new int[]{android.R.id.text1}, 0);
-        } finally {
-           // cursor.close();
-        }
+        cursor = database.query(DBOpenHelper.Maps.TABLE_NAME, new String[]{DBOpenHelper.Maps.COLUMN_ID, DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_NAME}, null, null, null, null, null);
+        return new SimpleCursorAdapter(ctx, android.R.layout.simple_list_item_1, cursor, new String[]{DBOpenHelper.Maps.COLUMN_DPNAME}, new int[]{android.R.id.text1}, 0);
     }
 
     /**
@@ -536,6 +543,24 @@ class Database {
     boolean endingSync() {
         Log.i("SYNC", "Ending sync function called");
         if (events.size() == 0 && posts.size() == 0 && !maps & !cvl & !canteen) {
+            NotificationManager manager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
+            Notification.Builder noti;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", NotificationManager.IMPORTANCE_DEFAULT);
+                manager.createNotificationChannel(chanell);
+                noti = new Notification.Builder(ctx, "channel1");
+            } else {
+                noti = new Notification.Builder(ctx);
+            }
+            noti.setContentTitle(ctx.getString(R.string.new_content_toread))
+                    .setAutoCancel(true)
+                    .setContentText("This is a test")
+                    .setShowWhen(true)
+                    .setSmallIcon(R.drawable.ic_launcher_material)
+                    .setVisibility(Notification.VISIBILITY_PUBLIC)
+                    .setStyle(new Notification.BigTextStyle().bigText("this is my big text that i'm writing right now but it's maybe not enough so that it displays it no expandable and i find that it is really a problem and i'm hoping everything's gone right now"));
+            noti.setAutoCancel(true);
+            manager.notify(3, noti.build());
             return false;
         } else {
             Gson gson = new Gson();
@@ -550,6 +575,8 @@ class Database {
             editor.putString("posts", gson.toJson(posts));
             Log.i("SYNC", gson.toJson(events));
             editor.apply();
+
+
             return true;
         }
     }

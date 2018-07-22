@@ -146,9 +146,9 @@ public class Sync extends IntentService {
         // PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        noti.setContentTitle(getResources().getString(R.string.sync_app_start_title))
+        noti.setContentTitle(getResources().getString(R.string.sync))
                 .setContentText(tickerText)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.ic_launcher_material)
                 .setOngoing(true)
                 .setContentIntent(intent)
                 .setTicker(getString(R.string.sync_start_ticker));
@@ -408,7 +408,7 @@ public class Sync extends IntentService {
         if (progress == -1) {
             noti.setContentTitle(getResources().getString(R.string.error))
                     .setContentText(Jsoup.parse(progressMessage).text())
-                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setSmallIcon(R.drawable.ic_launcher_material)
                     .setOngoing(false)
                     .setAutoCancel(true)
                     .setProgress(0, 0, false);

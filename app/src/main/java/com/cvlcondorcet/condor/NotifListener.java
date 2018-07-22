@@ -57,7 +57,7 @@ public class NotifListener extends FirebaseMessagingService {
                         PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                        // PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                         noti.setContentTitle(getString(R.string.new_content))
-                                .setSmallIcon(R.drawable.ic_launcher)
+                                .setSmallIcon(R.drawable.ic_launcher_material)
                                 .setContentText(getString(R.string.click_sync))
                                 .setContentIntent(intent);
                         noti.setAutoCancel(true);
@@ -101,7 +101,7 @@ public class NotifListener extends FirebaseMessagingService {
                     } else {
                         noti = new Notification.Builder(this);
                     }
-                    noti.setContentTitle(message.getNotification().getTitle()).setContentText(message.getNotification().getBody()).setSmallIcon(R.drawable.ic_launcher);
+                    noti.setContentTitle(message.getNotification().getTitle()).setContentText(message.getNotification().getBody()).setSmallIcon(R.drawable.ic_launcher_material);
                     Intent newIntent;
                     if (message.getData().containsKey("posts")) {
                         newIntent = new Intent(this, PostViewerActivity.class);
