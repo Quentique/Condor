@@ -62,7 +62,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 //            Toast.makeText(ctx, e.getDateBegin(), Toast.LENGTH_LONG).show();
                     noti.setContentTitle(Html.fromHtml(e.getName()))
                             .setContentText(content)
-                            .setSmallIcon(R.drawable.ic_launcher)
+                            .setSmallIcon(R.drawable.ic_launcher_material)
                             .setAutoCancel(true)
                             .setContentIntent(pendingIntent);
                     if (Build.VERSION.SDK_INT >= 21) {
