@@ -467,11 +467,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setMenuCounter(@IdRes int itemId, int count) {
-        TextView view = (TextView) navigationView.getMenu().findItem(itemId).getActionView().findViewById(R.id.testtt);
+        TextView view = (TextView) navigationView.getMenu().findItem(itemId).getActionView().findViewById(R.id.menu_counter);
         view.setText(count > 0 ? String.valueOf(count) : null);
     }
 
-    private Drawable setBadgeCount(Context context, int res, int badgeCount){
+    public static Drawable setBadgeCount(Context context, int res, int badgeCount){
         LayerDrawable icon = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.ic_counter_hamburger);
         Drawable mainIcon = ContextCompat.getDrawable(context, res);
         BadgeDrawable badge = new BadgeDrawable(context);
