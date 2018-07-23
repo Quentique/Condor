@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -14,6 +16,7 @@ import android.os.Build;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -543,24 +546,7 @@ class Database {
     boolean endingSync() {
         Log.i("SYNC", "Ending sync function called");
         if (events.size() == 0 && posts.size() == 0 && !maps & !cvl & !canteen) {
-            NotificationManager manager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
-            Notification.Builder noti;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", NotificationManager.IMPORTANCE_DEFAULT);
-                manager.createNotificationChannel(chanell);
-                noti = new Notification.Builder(ctx, "channel1");
-            } else {
-                noti = new Notification.Builder(ctx);
-            }
-            noti.setContentTitle(ctx.getString(R.string.new_content_toread))
-                    .setAutoCancel(true)
-                    .setContentText("This is a test")
-                    .setShowWhen(true)
-                    .setSmallIcon(R.drawable.ic_launcher_material)
-                    .setVisibility(Notification.VISIBILITY_PUBLIC)
-                    .setStyle(new Notification.BigTextStyle().bigText("this is my big text that i'm writing right now but it's maybe not enough so that it displays it no expandable and i find that it is really a problem and i'm hoping everything's gone right now"));
-            noti.setAutoCancel(true);
-            manager.notify(3, noti.build());
+
             return false;
         } else {
             Gson gson = new Gson();
@@ -575,8 +561,46 @@ class Database {
             editor.putString("posts", gson.toJson(posts));
             Log.i("SYNC", gson.toJson(events));
             editor.apply();
+            String content = "";
+            if (posts.size() > 0){
+                content += "- <b>"+String.valueOf(posts.size())+"</b> "+ctx.getString(R.string.new_posts)+"<br/>";
+            }
+            if (events.size() > 0) {
+                content += "- <strong>"+String.valueOf(events.size())+"</strong> "+ctx.getString(R.string.new_events)+"<br/>";
+            }
+            if (canteen) {
+                content += "- "+ ctx.getString(R.string.new_canteen) + "<br/>";
+            }
+            if (maps) {
+                content += "- " +ctx.getString(R.string.new_maps) +"<br/>";
+            }
+            if (cvl) {
+                content +="- "+ctx.getString(R.string.new_cvl)+"<br/>";
+            }
+            content = content.substring(0, content.length()-5);
+            NotificationManager manager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
+            Notification.Builder noti;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", NotificationManager.IMPORTANCE_DEFAULT);
+                manager.createNotificationChannel(chanell);
+                noti = new Notification.Builder(ctx, "channel1");
+            } else {
+                noti = new Notification.Builder(ctx);
+            }
+            noti.setContentTitle(ctx.getString(R.string.new_content_toread))
+                    .setAutoCancel(true)
+                    .setContentText(ctx.getString(R.string.drop_to_see))
+                    .setShowWhen(true)
+                    .setSmallIcon(R.drawable.ic_launcher_material)
+                    .setStyle(new Notification.BigTextStyle().bigText(Html.fromHtml(content)));
+            noti.setAutoCancel(true);
 
-
+            Intent newIntent = new Intent(ctx, SplashActivity.class);
+            android.support.v4.app.TaskStackBuilder stackBuilder = android.support.v4.app.TaskStackBuilder.create(ctx);
+            stackBuilder.addNextIntentWithParentStack(newIntent);
+            PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            noti.setContentIntent(intent);
+            manager.notify(3, noti.build());
             return true;
         }
     }
