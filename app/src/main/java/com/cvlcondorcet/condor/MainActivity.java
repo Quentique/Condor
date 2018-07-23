@@ -55,7 +55,7 @@ import com.google.android.gms.common.GoogleApiAvailability;*/
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+    public NavigationView navigationView;
     private Class fragmentClass;
     public static String locale;
     public Map<Integer, Class> correspondance;
@@ -238,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onBackStackChanged() {
                 try {
+                    setupDrawerContent(navigationView);
                     navigationView.setCheckedItem((Integer) getKeyFromValue(correspondance, getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().size() - 1).getClass()));
                 } catch(NullPointerException e ) {}
             }
