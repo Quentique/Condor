@@ -21,6 +21,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.view.View.GONE;
 
@@ -104,12 +105,13 @@ public class PostViewerActivity extends AppCompatActivity {
                 setTitle(view.getTitle());
             } else {
                 new Loading().execute("id", id);
+                ArrayList<Integer> newArt = Database.parsePrefNot("posts", this);
+                newArt.remove(Integer.valueOf(id));
+                Database.updatePrefValue("posts", newArt, this);
             }
         } else {
             new LoadingWeb().execute(getIntent().getStringExtra("link"));
         }
-
-
     }
 
 
@@ -179,6 +181,7 @@ public class PostViewerActivity extends AppCompatActivity {
             date.setText(post.getFormatedDate());
             cat.setText(post.getFormatedCategories());
             db.close();
+
         }
     }
 }

@@ -528,7 +528,8 @@ class Database {
         ArrayList<Integer> toReturn;
         Gson gson = new Gson();
         Type founder = new TypeToken<ArrayList<Integer>>(){}.getType();
-        toReturn = gson.fromJson(MainActivity.preferences.getString(key, ""), founder);
+        SharedPreferences pref = ctx.getSharedPreferences("notifications",0);
+        toReturn = gson.fromJson(pref.getString(key, ""), founder);
         if (toReturn == null) toReturn = new ArrayList<>();
         Log.i("DATABASE", "ACTION DEMANDED : "+toReturn.toString());
         return toReturn;
@@ -536,7 +537,8 @@ class Database {
 
     static void updatePrefValue(String key, ArrayList<Integer> array, Context ctx) {
         Gson gson = new Gson();
-        SharedPreferences.Editor editor=  MainActivity.preferences.edit();
+        SharedPreferences pref = ctx.getSharedPreferences("notifications",0);
+        SharedPreferences.Editor editor=  pref.edit();
         editor.putString(key, gson.toJson(array));
         //Log.i("TESTTTT", String.valueOf(pref.getInt(key,0)-1));
         editor.putInt(key+"_count", array.size());

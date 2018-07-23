@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 /**
  * Shows an event (from {@link EventsFragment} or from {@link AlarmReceiver#onReceive(Context, Intent)} and displays its information
  * @author Quentin DE MUYNCK
@@ -62,6 +64,9 @@ public class EventViewerActivity extends AppCompatActivity {
         try {
             Picasso.with(this).load(event.getPicture()).into(image);
         } catch(IllegalArgumentException e) {}
+        ArrayList<Integer> newEvents = Database.parsePrefNot("events", this);
+        newEvents.remove(Integer.valueOf(id));
+        Database.updatePrefValue("events", newEvents, this);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

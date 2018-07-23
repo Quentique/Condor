@@ -44,6 +44,8 @@ class RecyclerViewAdapterEvents extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public int getItemCount() { return (events != null) ? events.size() : 0; }
 
+    public void actualise() { newEvents = Database.parsePrefNot("events", ctx); }
+
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Log.i("EVENTS", "BindViewHolder");
         Event event = events.get(position);
@@ -86,8 +88,6 @@ class RecyclerViewAdapterEvents extends RecyclerView.Adapter<RecyclerView.ViewHo
                 Intent intent = new Intent(ctx, EventViewerActivity.class);
                 intent.putExtra("id", e.getId());
                 ctx.startActivity(intent);
-                newEvents.remove(Integer.valueOf(e.getId()));
-                Database.updatePrefValue("events", newEvents, ctx);
                 Log.i("EVENTS", "EXECUTED");
             }
         }
