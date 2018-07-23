@@ -85,4 +85,10 @@
     <string name="accept">ACCEPTER</string>
     <string name="new_content">Du contenu nouveau est disponible au téléchargement</string>
     <string name="new_content_toread">Nouveau contenu !</string>
+    <string name="new_canteen">Nouveau menu de la cantine !</string>
+    <string name="new_cvl">Du nouveau sur le CVL</string>
+    <string name="new_events">nouveaux évènements</string>
+    <string name="new_maps">nouveaux endroits</string>
+    <string name="new_posts">nouvelles actualités</string>
+    <string name="drop_to_see">Dérouler pour plus de détails</string>
 </resources>
