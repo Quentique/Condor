@@ -55,6 +55,8 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
         return (filteredList != null) ? filteredList.size() : 0;
     }
 
+    public void actualise() { newArt = Database.parsePrefNot("posts", ctx); }
+
     /**
      * Transfers data to object
      * @param list  data
@@ -246,8 +248,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
                 Log.i("POSTS", "ABOUT TO EXECUTE");
                 context.startActivity(intent);
-                newArt.remove(Integer.valueOf(post.getId()));
-                Database.updatePrefValue("posts", newArt, ctx);
+
                 Log.i("POSTS", "EXECUTED");
             }
         }
