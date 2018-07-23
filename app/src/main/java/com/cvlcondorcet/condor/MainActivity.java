@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     public Map<Integer, Class> correspondance;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    public static SharedPreferences preferences, default_preferences;
 
     /**
      * Sets up activity, loading language and locale.
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         mFirebaseRemoteConfig.setConfigSettings(configSettings);
         mFirebaseRemoteConfig.setDefaults(R.xml.defaults_remote_param);
+
+        preferences = getSharedPreferences("notifications",0);
+        default_preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         mFirebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -193,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InstantiationException e) {
                 }
             } else {
-                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_app_start", true) && allowConnect(this)) {
+                if (default_preferences.getBoolean("sync_app_start", true) && allowConnect(this)) {
                     Intent servicee = new Intent(getApplicationContext(), Sync.class);
                     servicee.putExtra("from", "activity");
                     startService(servicee);
@@ -300,14 +304,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        SharedPreferences pref = getSharedPreferences("notifications", 0);
-        int posts_count  = pref.getInt("posts_count", 0);
-        int events_count = pref.getInt("events_count", 0);
+        int posts_count  = preferences.getInt("posts_count", 0);
+        int events_count = preferences.getInt("events_count", 0);
         Log.i("START", String.valueOf(posts_count));
         Log.i("START", String.valueOf(events_count));
-        boolean cvl = pref.getBoolean("cvl", false);
-        boolean maps = pref.getBoolean("maps", false);
-        boolean canteen = pref.getBoolean("canteen", false);
+        boolean cvl = preferences.getBoolean("cvl", false);
+        boolean maps = preferences.getBoolean("maps", false);
+        boolean canteen = preferences.getBoolean("canteen", false);
         int count = posts_count+events_count;
         Log.i("START", String.valueOf(count));
         if (posts_count > 0) {
@@ -426,11 +429,10 @@ public class MainActivity extends AppCompatActivity {
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = conn.getActiveNetworkInfo();
 
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         try {
-            if (!settings.getBoolean("mobile_data_usage", true) && networkInfo != null & networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            if (!default_preferences.getBoolean("mobile_data_usage", true) && networkInfo != null & networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                 return true;
-            } else return settings.getBoolean("mobile_data_usage", true) && networkInfo != null;
+            } else return default_preferences.getBoolean("mobile_data_usage", true) && networkInfo != null;
         } catch (NullPointerException e) {
             return false;
         }

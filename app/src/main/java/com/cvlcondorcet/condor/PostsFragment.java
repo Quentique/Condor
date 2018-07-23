@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -103,7 +102,7 @@ public class PostsFragment extends Fragment
         loader = new Task();
         loader.execute();
         spinner.setListener(this);
-        rssAllowed = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean("rss_display", true);
+        rssAllowed = MainActivity.default_preferences.getBoolean("rss_display", true);
 
         getLoaderManager().initLoader(2, null, this);
     }
