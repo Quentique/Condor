@@ -2,6 +2,7 @@ package com.cvlcondorcet.condor;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -28,6 +29,8 @@ import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.IOException;
+
+import io.supercharge.shimmerlayout.ShimmerLayout;
 
 import static android.view.View.GONE;
 
@@ -244,6 +247,19 @@ public class MainFragment extends Fragment {
         }
         if (!mFirebaseRemoteConfig.getBoolean("canteen")) {
             view.findViewById(R.id.canteen_quick).setVisibility(GONE);
+        }
+        SharedPreferences pref = getContext().getSharedPreferences("notifications",0);
+        if (pref.getInt("posts_count",0) > 0) {
+            ShimmerLayout layouttt = view.findViewById(R.id.news_quick).findViewById(R.id.shimmer);
+            layouttt.startShimmerAnimation();
+        }
+        if(pref.getInt("events_count", 0) > 0) {
+            ShimmerLayout layout = view.findViewById(R.id.events_quick).findViewById(R.id.shimmer);
+            layout.startShimmerAnimation();
+        }
+        if (pref.getBoolean("canteen", false)) {
+            ShimmerLayout layout = view.findViewById(R.id.canteen_quick).findViewById(R.id.shimmer);
+            layout.startShimmerAnimation();
         }
     }
 
