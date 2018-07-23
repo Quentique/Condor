@@ -17,6 +17,7 @@ public class CVLFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        MainActivity.preferences.edit().putBoolean("cvl", false).apply();
         return inflater.inflate(R.layout.fragment_train, container, false);
     }
 

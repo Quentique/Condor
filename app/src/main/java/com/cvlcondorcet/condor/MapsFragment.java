@@ -142,6 +142,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 loadPdf(db.getPlaceId(test));
             }
         }
+        MainActivity.preferences.edit().putBoolean("maps", false).apply();
     }
 
     @Override
