@@ -87,8 +87,8 @@
     <string name="new_content_toread">Neuer Inhalt!</string>
     <string name="new_canteen">Neuer Mensa-Speiseplan!</string>
     <string name="new_cvl">Neues über CVL</string>
-    <string name="new_events">neue Events</string>
-    <string name="new_maps">neue Orte</string>
+    <string name="new_events">Neue Events</string>
+    <string name="new_maps">Neue Orte</string>
     <string name="new_posts">neue Nachrichten</string>
     <string name="drop_to_see">Öffnen für mehr</string>
 </resources>

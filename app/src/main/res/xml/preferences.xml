@@ -26,4 +26,14 @@
         android:key="rss_display"
         android:title="@string/rss_display_title"
         android:summary="@string/rss_display_summary"/>
+    <PreferenceCategory android:title="Vos données">
+        <SwitchPreferenceCompat
+            android:key="firebase"
+            android:title="Données statistiques"
+            android:defaultValue="false"/>
+        <SwitchPreferenceCompat
+            android:key="crashlytics"
+            android:title="Données de crash"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
 </PreferenceScreen>
