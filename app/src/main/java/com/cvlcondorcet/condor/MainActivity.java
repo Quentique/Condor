@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
             builder2.setItems(null,null);
             builder2.setTitle("Merci !");
-            builder2.setMessage(Html.fromHtml("<) style=\"text-align: justify;\">Nous vous remercions de la confiance que vous nous accordée.</p><br/><br/><strong>Nous synchronisons actuellement les derniers éléments !</strong>"));
+            builder2.setMessage(Html.fromHtml(getString(R.string.end_sync)));
             builder2.setCancelable(true);
             builder2.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
                 @Override

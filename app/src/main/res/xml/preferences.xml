@@ -1,46 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/content">
     <CheckBoxPreference
         android:key="mobile_data_usage"
         android:title="@string/sync_mobile_data_title"
         android:summary="@string/sync_mobile_data"
         android:defaultValue="true"/>
-    <CheckBoxPreference
-        android:key="sync_app_start"
-        android:title="@string/sync_app_start_title"
-        android:summary="@string/sync_app_start"
-        android:defaultValue="false"/>
-    <CheckBoxPreference
-        android:key="sync_when_notified"
-        android:title="@string/sync_firebase"
-        android:summary="@string/sync_firebase_more"
-        android:defaultValue="true"/>
-    <ListPreference
-        android:key="language"
-        android:title="@string/language"
-        android:dialogTitle="@string/select_language_title"
-        android:entries="@array/language_choose"
-        android:entryValues="@array/language_choose_values"
-        android:defaultValue="default"/>
-    <CheckBoxPreference
-        android:key="rss_display"
-        android:title="@string/rss_display_title"
-        android:summary="@string/rss_display_summary"/>
-    <PreferenceCategory android:title="Vos données">
+        <ListPreference
+            android:key="language"
+            android:title="@string/language"
+            android:dialogTitle="@string/select_language_title"
+            android:entries="@array/language_choose"
+            android:entryValues="@array/language_choose_values"
+            android:defaultValue="default"/>
+        <CheckBoxPreference
+            android:key="rss_display"
+            android:title="@string/rss_display_title"
+            android:summary="@string/rss_display_summary"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/sync">
+        <CheckBoxPreference
+            android:key="sync_app_start"
+            android:title="@string/sync_app_start_title"
+            android:summary="@string/sync_app_start"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="sync_when_notified"
+            android:title="@string/sync_firebase"
+            android:summary="@string/sync_firebase_more"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/your_data">
         <SwitchPreferenceCompat
             android:key="firebase"
-            android:title="Données statistiques"
-            android:defaultValue="false"/>
+            android:title="@string/stats_data"
+            android:defaultValue="false"
+            android:summary="@string/stats_data_summary"
+            />
         <SwitchPreferenceCompat
             android:key="crashlytics"
-            android:title="Données de crash"
-            android:defaultValue="false"/>
+            android:title="@string/crash_data"
+            android:defaultValue="false"
+            android:summary="@string/crash_data_summary"/>
         <Preference android:key="show_data"
-            android:title="Voir mes données"
+            android:title="@string/see_data"
             android:persistent="false"/>
         <Preference android:key="export_data"
-            android:title="Exporter mes données"/>
+            android:title="@string/export_data"/>
         <Preference android:key="delete"
-            android:title="Supprimer l'identifiant unique"/>
+            android:title="@string/delete_unique"
+            android:summary="@string/delete_summary"/>
     </PreferenceCategory>
 </PreferenceScreen>
