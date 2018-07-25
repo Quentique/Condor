@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InstantiationException e) {
                 }
             } else {
-                if (default_preferences.getBoolean("sync_app_start", true) && allowConnect(this)) {
+                if (default_preferences.getBoolean("sync_app_start", false) && allowConnect(this)) {
                     Intent servicee = new Intent(getApplicationContext(), Sync.class);
                     servicee.putExtra("from", "activity");
                     startService(servicee);
@@ -320,6 +320,11 @@ public class MainActivity extends AppCompatActivity {
         Log.i("START", String.valueOf(events_count));
         boolean cvl = preferences.getBoolean("cvl", false);
         boolean maps = preferences.getBoolean("maps", false);
+        if (maps){
+            Log.i("DEAT","WORKED");
+        } else {
+            Log.i("DEAT","NOT WORKED");
+        }
         boolean canteen = preferences.getBoolean("canteen", false);
         int count = posts_count+events_count;
         Log.i("START", String.valueOf(count));
