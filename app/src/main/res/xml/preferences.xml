@@ -35,5 +35,12 @@
             android:key="crashlytics"
             android:title="Données de crash"
             android:defaultValue="false"/>
+        <Preference android:key="show_data"
+            android:title="Voir mes données"
+            android:persistent="false"/>
+        <Preference android:key="export_data"
+            android:title="Exporter mes données"/>
+        <Preference android:key="delete"
+            android:title="Supprimer l'identifiant unique"/>
     </PreferenceCategory>
 </PreferenceScreen>
