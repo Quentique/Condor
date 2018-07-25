@@ -25,5 +25,6 @@
         <item name="T">Terminale</item>
         <item name="BTS">BTS</item>
         <item name="perso">Personnel</item>
+        <item name="">Ne se prononce pas</item>
     </string-array>
 </resources>

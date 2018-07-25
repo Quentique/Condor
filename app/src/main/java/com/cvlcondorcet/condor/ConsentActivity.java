@@ -1,6 +1,7 @@
 package com.cvlcondorcet.condor;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.util.Log;
 import android.widget.RelativeLayout;
 
@@ -27,7 +30,19 @@ public class ConsentActivity extends IntroActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.NoActionBar);
         super.onCreate(savedInstanceState);
-
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        builder2.setItems(null,null);
+        builder2.setTitle("Félicitations !");
+        builder2.setMessage(Html.fromHtml("<) style=\"text-align: justify;\">Vous avez installé Condor avec succès et nous vous en remercions. </p><br/><br/><strong>Pour utiliser Condor, nous avons besoin de votre consentement !</strong>"));
+        builder2.setCancelable(true);
+        builder2.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder2.create();
+        dialog.show();
         disableLeftButton(true);
         disableRightButton(true);
         disableFinalButton(true);

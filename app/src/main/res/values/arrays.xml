@@ -23,7 +23,8 @@
         <item name="2">Seconde</item>
         <item name="1">Première</item>
         <item name="T">Terminale</item>
-        <item name="BTS">BTS</item>
-        <item name="perso">Personnel</item>
+        <item name="BTS">HND</item>
+        <item name="perso">Staff</item>
+        <item name="">Sit on the fence</item>
     </string-array>
 </resources>
