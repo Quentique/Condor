@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                     recreate();
+                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
                 }
             });
             builder.create().show();
