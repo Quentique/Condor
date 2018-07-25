@@ -1,12 +1,18 @@
 package com.cvlcondorcet.condor;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Activity showing splash screen and starting the {@link MainActivity}
@@ -18,7 +24,16 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (PreferenceManager.getDefaultSharedPreferences(this).getInt("version",0) < BuildConfig.VERSION_CODE) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!pref.getBoolean("firebase", false)) {
+            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(false);
+        } else {
+            FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
+        }
+        if (pref.getBoolean("crashlytics", false)) {
+            Fabric.with(this, new Crashlytics());
+        }
+        if (pref.getInt("version",0) < BuildConfig.VERSION_CODE) {
             intent = new Intent(this, ConsentActivity.class);
         } else {
             intent = new Intent(this, MainActivity.class);

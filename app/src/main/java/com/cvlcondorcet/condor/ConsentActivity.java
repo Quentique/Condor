@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.widget.RelativeLayout;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager;
@@ -90,6 +91,7 @@ public class ConsentActivity extends IntroActivity {
         edit = PreferenceManager.getDefaultSharedPreferences(this).edit();
         Log.i("TEST", PreferenceManager.getDefaultSharedPreferences(this).getString("language", "test"));
         edit.putInt("version", BuildConfig.VERSION_CODE);
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         return new IntroButton.ProgressToNextActivity(nextActivity, edit);
        // return null;
     }
