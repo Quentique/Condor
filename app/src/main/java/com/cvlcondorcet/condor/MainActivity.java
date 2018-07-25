@@ -33,6 +33,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -44,6 +46,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import io.fabric.sdk.android.Fabric;
 
 /*import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;*/
@@ -71,7 +75,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build();
 
+// Initialize Fabric with the debug-disabled crashlytics.
+        Fabric.with(this, crashlyticsKit);
         /* Initialising Firebase and remote control */
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
@@ -82,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences("notifications",0);
         default_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if(default_preferences.getBoolean("firebase", false)) {
+            Log.i("STARTUP", "DONE");
+        } else {
+            Log.i("STARTUP", "SOMETHING WENT WRONG");
+        }
 
         mFirebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
