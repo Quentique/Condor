@@ -28,7 +28,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -166,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
                         case 4:
                             analytics.setUserProperty("category", "Personnels");
                             break;
+                        case 5:
+                            analytics.setUserProperty("category", "Ne se prononce pas");
+                            break;
                     }
                     recreate();
                 }
@@ -175,17 +177,10 @@ public class MainActivity extends AppCompatActivity {
             startService(servicee);
             AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
             builder2.setItems(null,null);
-            builder2.setTitle("Félicitations !");
-            builder2.setMessage(Html.fromHtml("<) style=\"text-align: justify;\">Vous avez installé Condor avec succès et nous vous en remercions. Nous téléchargeons actuellement les derniers éléments nécessaires. Merci !</p><br/><br/><strong>En utilisant Condor, vous acceptez les <a href=\"https://app.cvlcondorcet.fr/cgu\">CGU</a> (présentes dans la rubrique \"Aide\" de Condor).</strong>"));
-            builder2.setCancelable(false);
-            builder2.setNegativeButton(R.string.decline, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    finish();
-                }
-            });
-            builder2.setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
+            builder2.setTitle("Merci !");
+            builder2.setMessage(Html.fromHtml("<) style=\"text-align: justify;\">Nous vous remercions de la confiance que vous nous accordée.</p><br/><br/><strong>Nous synchronisons actuellement les derniers éléments !</strong>"));
+            builder2.setCancelable(true);
+            builder2.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -193,8 +188,6 @@ public class MainActivity extends AppCompatActivity {
             });
             AlertDialog dialog = builder2.create();
             dialog.show();
-            TextView textView = dialog.findViewById(android.R.id.message);
-            textView.setMovementMethod(LinkMovementMethod.getInstance());
         } else {
             try {
                 db.open();

@@ -27,14 +27,18 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (!pref.getBoolean("firebase", false)) {
             FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(false);
+            Log.i("TEST", "FirebaseAnalytics disabled");
         } else {
+            Log.i("TEST", "AUTOINITIALIZATION FirebaseAnalytics");
             FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
         }
         if (pref.getBoolean("crashlytics", false)) {
+            Log.i("TEST", "AUTOINITIALIZATION CRASHLYTICS");
             Fabric.with(this, new Crashlytics());
         }
         if (pref.getInt("version",0) < BuildConfig.VERSION_CODE) {
             intent = new Intent(this, ConsentActivity.class);
+            startActivity(intent);
         } else {
             intent = new Intent(this, MainActivity.class);
             Log.i("OPENING", "SPLASH ACITIVTY");

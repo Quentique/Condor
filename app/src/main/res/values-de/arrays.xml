@@ -24,6 +24,7 @@
         <item name="1">Première</item>
         <item name="T">Terminale</item>
         <item name="BTS">BTS</item>
-        <item name="perso">Personnel</item>
+        <item name="perso">Belegschaft</item>
+        <item name="">Nimmt keine Stellung dazu</item>
     </string-array>
 </resources>
