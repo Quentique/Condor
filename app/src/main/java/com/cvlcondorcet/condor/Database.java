@@ -62,7 +62,10 @@ class Database {
 
     void initialiseSync() {
         Log.i("SYNC", "Initalising function called");
-        canteen = cvl = maps = false;
+        SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
+        canteen = pref.getBoolean("canteen", false);
+        maps = pref.getBoolean("maps", false);
+        cvl = pref.getBoolean("cvl", false);
             events = parsePrefNot("events", ctx);
             Log.i("SYNC", events.toString());
             posts = parsePrefNot("posts", ctx);
@@ -602,6 +605,11 @@ class Database {
             PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             noti.setContentIntent(intent);
             manager.notify(3, noti.build());
+            if (pref.getBoolean("maps", false)){
+                Log.i("DATA", "WORKEDDDDD");
+            } else {
+                Log.i("DATA", "NOT WORKEDDDDD");
+            }
             return true;
         }
     }

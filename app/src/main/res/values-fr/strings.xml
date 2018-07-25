@@ -112,4 +112,5 @@
     <string name="conf_accept">Je déclare accepter la présente politique de confidentialité.</string>
     <string name="stats_accept">J\'accepte la transmission de données statistiques à la MDL du Lycée Condorcet.</string>
     <string name="crash_accepts">J\'accepte la transmission de mes données de crash à la MDL du Lycée Condorcet.</string>
+    <string name="congrats">Félicitations !</string>
 </resources>

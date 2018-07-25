@@ -1,14 +1,11 @@
 package com.cvlcondorcet.condor;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
@@ -32,7 +29,7 @@ public class ConsentActivity extends IntroActivity {
         super.onCreate(savedInstanceState);
         AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
         builder2.setItems(null,null);
-        builder2.setTitle("Félicitations !");
+        builder2.setTitle(R.string.congrats);
         builder2.setMessage(Html.fromHtml(getString(R.string.first_window)));
         builder2.setCancelable(true);
         builder2.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
@@ -109,41 +106,6 @@ public class ConsentActivity extends IntroActivity {
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         return new IntroButton.ProgressToNextActivity(nextActivity, edit);
        // return null;
-    }
-
-}
-class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
-
-    private Context mContext;
-
-    public SimpleFragmentPagerAdapter(Context context, FragmentManager fm) {
-        super(fm);
-        mContext = context;
-    }
-
-    // This determines the fragment for each tab
-    @Override
-    public Fragment getItem(int position) {
-        if (position == 0) {
-            Log.i("ADAPTER", "HELLO POSITION 0");
-            return new GTUFragment();
-        } else {return new GTUFragment();}
-    }
-
-    // This determines the number of tabs
-    @Override
-    public int getCount() {
-        return 2;
-    }
-
-    // This determines the title for each tab
-    @Override
-    public CharSequence getPageTitle(int position) {
-        // Generate title based on item position
-        switch (position) {
-            default:
-                return "";
-        }
     }
 
 }
