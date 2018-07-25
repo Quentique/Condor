@@ -42,7 +42,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
                     AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
                     builder2.setItems(null, null);
                     builder2.setTitle("Êtes-vous sûr·e ?");
-                    builder2.setMessage(Html.fromHtml("<p style=\"text-align: justify;\">Nous avons besoin de vos données. Si néanmoins vous souhaitez les supprimer, continuez.</p>"));
+                    builder2.setMessage(Html.fromHtml(getString(R.string.need_data)));
                     builder2.setCancelable(false);
                     builder2.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
@@ -74,7 +74,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
                 content = "<p>Instance ID : " + FirebaseInstanceId.getInstance().getId()+"</p>";
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
                 builder2.setItems(null, null);
-                builder2.setTitle("Vos données");
+                builder2.setTitle(getString(R.string.your_data));
                 builder2.setMessage(Html.fromHtml(content));
                 builder2.setCancelable(true);
                 AlertDialog dialog = builder2.create();
@@ -87,8 +87,10 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
             public boolean onPreferenceClick(Preference preference) {
                 ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData data = ClipData.newPlainText("condor", "{\"instance_id\":\""+FirebaseInstanceId.getInstance().getId()+"\"}");
-                clipboard.setPrimaryClip(data);
-                Toast.makeText(getContext(), "Vos données ont été exportées dans le presse-papier", Toast.LENGTH_LONG).show();
+                try {
+                    clipboard.setPrimaryClip(data);
+                } catch (NullPointerException e) { Toast.makeText(getContext(), R.string.copy_error, Toast.LENGTH_LONG).show(); }
+                Toast.makeText(getContext(), R.string.data_copied, Toast.LENGTH_LONG).show();
                 return true;
             }
         });
@@ -98,7 +100,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
                 builder2.setItems(null, null);
                 builder2.setTitle("Êtes-vous sûr·e ?");
-                builder2.setMessage(Html.fromHtml("<p style=\"text-align: justify;\">Vous vous apprêtez à rénoncer à utiliser Condor. Si vous continuez, <strong>toutes vos données</strong> seront supprimés de nos serveurs dans les conditions que vous avez précédemment acceptées.</p>"));
+                builder2.setMessage(Html.fromHtml(getString(R.string.condor_end)));
                 builder2.setCancelable(false);
                 builder2.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override

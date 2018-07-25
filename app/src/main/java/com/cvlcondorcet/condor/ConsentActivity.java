@@ -33,7 +33,7 @@ public class ConsentActivity extends IntroActivity {
         AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
         builder2.setItems(null,null);
         builder2.setTitle("Félicitations !");
-        builder2.setMessage(Html.fromHtml("<) style=\"text-align: justify;\">Vous avez installé Condor avec succès et nous vous en remercions. </p><br/><br/><strong>Pour utiliser Condor, nous avons besoin de votre consentement !</strong>"));
+        builder2.setMessage(Html.fromHtml(getString(R.string.first_window)));
         builder2.setCancelable(true);
         builder2.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
             @Override

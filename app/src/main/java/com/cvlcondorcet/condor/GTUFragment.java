@@ -35,24 +35,24 @@ public class GTUFragment extends Fragment {
            if (getArguments().getInt("id") == 1) {
                vview.loadUrl("file:///android_asset/cgu.html");
                LinearLayout check1 = (LinearLayout) getLayoutInflater().inflate(R.layout.consent_checkbox, (ViewGroup) view.findViewById(R.id.base_consent), true);
-               ((TextView) check1.findViewById(R.id.consent_text)).setText("Je déclare accepter les présentes conditions d'utilisation");
+               ((TextView) check1.findViewById(R.id.consent_text)).setText(R.string.gtu_accept);
                check1.findViewById(R.id.checkbox_consent).setTag(1);
                ((CheckBox) check1.findViewById(R.id.checkbox_consent)).setOnCheckedChangeListener(myCheckboxListener);
            }
            else {
                vview.loadUrl("file:///android_asset/cgu.html");
                LinearLayout check1 = (LinearLayout) ((LinearLayout) getLayoutInflater().inflate(R.layout.consent_checkbox, (ViewGroup) view.findViewById(R.id.base_consent), true)).getChildAt(0);
-               ((TextView) check1.findViewById(R.id.consent_text)).setText("Je déclare accepter la présente politique de confidentialité");
+               ((TextView) check1.findViewById(R.id.consent_text)).setText(R.string.conf_accept);
                check1.findViewById(R.id.checkbox_consent).setTag(2);
                ((CheckBox) check1.findViewById(R.id.checkbox_consent)).setOnCheckedChangeListener(myCheckboxListener);
 
                LinearLayout check2 = (LinearLayout)((LinearLayout) getLayoutInflater().inflate(R.layout.consent_checkbox, (ViewGroup) view.findViewById(R.id.base_consent), true)).getChildAt(1);
-               ((TextView) check2.findViewById(R.id.consent_text)).setText("J'accepte la transmission de données statistiques à la MDL du Lycée Condorcet");
+               ((TextView) check2.findViewById(R.id.consent_text)).setText(R.string.stats_accept);
                check2.findViewById(R.id.checkbox_consent).setTag(3);
                ((CheckBox) check2.findViewById(R.id.checkbox_consent)).setOnCheckedChangeListener(myCheckboxListener);
 
                LinearLayout check3 = (LinearLayout) ((LinearLayout) getLayoutInflater().inflate(R.layout.consent_checkbox, (ViewGroup) view.findViewById(R.id.base_consent), true)).getChildAt(2);
-               ((TextView) check3.findViewById(R.id.consent_text)).setText("J'accepte la transmission de mes données de crash à la MDL du Lycée Condorcet");
+               ((TextView) check3.findViewById(R.id.consent_text)).setText(R.string.crash_accepts);
                check3.findViewById(R.id.checkbox_consent).setTag(4);
                ((CheckBox) check3.findViewById(R.id.checkbox_consent)).setOnCheckedChangeListener(myCheckboxListener);
            }

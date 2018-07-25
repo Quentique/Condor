@@ -92,4 +92,24 @@
     <string name="new_posts">Neue Nachrichten</string>
     <string name="drop_to_see">Öffnen für mehr</string>
     <string name="continued">Weiter</string>
+    <string name="content">Inhalt</string>
+    <string name="your_data">Ihre Daten</string>
+    <string name="delete_unique">Die einmalige Kennung löschen</string>
+    <string name="export_data">Meine Daten exportieren</string>
+    <string name="see_data">Meine Daten sehen</string>
+    <string name="crash_data">Crashdaten</string>
+    <string name="stats_data">Statistikdaten</string>
+    <string name="stats_data_summary">Senden von Statistikdaten an den Herausgeber.</string>
+    <string name="crash_data_summary">Senden von Crashberichten an den Herausgeber.</string>
+    <string name="delete_summary">Alle Ihre Daten löschen.</string>
+    <string name="end_sync"><![CDATA[<p style=\"text-align: justify;\">Wir danken Ihnen für das Vertrauen, das Sie uns entgegengebracht haben.</p><br/><br/><strong>Wir synchronisieren zurzeit die letzten Elementen!</strong>]]></string>
+    <string name="need_data"><![CDATA[<p style=\"text-align: justify;\">Wir brauchen Ihre Daten. Wenn Sie sie trotzdem löschen wollen, gehen Sie weiter.</p>]]></string>
+    <string name="data_copied">Ihre Daten wurden in der Zwischenablage exportiert.</string>
+    <string name="copy_error">Mit Bedauern müssen wir Ihnen mitteilen, dass Ihre Daten nicht exportiert werden konnten. Bitte Kontakt mit dem·der DPO nehmen.</string>
+    <string name="condor_end"><![CDATA[<p style=\"text-align: justify;\">Sie sind im Begriff, darauf zu verzichten, Condor zu benutzen. Wenn Sie weitergehen, werden <strong>Ihre ganzen Daten</strong> aus unseren Servern in den Bedingungen gelöscht, die Sie vorher akzeptiert haben.</p>]]></string>
+    <string name="first_window"><![CDATA[<p style=\"text-align: justify;\">Condor wurde mit Erfolg installiert, une wir bedanken uns.</p><br/><br/><strong>Um Condor benutzen zu dürfen, brauchen wir Ihre Zustimmung!</strong>]]></string>
+    <string name="gtu_accept">Ich erkläre mich mit den vorliegenden allgemeinen Nutzungsbedingungen einverstanden.</string>
+    <string name="conf_accept">Ich erkläre mich mit der vorliegenden Datenschutzpolitik einverstanden.</string>
+    <string name="stats_accept">Ich erkläre mich mit der Statistikdatenübertragung an das MDL von dem Lycée Condorcet einverstanden.</string>
+    <string name="crash_accepts">Ich erkläre mich mit der Crashberichtsübertragung an das MDL von dem Lycée Condorcet einverstanden.</string>
 </resources>
