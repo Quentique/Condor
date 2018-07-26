@@ -302,7 +302,7 @@ public class Sync extends IntentService {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ignored) {
 
         }
         return tab;

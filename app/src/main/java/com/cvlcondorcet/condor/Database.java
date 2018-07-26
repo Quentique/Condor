@@ -20,6 +20,9 @@ import android.text.Html;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -128,7 +131,27 @@ class Database {
                             file.delete();
                         }
                         break;
+                    case "social_networks":
+                        if (!element.getString("value").equals(timestamp("social_networks"))) {
+                           // Log.i("TEST", element.getJSONArray("value").toString());
+                          //  JSONArray arrayS = element.getJSONObject("value").toJSONArray(element.getJSONObject("value").names());
+                            JsonParser parser = new JsonParser();
+                            JsonArray arrayH = parser.parse(timestamp("social_networks")).getAsJsonArray();
+                            int k;
+                            for (k=0;k<arrayH.size();k++) {
+                                JsonObject arrayK = arrayH.get(k).getAsJsonObject();
+                                File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+arrayK.get("image").getAsString());
+                                file.delete();
+                            }
+                            JsonArray arrayS = parser.parse(element.getString("value")).getAsJsonArray();
+                            for (k=0;k<arrayS.size();k++) {
+                               JsonObject arrayK = arrayS.get(k).getAsJsonObject();
+                               toBeDownloaded.add(arrayK.get("image").getAsString());
+                            }
+                        }
+                        break;
                 }
+                Log.i("DB-SYNC", toBeDownloaded.toString());
                 database.replace(DBOpenHelper.General.TABLE_NAME, null, values);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -566,10 +589,14 @@ class Database {
             Log.i("SYNC", gson.toJson(events));
             editor.apply();
             String content = "";
-            if (posts.size() > 0){
+            if (posts.size() == 1 ) {
+                content = "- <strong>"+ctx.getString(R.string.new_posts_one)+ " "+getPost(String.valueOf(posts.get(0))).getName()+"</strong><br/>";
+            }else if (posts.size() > 0){
                 content += "- <b>"+String.valueOf(posts.size())+"</b> "+ctx.getString(R.string.new_posts)+"<br/>";
             }
-            if (events.size() > 0) {
+            if (events.size() == 1) {
+                content = "- <strong>"+ctx.getString(R.string.new_events_one)+ " "+getEvent(String.valueOf(events.get(0))).getName()+"</strong><br/>";
+            } else if (events.size() > 0) {
                 content += "- <strong>"+String.valueOf(events.size())+"</strong> "+ctx.getString(R.string.new_events)+"<br/>";
             }
             if (canteen) {

@@ -2,24 +2,29 @@ package com.cvlcondorcet.condor;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
@@ -28,6 +33,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import io.supercharge.shimmerlayout.ShimmerLayout;
 
@@ -42,6 +48,7 @@ import static android.view.View.GONE;
 public class MainFragment extends Fragment {
     private Database db;
     private WebView webview;
+    private ArrayList<String> correspondance;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     @Override
@@ -106,10 +113,58 @@ public class MainFragment extends Fragment {
         image3.setImageResource(R.drawable.ic_mail_black_32dp);
         contactTitle3.setText("Mail : ");
         contactValue3.setText(db.timestamp("mail"));
-        final String facebook = db.timestamp("facebook");
-        final String twitter = db.timestamp("twitter");
+       /* final String facebook = db.timestamp("facebook");
+        final String twitter = db.timestamp("twitter");*/
         final String high = db.timestamp("website");
-        final String ent = db.timestamp("ent_link");
+       // final String ent = db.timestamp("ent_link");
+        JsonArray social;
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(correspondance.get((Integer) v.getTag())));
+                startActivity(intent);
+            }
+        };
+            JsonParser parser = new JsonParser();
+           // social = new JSONArray(db.timestamp("social_networks"));
+        Log.i("SOC", "INITALIZING PARSER");
+            social = parser.parse(db.timestamp("social_networks")).getAsJsonArray();
+        Log.i("SOCC", String.valueOf(social.size()));
+        int i;
+        correspondance = new ArrayList<>();
+        Picasso.with(getActivity()).setIndicatorsEnabled(true);
+        Picasso.with(getActivity()).setLoggingEnabled(true);
+        TableLayout tablelayout = view.findViewById(R.id.tablelayout_soc);
+        Log.i("MATHS", String.valueOf(Math.ceil((double)social.size()/4)));
+        for (i = 0 ; i < Math.ceil((double)social.size()/4); i++){
+            Log.i("SOC", "Entering first loop");
+            TableRow row = new TableRow(getActivity());
+            row.setTag(i);
+            TableRow.LayoutParams params = new TableRow.LayoutParams();
+            params.weight = 4;
+            params.column = 4;
+            params.width = TableRow.LayoutParams.MATCH_PARENT;
+            row.setLayoutParams(params);
+            row.setBaselineAligned(true);
+            row.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            int k;
+            int kl = (social.size()-4*i <= 4) ? social.size() : (i+1)*4;
+            for (k = i*4; k<kl; k++) {
+                Log.i("SOC", "Entering second-loop");
+                    JsonObject object = social.get(k).getAsJsonObject();
+                    ImageButton button = (ImageButton) getLayoutInflater().inflate(R.layout.social_network_button, (ViewGroup) row, false);
+                    button.setTag(k);
+                    button.setImageURI(Uri.parse(getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString()));
+                   // Picasso.with(getActivity()).load(getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString()).into(button);
+                    Log.i("TEST", getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString());
+                    correspondance.add(k, object.get("link").getAsString());
+                    button.setOnClickListener(listener);
+                    row.addView(button);
+            }
+            tablelayout.addView(row);
+        }
+
+
         db.close();
 
         if (MainActivity.allowConnect(getActivity()) && mFirebaseRemoteConfig.getBoolean("website")) {
@@ -164,7 +219,7 @@ public class MainFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.facebook_logo).setOnClickListener(new View.OnClickListener() {
+      /*  view.findViewById(R.id.facebook_logo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -207,7 +262,7 @@ public class MainFragment extends Fragment {
                     startActivity(intent);
                 }
             }
-        });
+        });*/
         view.findViewById(R.id.news_quick).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -58,7 +58,7 @@
     <string name="to_single_day">" bis "</string>
     <string name="client_default">There are no email clients installed.</string>
     <string name="licenses">LIZENZEN</string>
-    <string name="bug_send_feedback_here">Bug? Vorschlaf? Senden Sie ein Feedback!</string>
+    <string name="bug_send_feedback_here">Bug? Vorschlag? Senden Sie ein Feedback!</string>
     <string name="home">Home</string>
     <string name="help">Hilfe</string>
     <string name="maps">Karten</string>
@@ -113,4 +113,6 @@
     <string name="stats_accept">Ich erkläre mich mit der Statistikdatenübertragung an das MDL von dem Lycée Condorcet einverstanden.</string>
     <string name="crash_accepts">Ich erkläre mich mit der Crashberichtsübertragung an das MDL von dem Lycée Condorcet einverstanden.</string>
     <string name="congrats">Gratulierung!</string>
+    <string name="new_posts_one">"Neue Nachricht : "</string>
+    <string name="new_events_one">Neues Event :</string>
 </resources>
