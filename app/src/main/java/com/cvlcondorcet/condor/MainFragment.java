@@ -2,6 +2,7 @@ package com.cvlcondorcet.condor;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -121,7 +122,24 @@ public class MainFragment extends Fragment {
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(correspondance.get((Integer) v.getTag())));
+                Intent intent;
+                if (correspondance.get((Integer) v.getTag()).contains("facebook")) {
+                        PackageManager packageManager = getActivity().getPackageManager();
+                        String toshow;
+                        try {
+                            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
+                            if (versionCode >= 3002850) { //newer versions of fb app
+                               toshow=  "fb://facewebmodal/f?href=" + correspondance.get((Integer) v.getTag());
+                            } else { //older versions of fb app
+                                toshow= "fb://page/" + correspondance.get((Integer) v.getTag());
+                            }
+                        } catch (PackageManager.NameNotFoundException e) {
+                            toshow= correspondance.get((Integer) v.getTag()); //normal web url
+                        }
+                    intent = new Intent(Intent.ACTION_VIEW, Uri.parse(toshow));
+                } else {
+                    intent = new Intent(Intent.ACTION_VIEW, Uri.parse(correspondance.get((Integer) v.getTag())));
+                }
                 startActivity(intent);
             }
         };
