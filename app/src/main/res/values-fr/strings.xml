@@ -113,4 +113,6 @@
     <string name="stats_accept">J\'accepte la transmission de données statistiques à la MDL du Lycée Condorcet.</string>
     <string name="crash_accepts">J\'accepte la transmission de mes données de crash à la MDL du Lycée Condorcet.</string>
     <string name="congrats">Félicitations !</string>
+    <string name="new_posts_one">"Nouvelle actualité : "</string>
+    <string name="new_events_one">"Nouveau évènement : "</string>
 </resources>

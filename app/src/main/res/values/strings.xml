@@ -116,5 +116,7 @@
     <string name="stats_accept">I hereby accept the transmission of statistic data to the MDL of the Lycée Condorcet.</string>
     <string name="crash_accepts">I hereby accept the transmission of crash data to the MDL of the Lycée Condorcet.</string>
     <string name="congrats">Congratulations!</string>
+    <string name="new_posts_one">New post :</string>
+    <string name="new_events_one">New event :</string>
 
 </resources>
