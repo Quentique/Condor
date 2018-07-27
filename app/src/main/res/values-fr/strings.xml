@@ -115,4 +115,5 @@
     <string name="congrats">Félicitations !</string>
     <string name="new_posts_one">"Nouvelle actualité : "</string>
     <string name="new_events_one">"Nouveau évènement : "</string>
+    <string name="conf">Politique de confidentialité</string>
 </resources>
