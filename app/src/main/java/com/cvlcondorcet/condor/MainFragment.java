@@ -17,8 +17,6 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -152,25 +150,25 @@ public class MainFragment extends Fragment {
         correspondance = new ArrayList<>();
         Picasso.with(getActivity()).setIndicatorsEnabled(true);
         Picasso.with(getActivity()).setLoggingEnabled(true);
-        TableLayout tablelayout = view.findViewById(R.id.tablelayout_soc);
+        LinearLayout tablelayout = view.findViewById(R.id.tablelayout_soc);
+
         Log.i("MATHS", String.valueOf(Math.ceil((double)social.size()/4)));
         for (i = 0 ; i < Math.ceil((double)social.size()/4); i++){
             Log.i("SOC", "Entering first loop");
-            TableRow row = new TableRow(getActivity());
+            LinearLayout row = new LinearLayout(getActivity());
             row.setTag(i);
-            TableRow.LayoutParams params = new TableRow.LayoutParams();
-            params.weight = 4;
-            params.column = 4;
-            params.width = TableRow.LayoutParams.MATCH_PARENT;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 4f);
             row.setLayoutParams(params);
-            row.setBaselineAligned(true);
             row.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            row.setWeightSum(4f);
             int k;
             int kl = (social.size()-4*i <= 4) ? social.size() : (i+1)*4;
             for (k = i*4; k<kl; k++) {
                 Log.i("SOC", "Entering second-loop");
                     JsonObject object = social.get(k).getAsJsonObject();
                     ImageButton button = (ImageButton) getLayoutInflater().inflate(R.layout.social_network_button, (ViewGroup) row, false);
+                    LinearLayout.LayoutParams lay = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+                    button.setLayoutParams(lay);
                     button.setTag(k);
                     button.setImageURI(Uri.parse(getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString()));
                    // Picasso.with(getActivity()).load(getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString()).into(button);
@@ -179,10 +177,16 @@ public class MainFragment extends Fragment {
                     button.setOnClickListener(listener);
                     row.addView(button);
             }
+            if (kl%4 != 0) {
+
+            }
             tablelayout.addView(row);
         }
 
-
+       /* tablelayout.setColumnShrinkable(0, true);
+        tablelayout.setColumnStretchable(1, true);
+        tablelayout.setColumnStretchable(2, true);
+        tablelayout.setColumnStretchable(3, true);*/
         db.close();
 
         if (MainActivity.allowConnect(getActivity()) && mFirebaseRemoteConfig.getBoolean("website")) {
