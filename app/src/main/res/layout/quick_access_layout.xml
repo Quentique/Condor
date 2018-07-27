@@ -1,104 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:weightSum="3"
-    android:baselineAligned="true"
     android:layout_marginTop="10dp"
-    android:minHeight="100dp">
+    android:padding="0dp"
+    android:paddingStart="10dp"
+    android:minHeight="100dp"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:weightSum="3">
 
     <LinearLayout
         android:id="@+id/news_quick"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1"
         android:layout_marginTop="10dp"
-        android:foreground="?attr/selectableItemBackground">
-        <io.supercharge.shimmerlayout.ShimmerLayout
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            app:shimmer_animation_duration="2500"
-            app:shimmer_angle="45"
-            android:id="@+id/shimmer">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:minHeight="90dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_announcement_black_24dp" />
-
-        <TextView
-            android:id="@+id/news_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/news"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:layout_gravity="bottom"/>
-        </io.supercharge.shimmerlayout.ShimmerLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/events_quick"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_weight="1"
         android:foreground="?attr/selectableItemBackground"
-        android:layout_marginTop="10dp">
-        <io.supercharge.shimmerlayout.ShimmerLayout
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            app:shimmer_animation_duration="2500"
-            app:shimmer_angle="30"
-            android:id="@+id/shimmer">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="90dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_event_black_24dp" />
+        android:orientation="vertical">
 
-        <TextView
+        <io.supercharge.shimmerlayout.ShimmerLayout
+            android:id="@+id/shimmer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/events"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:layout_gravity="bottom"/>
+            android:layout_height="match_parent"
+            app:shimmer_angle="45"
+            app:shimmer_animation_duration="2500">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="90dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_announcement_black_24dp" />
+
+            <TextView
+                android:id="@+id/news_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/news"
+                android:textAlignment="center"
+                android:textAllCaps="true" />
         </io.supercharge.shimmerlayout.ShimmerLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/events_quick"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="vertical">
+
+        <io.supercharge.shimmerlayout.ShimmerLayout
+            android:id="@+id/shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:shimmer_angle="30"
+            app:shimmer_animation_duration="2500">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="90dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_event_black_24dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:text="@string/events"
+                android:textAlignment="center"
+                android:textAllCaps="true" />
+        </io.supercharge.shimmerlayout.ShimmerLayout>
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/canteen_quick"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:foreground="?attr/selectableItemBackground">
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="end"
+        android:orientation="vertical">
+
         <io.supercharge.shimmerlayout.ShimmerLayout
-            android:layout_width="match_parent" android:layout_height="match_parent"
-            app:shimmer_animation_duration="2500"
+            android:id="@+id/shimmer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:shimmer_angle="-45"
-            android:id="@+id/shimmer">
+            app:shimmer_animation_duration="2500">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" android:orientation="vertical">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="90dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_restaurant_black_24dp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/canteen"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:layout_gravity="bottom"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="90dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_restaurant_black_24dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="@string/canteen"
+                    android:textAlignment="center"
+                    android:textAllCaps="true" />
             </LinearLayout>
         </io.supercharge.shimmerlayout.ShimmerLayout>
     </LinearLayout>
