@@ -85,6 +85,15 @@ public class HelpFragment extends Fragment {
                 getActivity().startActivity(intent);
             }
         });
+        Button button4 = view.findViewById(R.id.conf);
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LicensesActivity.class);
+                intent.putExtra("name", "conf");
+                getActivity().startActivity(intent);
+            }
+        });
         Button button2 = view.findViewById(R.id.bug_report);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
