@@ -138,9 +138,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
-        if (getPackageManager().getLaunchIntentForPackage("com.sncf.fusion") == null) {
-            navigationView.getMenu().findItem(R.id.nav_train).setVisible(false);
-        }
 
         /* Getting data from db and detect if first use or not */
         Database db = new Database(this);
@@ -315,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
         int[] id = {R.id.nav_posts, R.id.nav_events, R.id.nav_maps, R.id.nav_train, R.id.nav_cvl, R.id.nav_canteen};
         for (int i = 0 ; i <id.length ; i++) {
             if (!mFirebaseRemoteConfig.getBoolean(params[i])) {
-              //  nav.getMenu().findItem(id[i]).setVisible(false);
+                nav.getMenu().findItem(id[i]).setVisible(false);
             }
         }
 
@@ -399,6 +396,12 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("stationUic", "87184002");
                 intent.addCategory("DEFAULT");
                 startActivity(intent);
+            } else {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "com.sncf.fusion")));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "com.sncf.fusion")));
+                }
             }
         } else if (item.getItemId() == R.id.nav_bus) {
             if (mFirebaseRemoteConfig.getBoolean("bus")) {
