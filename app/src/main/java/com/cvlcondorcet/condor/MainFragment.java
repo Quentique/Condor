@@ -150,8 +150,6 @@ public class MainFragment extends Fragment {
         Log.i("SOCC", String.valueOf(social.size()));
         int i;
         correspondance = new ArrayList<>();
-        Picasso.with(getActivity()).setIndicatorsEnabled(true);
-        Picasso.with(getActivity()).setLoggingEnabled(true);
         LinearLayout tablelayout = view.findViewById(R.id.tablelayout_soc);
 
         Log.i("MATHS", String.valueOf(Math.ceil((double)social.size()/4)));

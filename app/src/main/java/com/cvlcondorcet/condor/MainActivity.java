@@ -1,6 +1,5 @@
 package com.cvlcondorcet.condor;
 
-import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,21 +33,16 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import io.fabric.sdk.android.Fabric;
 
 /*import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;*/
@@ -73,22 +67,21 @@ public class MainActivity extends AppCompatActivity {
      * Loads old activity state (fragment), starting syncing at app starts, etc.
      * @param savedInstanceState    Old state
      */
-    @SuppressLint("UseSparseArrays")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+       /* Crashlytics crashlyticsKit = new Crashlytics.Builder()
                 .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build();
+                .build();*/
 
 // Initialize Fabric with the debug-disabled crashlytics.
-        Fabric.with(this, crashlyticsKit);
+        //Fabric.with(this, crashlyticsKit);
         /* Initialising Firebase and remote control */
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+      /*  FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
-        mFirebaseRemoteConfig.setConfigSettings(configSettings);
+        mFirebaseRemoteConfig.setConfigSettings(configSettings);*/
         mFirebaseRemoteConfig.setDefaults(R.xml.defaults_remote_param);
 
         preferences = getSharedPreferences("notifications",0);
@@ -171,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                             analytics.setUserProperty("category", "Personnels");
                             break;
                         case 5:
-                            analytics.setUserProperty("category", "Ne se prononce pas");
+                            analytics.setUserProperty("category", "NSP");
                             break;
                     }
                     recreate();
