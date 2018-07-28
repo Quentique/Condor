@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.SQLException;
@@ -136,6 +137,9 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
+        if (getPackageManager().getLaunchIntentForPackage("com.sncf.fusion") == null) {
+            navigationView.getMenu().findItem(R.id.nav_train).setVisible(false);
+        }
 
         /* Getting data from db and detect if first use or not */
         Database db = new Database(this);
@@ -310,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
         int[] id = {R.id.nav_posts, R.id.nav_events, R.id.nav_maps, R.id.nav_train, R.id.nav_cvl, R.id.nav_bus, R.id.nav_canteen};
         for (int i = 0 ; i <id.length ; i++) {
             if (!mFirebaseRemoteConfig.getBoolean(params[i])) {
-                nav.getMenu().findItem(id[i]).setVisible(false);
+              //  nav.getMenu().findItem(id[i]).setVisible(false);
             }
         }
 
@@ -351,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_menu_black_24dp, count));
 
 
+
         nav.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -379,14 +384,17 @@ public class MainActivity extends AppCompatActivity {
 
         String value = "";
         if (item.getItemId() == R.id.nav_train) {
-            if (getPackageManager().getLaunchIntentForPackage("com.sncf.fusion") == null) {
-                fragmentClass = TrainFragment.class;
-                value="train_web";
-            } else {
+            if (getPackageManager().getLaunchIntentForPackage("com.sncf.fusion") != null) {
                 value="train_app";
                 Intent intent = new Intent();
                 intent.setAction("com.sncf.fusion.STATION");
-                intent.setComponent(new ComponentName("com.sncf.fusion", "com.sncf.fusion.ui.station.trainboard.StationBoardsActivity"));
+                try {
+                    if (getPackageManager().getPackageInfo("com.sncf.fusion", 0).versionCode > 220) {
+                        intent.setComponent(new ComponentName("com.sncf.fusion", "com.sncf.fusion.ui.station.trainboard.StationBoardsActivity"));
+                    } else {
+                        intent.setComponent(new ComponentName("com.sncf.fusion", "com.sncf.fusion.feature.station.ui.trainboard.StationBoardsActivity"));
+                    }
+                } catch (PackageManager.NameNotFoundException ignored) {}
                 intent.putExtra("stationUic", "87184002");
                 intent.addCategory("DEFAULT");
                 startActivity(intent);
