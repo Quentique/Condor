@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -310,8 +311,8 @@ public class MainActivity extends AppCompatActivity {
      * @param nav   navigation view that must be set up
      */
     public void setupDrawerContent(NavigationView nav) {
-        String[] params = {"posts", "events", "maps", "train", "cvl", "bus", "canteen"};
-        int[] id = {R.id.nav_posts, R.id.nav_events, R.id.nav_maps, R.id.nav_train, R.id.nav_cvl, R.id.nav_bus, R.id.nav_canteen};
+        String[] params = {"posts", "events", "maps", "train", "cvl", "canteen"};
+        int[] id = {R.id.nav_posts, R.id.nav_events, R.id.nav_maps, R.id.nav_train, R.id.nav_cvl, R.id.nav_canteen};
         for (int i = 0 ; i <id.length ; i++) {
             if (!mFirebaseRemoteConfig.getBoolean(params[i])) {
               //  nav.getMenu().findItem(id[i]).setVisible(false);
@@ -399,6 +400,22 @@ public class MainActivity extends AppCompatActivity {
                 intent.addCategory("DEFAULT");
                 startActivity(intent);
             }
+        } else if (item.getItemId() == R.id.nav_bus) {
+            if (mFirebaseRemoteConfig.getBoolean("bus")) {
+                fragmentClass = BusFragment.class;
+            } else {
+                Intent intent = getPackageManager().getLaunchIntentForPackage("fr.optymo.app");
+                if (intent == null) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "fr.optymo.app")));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "fr.optymo.app")));
+                    }
+                } else {
+                    startActivity(intent);
+                }
+            }
+
         } else {
             fragmentClass = correspondance.get(item.getItemId());
         }
