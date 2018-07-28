@@ -1,6 +1,6 @@
 package com.cvlcondorcet.condor;
 
-import android.content.BroadcastReceiver;
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -60,11 +60,11 @@ import com.google.android.gms.common.GoogleApiAvailability;*/
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    public NavigationView navigationView;
+    private NavigationView navigationView;
     private Class fragmentClass;
     public static String locale;
-    public Map<Integer, Class> correspondance;
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private HashMap<Integer, Class> correspondance;
+    // --Commented out by Inspection (28/07/2018 09:34):private BroadcastReceiver mRegistrationBroadcastReceiver;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     public static SharedPreferences preferences, default_preferences;
 
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
      * Loads old activity state (fragment), starting syncing at app starts, etc.
      * @param savedInstanceState    Old state
      */
+    @SuppressLint("UseSparseArrays")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,8 +134,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar bar = findViewById(R.id.toolbar);
         setSupportActionBar(bar);
       //  getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
-        getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_menu_black_24dp, 0));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try {
+            getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, 0));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException ignored) {}
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
@@ -196,16 +199,16 @@ public class MainActivity extends AppCompatActivity {
                 db.open();
                 Sync.rssURL = db.timestamp("website") + "feed";
                 db.close();
-            } catch (SQLException e) { }
+            } catch (SQLException ignored) { }
 
             if (savedInstanceState != null) {
                 try {
                     fragmentClass = (Class) savedInstanceState.getSerializable("class");
                     Fragment fg = (Fragment) fragmentClass.newInstance();
                     getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fg).commit();
-                } catch (NullPointerException e) {
-                } catch (IllegalAccessException e) {
-                } catch (InstantiationException e) {
+                } catch (NullPointerException ignored) {
+                } catch (IllegalAccessException ignored) {
+                } catch (InstantiationException ignored) {
                 }
             } else {
                 if (default_preferences.getBoolean("sync_app_start", false) && allowConnect(this)) {
@@ -242,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        FirebaseMessaging.getInstance().subscribeToTopic("condor641951236");
+        FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");
         Log.i("CONDOR", "\""+FirebaseInstanceId.getInstance().getId()+"\"");
 
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
@@ -251,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     setupDrawerContent(navigationView);
                     navigationView.setCheckedItem((Integer) getKeyFromValue(correspondance, getSupportFragmentManager().getFragments().get(getSupportFragmentManager().getFragments().size() - 1).getClass()));
-                } catch(NullPointerException e ) {}
+                } catch(NullPointerException ignored ) {}
             }
         });
         db.close();
@@ -307,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
      * Sets up the navigation drawer and handling click.
      * @param nav   navigation view that must be set up
      */
-    public void setupDrawerContent(NavigationView nav) {
+    private void setupDrawerContent(NavigationView nav) {
         String[] params = {"posts", "events", "maps", "train", "cvl", "canteen"};
         int[] id = {R.id.nav_posts, R.id.nav_events, R.id.nav_maps, R.id.nav_train, R.id.nav_cvl, R.id.nav_canteen};
         for (int i = 0 ; i <id.length ; i++) {
@@ -350,14 +353,15 @@ public class MainActivity extends AppCompatActivity {
             nav.getMenu().findItem(R.id.nav_canteen).setActionView(R.layout.menu_counter);
             count++;
         } else { nav.getMenu().findItem(R.id.nav_canteen).setActionView(null);  }
-        getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, R.drawable.ic_menu_black_24dp, count));
+        getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, count));
 
 
 
         nav.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem item) {
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        //noinspection ConstantConditions
                         if (item == null) {
                             return true;
                         } else {
@@ -381,46 +385,51 @@ public class MainActivity extends AppCompatActivity {
         Bundle params = new Bundle();
 
         String value = "";
-        if (item.getItemId() == R.id.nav_train) {
-            if (getPackageManager().getLaunchIntentForPackage("com.sncf.fusion") != null) {
-                value="train_app";
-                Intent intent = new Intent();
-                intent.setAction("com.sncf.fusion.STATION");
-                try {
-                    if (getPackageManager().getPackageInfo("com.sncf.fusion", 0).versionCode > 220) {
-                        intent.setComponent(new ComponentName("com.sncf.fusion", "com.sncf.fusion.ui.station.trainboard.StationBoardsActivity"));
-                    } else {
-                        intent.setComponent(new ComponentName("com.sncf.fusion", "com.sncf.fusion.feature.station.ui.trainboard.StationBoardsActivity"));
-                    }
-                } catch (PackageManager.NameNotFoundException ignored) {}
-                intent.putExtra("stationUic", "87184002");
-                intent.addCategory("DEFAULT");
-                startActivity(intent);
-            } else {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "com.sncf.fusion")));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "com.sncf.fusion")));
-                }
-            }
-        } else if (item.getItemId() == R.id.nav_bus) {
-            if (mFirebaseRemoteConfig.getBoolean("bus")) {
-                fragmentClass = BusFragment.class;
-            } else {
-                Intent intent = getPackageManager().getLaunchIntentForPackage("fr.optymo.app");
-                if (intent == null) {
+        switch (item.getItemId()) {
+            case R.id.nav_train:
+                if (getPackageManager().getLaunchIntentForPackage("com.sncf.fusion") != null) {
+                    value = "train_app";
+                    Intent intent = new Intent();
+                    intent.setAction("com.sncf.fusion.STATION");
                     try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "fr.optymo.app")));
-                    } catch (android.content.ActivityNotFoundException anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "fr.optymo.app")));
+                        if (getPackageManager().getPackageInfo("com.sncf.fusion", 0).versionCode > 220) {
+                            intent.setComponent(new ComponentName("com.sncf.fusion", "com.sncf.fusion.ui.station.trainboard.StationBoardsActivity"));
+                        } else {
+                            intent.setComponent(new ComponentName("com.sncf.fusion", "com.sncf.fusion.feature.station.ui.trainboard.StationBoardsActivity"));
+                        }
+                    } catch (PackageManager.NameNotFoundException ignored) {
                     }
-                } else {
+                    intent.putExtra("stationUic", "87184002");
+                    intent.addCategory("DEFAULT");
                     startActivity(intent);
+                } else {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "com.sncf.fusion")));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "com.sncf.fusion")));
+                    }
                 }
-            }
+                break;
+            case R.id.nav_bus:
+                if (mFirebaseRemoteConfig.getBoolean("bus")) {
+                    fragmentClass = BusFragment.class;
+                } else {
+                    Intent intent = getPackageManager().getLaunchIntentForPackage("fr.optymo.app");
+                    if (intent == null) {
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "fr.optymo.app")));
+                        } catch (android.content.ActivityNotFoundException anfe) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + "fr.optymo.app")));
+                        }
+                    } else {
+                        startActivity(intent);
+                    }
+                }
 
-        } else {
-            fragmentClass = correspondance.get(item.getItemId());
+                break;
+            default:
+                fragmentClass = correspondance.get(item.getItemId());
+                break;
         }
         if (fragmentClass != null) {
             Log.i("ID", fragmentClass.toString());
@@ -432,7 +441,7 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
                 navigationView.setCheckedItem(item.getItemId());
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
 
@@ -470,18 +479,15 @@ public class MainActivity extends AppCompatActivity {
     public static boolean allowConnect(Context context) {
         ConnectivityManager conn =  (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = conn.getActiveNetworkInfo();
-
         try {
-            if (!default_preferences.getBoolean("mobile_data_usage", true) && networkInfo != null & networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                return true;
-            } else return default_preferences.getBoolean("mobile_data_usage", true) && networkInfo != null;
+            NetworkInfo networkInfo = conn.getActiveNetworkInfo();
+            return !default_preferences.getBoolean("mobile_data_usage", true) && networkInfo != null & networkInfo.getType() == ConnectivityManager.TYPE_WIFI || default_preferences.getBoolean("mobile_data_usage", true) && networkInfo != null;
         } catch (NullPointerException e) {
             return false;
         }
     }
 
-    public static Object getKeyFromValue(Map hm, Object value) {
+    private static Object getKeyFromValue(Map hm, Object value) {
         for (Object o: hm.keySet()) {
             if (hm.get(o).equals(value)) {
                 return o;
@@ -512,13 +518,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setMenuCounter(@IdRes int itemId, int count) {
-        TextView view = (TextView) navigationView.getMenu().findItem(itemId).getActionView().findViewById(R.id.menu_counter);
+        TextView view = navigationView.getMenu().findItem(itemId).getActionView().findViewById(R.id.menu_counter);
         view.setText(count > 0 ? String.valueOf(count) : null);
     }
 
-    public static Drawable setBadgeCount(Context context, int res, int badgeCount){
+    private static Drawable setBadgeCount(Context context, int badgeCount){
         LayerDrawable icon = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.ic_counter_hamburger);
-        Drawable mainIcon = ContextCompat.getDrawable(context, res);
+        Drawable mainIcon = ContextCompat.getDrawable(context, R.drawable.ic_menu_black_24dp);
         BadgeDrawable badge = new BadgeDrawable(context);
         badge.setCount(String.valueOf(badgeCount));
         icon.mutate();
@@ -538,10 +544,13 @@ public class MainActivity extends AppCompatActivity {
                     Fragment fragment = null;
                     try {
                         fragment = MapsFragment.class.newInstance();
-                    } catch (InstantiationException e) {
-                    } catch (IllegalAccessException e) {
+                    } catch (InstantiationException ignored) {
+                    } catch (IllegalAccessException ignored) {
                     }
-                    fragment.setArguments(bundle);
+                    try {
+                        assert fragment != null;
+                        fragment.setArguments(bundle);
+                    } catch (NullPointerException ignored) {}
                     getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
                 } else if (newIntent.getStringExtra("fragment").equals("nav")) {
                     setupDrawerContent(navigationView);

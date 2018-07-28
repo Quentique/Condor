@@ -40,7 +40,7 @@ public class GTUFragment extends Fragment {
                ((CheckBox) check1.findViewById(R.id.checkbox_consent)).setOnCheckedChangeListener(myCheckboxListener);
            }
            else {
-               vview.loadUrl("file:///android_asset/cgu.html");
+               vview.loadUrl("file:///android_asset/conf.html");
                LinearLayout check1 = (LinearLayout) ((LinearLayout) getLayoutInflater().inflate(R.layout.consent_checkbox, (ViewGroup) view.findViewById(R.id.base_consent), true)).getChildAt(0);
                ((TextView) check1.findViewById(R.id.consent_text)).setText(R.string.conf_accept);
                check1.findViewById(R.id.checkbox_consent).setTag(2);

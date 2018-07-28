@@ -119,5 +119,9 @@
     <string name="new_posts_one">New post :</string>
     <string name="new_events_one">New event :</string>
     <string name="conf">Privacy Policy</string>
-
+    <string name="sync_notification_name">Sync notification</string>
+    <string name="sync_summary_notif">Notification that displays the new content.</string>
+    <string name="clear_notif_title">Clear all notifications</string>
+    <string name="clear_notif_summary">Remove all notifications within the app.</string>
+    <string name="clear_notif_done">Notifications cleared.</string>
 </resources>

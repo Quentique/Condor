@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -122,6 +123,25 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
                 });
                 AlertDialog dialog = builder2.create();
                 dialog.show();
+                return true;
+            }
+        });
+        findPreference("clear_notif").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+               SharedPreferences.Editor editor =  MainActivity.preferences.edit();
+                editor.putInt("posts_count", 0);
+                editor.putInt("events_count", 0);
+                editor.putBoolean("cvl", false);
+                editor.putBoolean("maps", false);
+                editor.putBoolean("canteen", false);
+                editor.putString("events","[]");
+                editor.putString("posts", "[]");
+                editor.apply();
+                Toast.makeText(getActivity(), R.string.clear_notif_done, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("fragment", "nav");
+                startActivity(intent);
                 return true;
             }
         });

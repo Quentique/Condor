@@ -15,6 +15,7 @@
             android:defaultValue="default"/>
         <CheckBoxPreference
             android:key="rss_display"
+            android:defaultValue="true"
             android:title="@string/rss_display_title"
             android:summary="@string/rss_display_summary"/>
     </PreferenceCategory>
@@ -30,6 +31,15 @@
             android:title="@string/sync_firebase"
             android:summary="@string/sync_firebase_more"
             android:defaultValue="true"/>
+        <SwitchPreferenceCompat
+            android:key="sync_notif"
+            android:title="@string/sync_notification_name"
+            android:summary="@string/sync_summary_notif"
+            android:defaultValue="true"/>
+        <Preference
+            android:key="clear_notif"
+            android:title="@string/clear_notif_title"
+            android:summary="@string/clear_notif_summary"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/your_data">
         <SwitchPreferenceCompat

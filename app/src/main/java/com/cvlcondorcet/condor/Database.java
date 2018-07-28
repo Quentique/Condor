@@ -15,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -136,18 +137,23 @@ class Database {
                            // Log.i("TEST", element.getJSONArray("value").toString());
                           //  JSONArray arrayS = element.getJSONObject("value").toJSONArray(element.getJSONObject("value").names());
                             JsonParser parser = new JsonParser();
-                            JsonArray arrayH = parser.parse(timestamp("social_networks")).getAsJsonArray();
+                            JsonArray arrayH;
                             int k;
-                            for (k=0;k<arrayH.size();k++) {
-                                JsonObject arrayK = arrayH.get(k).getAsJsonObject();
-                                File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+arrayK.get("image").getAsString());
-                                file.delete();
-                            }
-                            JsonArray arrayS = parser.parse(element.getString("value")).getAsJsonArray();
-                            for (k=0;k<arrayS.size();k++) {
-                               JsonObject arrayK = arrayS.get(k).getAsJsonObject();
-                               toBeDownloaded.add(arrayK.get("image").getAsString());
-                            }
+                            try {
+                                arrayH = parser.parse(timestamp("social_networks")).getAsJsonArray();
+                                for (k=0;k<arrayH.size();k++) {
+                                    JsonObject arrayK = arrayH.get(k).getAsJsonObject();
+                                    File file = new File(ctx.getApplicationContext().getFilesDir().toString()+"/"+arrayK.get("image").getAsString());
+                                    file.delete();
+                                }
+                            } catch (IllegalStateException e) { arrayH = new JsonArray(); }
+                            try {
+                                JsonArray arrayS = parser.parse(element.getString("value")).getAsJsonArray();
+                                for (k = 0; k < arrayS.size(); k++) {
+                                    JsonObject arrayK = arrayS.get(k).getAsJsonObject();
+                                    toBeDownloaded.add(arrayK.get("image").getAsString());
+                                }
+                            } catch (IllegalStateException ignored) {}
                         }
                         break;
                 }
@@ -588,54 +594,56 @@ class Database {
             editor.putString("posts", gson.toJson(posts));
             Log.i("SYNC", gson.toJson(events));
             editor.apply();
-            String content = "";
-            if (posts.size() == 1 ) {
-                content = "- <strong>"+ctx.getString(R.string.new_posts_one)+ " "+getPost(String.valueOf(posts.get(0))).getName()+"</strong><br/>";
-            }else if (posts.size() > 0){
-                content += "- <b>"+String.valueOf(posts.size())+"</b> "+ctx.getString(R.string.new_posts)+"<br/>";
-            }
-            if (events.size() == 1) {
-                content = "- <strong>"+ctx.getString(R.string.new_events_one)+ " "+getEvent(String.valueOf(events.get(0))).getName()+"</strong><br/>";
-            } else if (events.size() > 0) {
-                content += "- <strong>"+String.valueOf(events.size())+"</strong> "+ctx.getString(R.string.new_events)+"<br/>";
-            }
-            if (canteen) {
-                content += "- "+ ctx.getString(R.string.new_canteen) + "<br/>";
-            }
-            if (maps) {
-                content += "- " +ctx.getString(R.string.new_maps) +"<br/>";
-            }
-            if (cvl) {
-                content +="- "+ctx.getString(R.string.new_cvl)+"<br/>";
-            }
-            content = content.substring(0, content.length()-5);
-            NotificationManager manager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
-            Notification.Builder noti;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", NotificationManager.IMPORTANCE_DEFAULT);
-                manager.createNotificationChannel(chanell);
-                noti = new Notification.Builder(ctx, "channel1");
-            } else {
-                noti = new Notification.Builder(ctx);
-            }
-            noti.setContentTitle(ctx.getString(R.string.new_content_toread))
-                    .setAutoCancel(true)
-                    .setContentText(ctx.getString(R.string.drop_to_see))
-                    .setShowWhen(true)
-                    .setSmallIcon(R.drawable.ic_launcher_material)
-                    .setStyle(new Notification.BigTextStyle().bigText(Html.fromHtml(content)));
-            noti.setAutoCancel(true);
+            if (PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("sync_notif", true)) {
+                String content = "";
+                if (posts.size() == 1) {
+                    content = "- <strong>" + ctx.getString(R.string.new_posts_one) + " " + getPost(String.valueOf(posts.get(0))).getName() + "</strong><br/>";
+                } else if (posts.size() > 0) {
+                    content += "- <b>" + String.valueOf(posts.size()) + "</b> " + ctx.getString(R.string.new_posts) + "<br/>";
+                }
+                if (events.size() == 1) {
+                    content = "- <strong>" + ctx.getString(R.string.new_events_one) + " " + getEvent(String.valueOf(events.get(0))).getName() + "</strong><br/>";
+                } else if (events.size() > 0) {
+                    content += "- <strong>" + String.valueOf(events.size()) + "</strong> " + ctx.getString(R.string.new_events) + "<br/>";
+                }
+                if (canteen) {
+                    content += "- " + ctx.getString(R.string.new_canteen) + "<br/>";
+                }
+                if (maps) {
+                    content += "- " + ctx.getString(R.string.new_maps) + "<br/>";
+                }
+                if (cvl) {
+                    content += "- " + ctx.getString(R.string.new_cvl) + "<br/>";
+                }
+                content = content.substring(0, content.length() - 5);
+                NotificationManager manager = (NotificationManager) ctx.getSystemService(NOTIFICATION_SERVICE);
+                Notification.Builder noti;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel chanell = new NotificationChannel("channel1", "Coucou", NotificationManager.IMPORTANCE_DEFAULT);
+                    manager.createNotificationChannel(chanell);
+                    noti = new Notification.Builder(ctx, "channel1");
+                } else {
+                    noti = new Notification.Builder(ctx);
+                }
+                noti.setContentTitle(ctx.getString(R.string.new_content_toread))
+                        .setAutoCancel(true)
+                        .setContentText(ctx.getString(R.string.drop_to_see))
+                        .setShowWhen(true)
+                        .setSmallIcon(R.drawable.ic_launcher_material)
+                        .setStyle(new Notification.BigTextStyle().bigText(Html.fromHtml(content)));
+                noti.setAutoCancel(true);
 
-            Intent newIntent = new Intent(ctx, SplashActivity.class);
-            android.support.v4.app.TaskStackBuilder stackBuilder = android.support.v4.app.TaskStackBuilder.create(ctx);
-            stackBuilder.addNextIntentWithParentStack(newIntent);
-            PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            noti.setContentIntent(intent);
-            manager.notify(3, noti.build());
-            if (pref.getBoolean("maps", false)){
-                Log.i("DATA", "WORKEDDDDD");
-            } else {
-                Log.i("DATA", "NOT WORKEDDDDD");
+                Intent newIntent = new Intent(ctx, SplashActivity.class);
+                android.support.v4.app.TaskStackBuilder stackBuilder = android.support.v4.app.TaskStackBuilder.create(ctx);
+                stackBuilder.addNextIntentWithParentStack(newIntent);
+                PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                noti.setContentIntent(intent);
+                manager.notify(3, noti.build());
+                if (pref.getBoolean("maps", false)) {
+                    Log.i("DATA", "WORKEDDDDD");
+                } else {
+                    Log.i("DATA", "NOT WORKEDDDDD");
+                }
             }
             return true;
         }

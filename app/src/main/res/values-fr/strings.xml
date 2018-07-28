@@ -116,4 +116,9 @@
     <string name="new_posts_one">"Nouvelle actualité : "</string>
     <string name="new_events_one">"Nouveau évènement : "</string>
     <string name="conf">Politique de confidentialité</string>
+    <string name="sync_notification_name">Notification de synchronisation</string>
+    <string name="sync_summary_notif">Notification qui montre le nouveau contenu de Condor.</string>
+    <string name="clear_notif_title">Nettoyer les notifications</string>
+    <string name="clear_notif_summary">Enlever les notifications dans l\'appli.</string>
+    <string name="clear_notif_done">Notifications nettoyées.</string>
 </resources>
