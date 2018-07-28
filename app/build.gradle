@@ -7,7 +7,7 @@ android {
         applicationId "com.cvlcondorcet.condor"
         minSdkVersion 18
         targetSdkVersion 27
-        versionCode 13
+        versionCode 16
         versionName "0.9be"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
