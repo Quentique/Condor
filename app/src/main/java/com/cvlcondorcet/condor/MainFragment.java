@@ -144,7 +144,9 @@ public class MainFragment extends Fragment {
             JsonParser parser = new JsonParser();
            // social = new JSONArray(db.timestamp("social_networks"));
         Log.i("SOC", "INITALIZING PARSER");
+        try {
             social = parser.parse(db.timestamp("social_networks")).getAsJsonArray();
+        } catch (IllegalStateException e) { social = new JsonArray(); }
         Log.i("SOCC", String.valueOf(social.size()));
         int i;
         correspondance = new ArrayList<>();

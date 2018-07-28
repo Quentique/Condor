@@ -116,4 +116,9 @@
     <string name="new_posts_one">"Neue Nachricht : "</string>
     <string name="new_events_one">Neues Event :</string>
     <string name="conf">Datenschutzpolitik</string>
+    <string name="sync_notification_name">Synchronisationsbenachrichtung</string>
+    <string name="sync_summary_notif">Benachrichtung, die den neuen Inhalt zeigt.</string>
+    <string name="clear_notif_title">Benachrichtungen beseitigen</string>
+    <string name="clear_notif_summary">Entfernt die Benachrichtungen im App.</string>
+    <string name="clear_notif_done">Benachrichtungen beseitigt.</string>
 </resources>

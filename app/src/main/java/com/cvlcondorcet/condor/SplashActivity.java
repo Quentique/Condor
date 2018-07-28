@@ -36,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
             Log.i("TEST", "AUTOINITIALIZATION CRASHLYTICS");
             Fabric.with(this, new Crashlytics());
         }
+        Log.i("CONSENT", String.valueOf(pref.getInt("version", 0)));
         if (pref.getInt("version",0) < BuildConfig.VERSION_CODE) {
             intent = new Intent(this, ConsentActivity.class);
             startActivity(intent);
