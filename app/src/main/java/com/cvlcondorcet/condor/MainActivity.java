@@ -140,13 +140,12 @@ public class MainActivity extends AppCompatActivity {
         db.open();
         if (db.timestamp("name").equals("")) {
             selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_sync));
-            final FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Catégorie");
             builder.setItems(R.array.cat, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getApplication());
                     switch (which) {
                         case 0:
                             analytics.setUserProperty("category", "Secondes");
@@ -238,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");
+        FirebaseMessaging.getInstance().subscribeToTopic("condor641951236");
         Log.i("CONDOR", "\""+FirebaseInstanceId.getInstance().getId()+"\"");
 
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {

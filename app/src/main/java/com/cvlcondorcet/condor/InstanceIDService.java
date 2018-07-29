@@ -16,7 +16,7 @@ public class InstanceIDService extends FirebaseMessagingService {
             subscribeTopic(token);
     }
     private void subscribeTopic(String token) {
-       FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");
+       FirebaseMessaging.getInstance().subscribeToTopic("condor641951236");
 
         //Log.i("TEST", "SUBSCRIBED TOPIC");
     }
