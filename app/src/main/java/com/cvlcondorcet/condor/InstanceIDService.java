@@ -1,8 +1,7 @@
 package com.cvlcondorcet.condor;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 /**
  * Registers token & subscribe to the topic to receive new-content notification
@@ -10,11 +9,11 @@ import com.google.firebase.messaging.FirebaseMessaging;
  * @see MainActivity
  */
 
-public class InstanceIDService extends FirebaseInstanceIdService {
-    public void onTokenRefresh() {
-            String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+public class InstanceIDService extends FirebaseMessagingService {
+    @Override
+    public void onNewToken(String token) {
            // Log.d("TEST", "Refreshed token: " + refreshedToken);
-            subscribeTopic(refreshedToken);
+            subscribeTopic(token);
     }
     private void subscribeTopic(String token) {
        FirebaseMessaging.getInstance().subscribeToTopic("condor541951236");

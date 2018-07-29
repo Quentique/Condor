@@ -36,6 +36,7 @@
                 android:textAlignment="center"
                 android:foreground="?attr/selectableItemBackground"
                 android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/logo"
                 android:background="#00ffffff"/>
             <TextView

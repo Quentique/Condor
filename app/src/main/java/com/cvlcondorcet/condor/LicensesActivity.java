@@ -40,15 +40,19 @@ public class LicensesActivity extends AppCompatActivity {
         try {
             name = getIntent().getStringExtra("name");
         } catch (Exception e) {name ="licenses";}
-        if (name.equals("licenses")) {
-            setTitle(R.string.licenses);
-            view.loadUrl("file:///android_asset/licenses.html");
-        } else if (name.equals("cgu")) {
-            setTitle("CGU");
-            view.loadUrl("file:///android_asset/cgu.html");
-        } else {
-            setTitle("Confidentialité");
-            view.loadUrl("file:///android_asset/conf.html");
+        switch (name) {
+            case "licenses":
+                setTitle(R.string.licenses);
+                view.loadUrl("file:///android_asset/licenses.html");
+                break;
+            case "cgu":
+                setTitle("CGU");
+                view.loadUrl("file:///android_asset/cgu.html");
+                break;
+            default:
+                setTitle("Confidentialité");
+                view.loadUrl("file:///android_asset/conf.html");
+                break;
         }
     }
 }

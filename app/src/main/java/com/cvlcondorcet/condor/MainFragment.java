@@ -177,9 +177,6 @@ public class MainFragment extends Fragment {
                     button.setOnClickListener(listener);
                     row.addView(button);
             }
-            if (kl%4 != 0) {
-
-            }
             tablelayout.addView(row);
         }
 
