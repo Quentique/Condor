@@ -1,5 +1,7 @@
 package com.cvlcondorcet.condor;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -25,7 +28,21 @@ public class GTUFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         WebView vview = view.findViewById(R.id.webview_consent);
-        vview.loadUrl("file:///android_asset/cgu.html");
+        vview.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.i("URL", url);
+                if (!(url.startsWith("http") || url.startsWith("mailto"))) {
+                    Log.i("TEST", "Click NOT handle with httpds");
+                    return true;
+                } else {
+                    Log.i("TEST", "Click handle with httpds");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    view.getContext().startActivity(intent);
+                    return true;
+                }
+            }
+        });
       /*  LinearLayout check1 = (LinearLayout) getLayoutInflater().inflate(R.layout.consent_checkbox, (ViewGroup) view.findViewById(R.id.base_consent), true);
         check1.findViewById(R.id.checkbox_consent).setTag(1);
 
