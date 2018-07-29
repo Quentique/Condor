@@ -34,6 +34,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
         getActivity().setTitle(R.string.settings);
         if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("firebase", false)) {
             Log.i("SHARED", "ACTIVE");
+
         } else { Log.i("SHARED", "INACTIVE"); }
 
         ((SwitchPreferenceCompat) findPreference("firebase")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -62,9 +63,40 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
                     AlertDialog dialog = builder2.create();
                     dialog.show();
                     return true;
+                } else {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("Catégorie");
+                    builder.setItems(R.array.cat, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.i("THIS IS A TEST", String.valueOf(which));
+                            FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
+                            switch (which) {
+                                case 0:
+                                    analytics.setUserProperty("category", "Secondes");
+                                    break;
+                                case 1:
+                                    analytics.setUserProperty("category", "Premières");
+                                    break;
+                                case 2:
+                                    analytics.setUserProperty("category", "Terminales");
+                                    break;
+                                case 3:
+                                    analytics.setUserProperty("category", "BTS");
+                                    break;
+                                case 4:
+                                    analytics.setUserProperty("category", "Personnels");
+                                    break;
+                                case 5:
+                                    analytics.setUserProperty("category", "NSP");
+                                    break;
+                            }
+                        }
+                    });
+                    builder.create().show();
+                    return true;
                 }
-                else
-                    return false;
             }
         });
 

@@ -8,7 +8,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 27
         versionCode 16
-        versionName "0.9be"
+        versionName "1.1b"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
@@ -31,25 +31,25 @@ android {
     }
 }
 
-/*ext.abiCodes = ['arm64-v8a':5, armeabi:3, 'armeabi-v7a':4, 'x86_64':7, x86:6]
+ext.abiCodes = ['arm64-v8a':5, armeabi:3, 'armeabi-v7a':4, 'x86_64':7, x86:6]
 
 android.applicationVariants.all { variant ->
     variant.outputs.each{ output ->
         def baseAbiVersionCode =
                 project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
         if (baseAbiVersionCode != null) {
-            def code = android.defaultConfig.targetSdkVersion.apiLevel * 1000
+            def code = android.defaultConfig.targetSdkVersion.apiLevel * 10000
             code += baseAbiVersionCode *100
             code += variant.versionCode
             output.versionCodeOverride = code
         } else {
-            def code = android.defaultConfig.targetSdkVersion.apiLevel * 1000
+            def code = android.defaultConfig.targetSdkVersion.apiLevel * 10000
             code += 1 *100
             code += variant.versionCode
             output.versionCodeOverride = code
         }
     }
-}*/
+}
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])

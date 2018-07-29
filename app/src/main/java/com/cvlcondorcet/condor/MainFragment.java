@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.gson.JsonArray;
@@ -210,9 +211,10 @@ public class MainFragment extends Fragment {
         (layout1.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phone = String.valueOf(((TextView)view.findViewById(R.id.value_contact)).getText());
+               /* String phone = String.valueOf(((TextView)view.findViewById(R.id.value_contact)).getText());
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                startActivity(intent);
+                startActivity(intent);*/
+                Crashlytics.getInstance().crash();
             }
         });
         (layout2.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
