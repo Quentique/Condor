@@ -252,19 +252,23 @@ public class Sync extends IntentService {
      * @return          {@link JSONArray JSONArray} containing the requested values
      */
     private JSONArray get(String content) {
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         URL url = null;
         JSONArray tab = new JSONArray();
         try {
 
             try {
                 String machin;
-                if (content.equals(GEN_URL)) {
-                    machin = db.timestamp("timestamp");
-                } else if (content.equals(MAPS_URL)) {
-                    machin = db.timestamp("maps_change");
-                } else {
-                    machin = db.timestamp("last_sync");
+                switch (content) {
+                    case GEN_URL:
+                        machin = db.timestamp("timestamp");
+                        break;
+                    case MAPS_URL:
+                        machin = db.timestamp("maps_change");
+                        break;
+                    default:
+                        machin = db.timestamp("last_sync");
+                        break;
                 }
                 machin = machin.replaceAll("\\s", "T");
                 Log.i("CONDOR", machin);
@@ -289,7 +293,7 @@ public class Sync extends IntentService {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null)
-                    answer += inputLine;
+                    answer.append(inputLine);
                 in.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -298,7 +302,7 @@ public class Sync extends IntentService {
             }
            // Log.i("E", answer);
             try {
-                tab = new JSONArray(answer);
+                tab = new JSONArray(answer.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -343,7 +347,7 @@ public class Sync extends IntentService {
      */
     private String serverState() {
         URL url = null;
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         try{
             url = new URL(base_URL + check_URL + KEY);
         } catch (MalformedURLException e) {
@@ -357,7 +361,7 @@ public class Sync extends IntentService {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null)
-                    answer += inputLine;
+                    answer.append(inputLine);
                 in.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -365,7 +369,7 @@ public class Sync extends IntentService {
                 handler.post(sendProgress);
                 stopForeground(true);
                 networkError = true;
-                answer = "Server is unreachable, please try again later.";
+                answer = new StringBuilder("Server is unreachable, please try again later.");
             } finally {
                 connection.disconnect();
             }
@@ -375,16 +379,16 @@ public class Sync extends IntentService {
             stopForeground(true);
             networkError = true;
             e.printStackTrace();
-            answer = "Server is unreachable, please try again later.";
+            answer = new StringBuilder("Server is unreachable, please try again later.");
         } catch (IOException e) {
             progress = -1;
             handler.post(sendProgress);
             stopForeground(true);
             networkError = true;
             e.printStackTrace();
-            answer = "I/O Error";
+            answer = new StringBuilder("I/O Error");
         }
-        return answer;
+        return answer.toString();
     }
 
     /**

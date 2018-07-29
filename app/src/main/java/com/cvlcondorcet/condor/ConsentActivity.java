@@ -1,5 +1,6 @@
 package com.cvlcondorcet.condor;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -51,7 +52,7 @@ public class ConsentActivity extends IntroActivity {
        // getRootView().findViewById(com.matthewtamlin.sliding_intro_screen_library.R.id.intro_activity_progressIndicatorHolder).setBackgroundColor(getResources().getColor(R.color.primaryColor));
         ((RelativeLayout.LayoutParams) getRootView().findViewById(com.matthewtamlin.sliding_intro_screen_library.R.id.intro_activity_viewPager).getLayoutParams()).setMargins(0, 0, 0, 140);
         getRootView().findViewById(com.matthewtamlin.sliding_intro_screen_library.R.id.intro_activity_progressIndicatorHolder).setBackgroundColor(getResources().getColor(R.color.primaryColor));
-        hideStatusBar();
+        //hideStatusBar();
 
         addPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -88,6 +89,7 @@ public class ConsentActivity extends IntroActivity {
         return fragments;
     }
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     protected IntroButton.Behaviour generateFinalButtonBehaviour() {
         /* The pending changes to the shared preferences editor will be applied when the
