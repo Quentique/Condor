@@ -4,7 +4,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
 /**
- * Registers token & subscribe to the topic to receive new-content notification
+ * Subscribe to the topic to receive new-content notification
  * @author Quentin DE MUYNCK
  * @see MainActivity
  */
