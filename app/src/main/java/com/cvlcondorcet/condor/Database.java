@@ -556,6 +556,12 @@ class Database {
         return results;
     }
 
+    /**
+     * Static method to prevent code repetition
+     * @param key "posts" or "events" value only
+     * @param ctx Context to access SharedPreferences
+     * @return Returns an ArrayList with the id of new events or posts depending on the key
+     */
     static ArrayList<Integer> parsePrefNot(String key, Context ctx) {
         ArrayList<Integer> toReturn;
         Gson gson = new Gson();
@@ -567,6 +573,12 @@ class Database {
         return toReturn;
     }
 
+    /**
+     * Turns an ArrayList with id of new posts||events and stores it in SharedPreferences
+     * @param key "posts" or "events' only
+     * @param array The array with the new values
+     * @param ctx Context to access SharedPreferences
+     */
     static void updatePrefValue(String key, ArrayList<Integer> array, Context ctx) {
         Gson gson = new Gson();
         SharedPreferences pref = ctx.getSharedPreferences("notifications",0);
@@ -576,6 +588,11 @@ class Database {
         editor.putInt(key+"_count", array.size());
         editor.apply();
     }
+
+    /**
+     * End synchronisation by storing new values in Preferences for notifications within the app and displaying notification according to user's preferences.
+     * @return true if new content, false otherwise.
+     */
     boolean endingSync() {
         Log.i("SYNC", "Ending sync function called");
         if (events.size() == 0 && posts.size() == 0 && !maps & !cvl & !canteen) {
