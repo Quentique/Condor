@@ -21,6 +21,11 @@ import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Activity displaying the politics the user must accept before using the app.
+ * @author Quentin De Muynck
+ * @see com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity
+ */
 public class ConsentActivity extends IntroActivity {
 
     public SharedPreferences.Editor edit;
@@ -73,6 +78,11 @@ public class ConsentActivity extends IntroActivity {
         });
     }
 
+    /**
+     *  Generates fragments with the different politics that the user must accepts
+     * @param savedInstanceState nothings
+     * @return the fragments
+     */
     @Override
     protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
         ArrayList<Fragment> fragments = new ArrayList<>();
@@ -89,25 +99,19 @@ public class ConsentActivity extends IntroActivity {
         return fragments;
     }
 
+    /**
+     * The pending changes in the Editor will be committed with the call of ProgressToNextActivity (click on the final button)
+     * @return params for the end
+     */
     @SuppressLint("CommitPrefEdits")
     @Override
     protected IntroButton.Behaviour generateFinalButtonBehaviour() {
-        /* The pending changes to the shared preferences editor will be applied when the
-         * introduction is successfully completed. By setting a flag in the pending edits and
-         * checking the status of the flag when the activity starts, the introduction screen can
-         * be skipped if it has previously been completed.
-         */
-      //  final SharedPreferences sp = getSharedPreferences(DISPLAY_ONCE_PREFS, MODE_PRIVATE);
-       // final SharedPreferences.Editor pendingEdits = sp.edit().putBoolean(DISPLAY_ONCE_KEY, true);
-
-        // Define the next activity intent and create the Behaviour to use for the final button
         final Intent nextActivity = new Intent(this, MainActivity.class);
         edit = PreferenceManager.getDefaultSharedPreferences(this).edit();
         Log.i("TEST", PreferenceManager.getDefaultSharedPreferences(this).getString("language", "test"));
         edit.putInt("version", BuildConfig.VERSION_CODE);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         return new IntroButton.ProgressToNextActivity(nextActivity, edit);
-       // return null;
     }
 
 }

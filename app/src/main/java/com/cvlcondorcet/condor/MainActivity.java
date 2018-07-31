@@ -44,8 +44,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-/*import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;*/
 
 /**
  * Main activity, frame for fragments, home for navigation drawer, etc.

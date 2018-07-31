@@ -22,6 +22,10 @@ import java.util.Map;
  */
 
 public class NotifListener extends FirebaseMessagingService {
+    /**
+     * Handling message when app's in the foreground
+     * @param message the received message
+     */
     @Override
     public void onMessageReceived(RemoteMessage message) {
         String messageT = message.getFrom();
@@ -139,7 +143,6 @@ public class NotifListener extends FirebaseMessagingService {
                 }
             }
         }
-
         return dir.delete();
     }
 }

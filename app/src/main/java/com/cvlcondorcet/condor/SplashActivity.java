@@ -15,7 +15,8 @@ import java.util.List;
 import io.fabric.sdk.android.Fabric;
 
 /**
- * Activity showing splash screen and starting the {@link MainActivity}
+ * Activity showing splash screen and redirecting the user to the MainActivity or to the ConsentActivity. Loads different modules (Firebase, Crashlytics, etc.)
+ * Is also able to catch IntentExtras and launch directly the good Activity
  * @author Quentin DE MUYNCK
  */
 

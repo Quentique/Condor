@@ -18,6 +18,9 @@ import android.widget.TextView;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager;
 
+/**
+ * Fragment displaying HTML file (politics conf), and checkboxes according to the given param
+ */
 public class GTUFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -76,6 +79,9 @@ public class GTUFragment extends Fragment {
        }
     }
 
+    /**
+     * Handling navigation according to user's consent (or non-consent)
+     */
     private CompoundButton.OnCheckedChangeListener myCheckboxListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
