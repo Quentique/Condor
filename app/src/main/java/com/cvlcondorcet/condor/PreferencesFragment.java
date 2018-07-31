@@ -16,6 +16,7 @@ import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -146,7 +147,8 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
                         FirebaseAnalytics.getInstance(getContext()).resetAnalyticsData();
                         try {
                             FirebaseInstanceId.getInstance().deleteInstanceId();
-                        } catch (IOException ignored) {}
+                        } catch (IOException ignored) {
+                            Crashlytics.logException(ignored); }
                         PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putInt("version", 0).apply();
                         dialog.dismiss();
                         getActivity().finish();

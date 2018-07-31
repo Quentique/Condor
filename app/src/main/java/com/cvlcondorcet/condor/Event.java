@@ -1,6 +1,8 @@
 package com.cvlcondorcet.condor;
 
 
+import com.crashlytics.android.Crashlytics;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +27,7 @@ class Event {
         try {
             this.begin = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(begin);
             this.end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(end);
-        } catch (ParseException e) {e.printStackTrace(); }
+        } catch (ParseException e) { Crashlytics.logException(e); }
     }
 
     public String getId() {return id;}

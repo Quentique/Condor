@@ -342,8 +342,8 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 public void run() {
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    } catch (InterruptedException ignored) {
+
                     }
                     try {
                         getActivity().runOnUiThread(new Runnable() {
@@ -353,7 +353,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                                 pdf.zoomWithAnimation((float) x, (float) y, 2.5f);
                             }
                         });
-                    } catch(NullPointerException e) {}
+                    } catch(NullPointerException ignored) {}
                 }
             }).start();
             layout.setVisibility(View.VISIBLE);

@@ -63,7 +63,7 @@ public class EventViewerActivity extends AppCompatActivity {
         when.setText(date);
         try {
             Picasso.with(this).load(event.getPicture()).into(image);
-        } catch(IllegalArgumentException e) {}
+        } catch(IllegalArgumentException ignored) {}
         ArrayList<Integer> newEvents = Database.parsePrefNot("events", this);
         newEvents.remove(Integer.valueOf(id));
         Database.updatePrefValue("events", newEvents, this);

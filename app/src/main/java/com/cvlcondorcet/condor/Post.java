@@ -2,6 +2,8 @@ package com.cvlcondorcet.condor;
 
 import android.support.annotation.NonNull;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,7 +78,7 @@ class Post implements Comparable<Post> {
             Date pdate = format1.parse(toParse);
             SimpleDateFormat format2 = new SimpleDateFormat(toFormat, Locale.getDefault());
             return format2.format(pdate);
-        } catch (ParseException e ) { e.printStackTrace(); return ""; }
+        } catch (ParseException e ) { Crashlytics.logException(e); return ""; }
     }
 
     /**
@@ -88,7 +90,7 @@ class Post implements Comparable<Post> {
     public static Date getDateObject(String obj) {
         try {
             return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(obj);
-        } catch (ParseException e) { e.printStackTrace(); return null; }
+        } catch (ParseException e) { Crashlytics.logException(e); return null; }
     }
 
     /**
@@ -96,13 +98,14 @@ class Post implements Comparable<Post> {
      * @return  categories in String format
      */
     private String formatCategories() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (String item : categories) {
-            result += item + ", ";
+            result.append(item).append(", ");
         }
         try {
             return result.substring(0, result.length()-2);
         } catch (Exception e ) {
+            Crashlytics.logException(e);
             return "";
         }
     }

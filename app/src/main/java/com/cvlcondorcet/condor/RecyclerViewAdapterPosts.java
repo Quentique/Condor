@@ -97,7 +97,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
         try {
             Picasso.with(ctx).load(post.getPicture()).into(((ViewHolder) holder).pic);
             ((RecyclerViewAdapterPosts.ViewHolder) holder).pic.setVisibility(View.VISIBLE);
-        }catch (IllegalArgumentException e ) { e.printStackTrace(); ((RecyclerViewAdapterPosts.ViewHolder) holder).pic.setVisibility(View.GONE);}
+        }catch (IllegalArgumentException e ) { ((RecyclerViewAdapterPosts.ViewHolder) holder).pic.setVisibility(View.GONE);}
     }
 
     /**
@@ -131,7 +131,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                    // Log.i("EEE", String.valueOf(filteredList.size()));
                     try {
                         Collections.sort(filteredList, Collections.<Post>reverseOrder());
-                    } catch (NullPointerException e) {}
+                    } catch (NullPointerException ignored) {}
                     ((Activity) ctx).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

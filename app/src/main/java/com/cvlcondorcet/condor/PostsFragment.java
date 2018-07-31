@@ -238,7 +238,7 @@ public class PostsFragment extends Fragment
             spinner = null;
             bar.setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_TITLE | android.support.v7.app.ActionBar.DISPLAY_HOME_AS_UP | android.support.v7.app.ActionBar.DISPLAY_SHOW_HOME);
             loader.cancel(true);
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException ignored) {}
     }
 
     /**
