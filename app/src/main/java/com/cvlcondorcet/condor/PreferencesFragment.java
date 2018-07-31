@@ -99,7 +99,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
                 }
             }
         });
-
         findPreference("show_data").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

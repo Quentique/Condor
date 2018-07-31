@@ -64,6 +64,9 @@ class Database {
         return database != null && database.isOpen();
     }
 
+    /**
+     * Initialises variables for sync (count for new content)
+     */
     void initialiseSync() {
         Log.i("SYNC", "Initalising function called");
         SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
@@ -439,6 +442,10 @@ class Database {
         return toReturn;
     }
 
+    /**
+     * Used for the Maps module, retrives suggestions according to user's entry 
+     * @return CursorAdapter with suggestions
+     */
     @SuppressLint("Recycle")
     CursorAdapter getSuggestions() {
         Cursor cursor;

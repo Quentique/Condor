@@ -240,50 +240,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-      /*  view.findViewById(R.id.facebook_logo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Uri uri = Uri.parse("https://www.facebook.com/pg/"+facebook);
-                try {
-                    ApplicationInfo appInfo = getActivity().getPackageManager().getApplicationInfo("com.facebook.katana", 0);
-                    if (appInfo.enabled) {
-                        uri = Uri.parse("fb://page/"+ facebook);
-                    }
-                } catch (PackageManager.NameNotFoundException ignored) {}
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
-
-        view.findViewById(R.id.twitter_logo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!twitter.contentEquals("")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitter));
-                    startActivity(intent);
-                }
-            }
-        });
-
-        view.findViewById(R.id.highschool_logo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!high.contentEquals("")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(high));
-                    startActivity(intent);
-                }
-            }
-        });
-        view.findViewById(R.id.ent_logo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!ent.contentEquals("")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ent));
-                    startActivity(intent);
-                }
-            }
-        });*/
         view.findViewById(R.id.news_quick).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -337,6 +293,9 @@ public class MainFragment extends Fragment {
         }
     }
 
+    /**
+     * Extracts a banner from the high-school's website
+     */
     private class LoadingWeb extends AsyncTask<String, Void, Void> {
         String toDisplay = "";
         String high = "";
