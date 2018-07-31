@@ -79,7 +79,7 @@ public class MainFragment extends Fragment {
             color = Color.parseColor(db.timestamp("color"));
         } catch (Exception e ) {
             color = Color.parseColor("#000000");
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         title.setTextColor(color);
         title.setShadowLayer(2.0f, 6.0f,6.0f,Color.parseColor("#000000"));

@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -128,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, 0));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (NullPointerException ignored) {}
+        } catch (NullPointerException ignored) {
+            Crashlytics.logException(ignored);}
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nvView);
         setupDrawerContent(navigationView);
@@ -189,16 +191,16 @@ public class MainActivity extends AppCompatActivity {
                 db.open();
                 Sync.rssURL = db.timestamp("website") + "feed";
                 db.close();
-            } catch (SQLException ignored) { }
+            } catch (SQLException ignored) { Crashlytics.logException(ignored); }
 
             if (savedInstanceState != null) {
                 try {
                     fragmentClass = (Class) savedInstanceState.getSerializable("class");
                     Fragment fg = (Fragment) fragmentClass.newInstance();
                     getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fg).commit();
-                } catch (NullPointerException ignored) {
-                } catch (IllegalAccessException ignored) {
-                } catch (InstantiationException ignored) {
+                } catch (NullPointerException ignored) { Crashlytics.logException(ignored);
+                } catch (IllegalAccessException ignored) { Crashlytics.logException(ignored);
+                } catch (InstantiationException ignored) { Crashlytics.logException(ignored);
                 }
             } else {
                 if (default_preferences.getBoolean("sync_app_start", false) && allowConnect(this)) {
@@ -431,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
                 navigationView.setCheckedItem(item.getItemId());
 
-            } catch (Exception ignored) {
+            } catch (Exception ignored) { Crashlytics.logException(ignored);
             }
         }
 
@@ -534,14 +536,12 @@ public class MainActivity extends AppCompatActivity {
                     Fragment fragment = null;
                     try {
                         fragment = MapsFragment.class.newInstance();
+                        fragment.setArguments(bundle);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
                     } catch (InstantiationException ignored) {
                     } catch (IllegalAccessException ignored) {
                     }
-                    try {
-                        assert fragment != null;
-                        fragment.setArguments(bundle);
-                    } catch (NullPointerException ignored) {}
-                    getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
+
                 } else if (newIntent.getStringExtra("fragment").equals("nav")) {
                     setupDrawerContent(navigationView);
                 }

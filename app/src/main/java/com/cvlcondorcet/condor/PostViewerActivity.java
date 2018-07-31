@@ -17,6 +17,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -144,7 +146,7 @@ public class PostViewerActivity extends AppCompatActivity {
                 toDisplay = "<link rel=\"stylesheet\" href=\"style.css\"/>";
                 toDisplay += doc.select(".post").first().html();
 
-            } catch (IOException e) {}
+            } catch (IOException e) { Crashlytics.logException(e); }
             return null;
         }
 

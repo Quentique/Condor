@@ -14,6 +14,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -111,7 +113,8 @@ public class TrainFragment extends Fragment {
                     element.add(el);
                     element.add(el2);
                   //  Log.i("DO", "FOREGOUND");
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                    Crashlytics.logException(e);}
             }
             return null;
         }
@@ -121,7 +124,7 @@ public class TrainFragment extends Fragment {
             try {
                 web_view.loadDataWithBaseURL("http://m.sncf.com", element.toString(), "text/html", "gzip", "");
                 // Log.i("END", "LOADING");
-            } catch(NullPointerException e) {  }
+            } catch(NullPointerException e) { Crashlytics.logException(e); }
         }
     }
 

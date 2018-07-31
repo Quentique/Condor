@@ -4,6 +4,8 @@ package com.cvlcondorcet.condor;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -64,7 +66,7 @@ class PostsLoader extends AsyncTaskLoader<List<Post>> {
                    // Log.i("EEEE", Jsoup.clean(element.select("description").first().text(), Whitelist.none()));
                 }
 
-                }catch (IllegalArgumentException e) {}
+                }catch (IllegalArgumentException e) { Crashlytics.logException(e);}
                 data.addAll(rssFeed);
             } catch (IOException e) {
                 e.printStackTrace();

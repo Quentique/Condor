@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;
@@ -224,7 +225,7 @@ public class Sync extends IntentService {
                 db.close();
             } catch(SQLException e){
                 progress = -2;
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             noti.setOngoing(false);
@@ -275,7 +276,7 @@ public class Sync extends IntentService {
                 url = new URL(base_URL + content + KEY + "&timestamp=" + machin);
                 Log.i("TEST", url.toString());
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             HttpURLConnection connection = null;
@@ -283,6 +284,7 @@ public class Sync extends IntentService {
                 connection = (HttpURLConnection) url.openConnection();
               //  Log.i("NETWORK ERROR", hello);
             } catch (IOException e) {
+                Crashlytics.logException(e);
                 progress = -1;
                 progressMessage = "An network error has occurred while syncing. Please try again later.";
                 handler.post(sendProgress);
@@ -296,7 +298,7 @@ public class Sync extends IntentService {
                     answer.append(inputLine);
                 in.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             } finally {
                 connection.disconnect();
             }
@@ -304,10 +306,10 @@ public class Sync extends IntentService {
             try {
                 tab = new JSONArray(answer.toString());
             } catch (JSONException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
         } catch (NullPointerException ignored) {
-
+            Crashlytics.logException(ignored);
         }
         return tab;
     }
@@ -337,7 +339,7 @@ public class Sync extends IntentService {
             input.close();
           //  Log.i("EBUG", "File downloaded " + file);
         } catch (IOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
     }
 
@@ -351,7 +353,7 @@ public class Sync extends IntentService {
         try{
             url = new URL(base_URL + check_URL + KEY);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         HttpURLConnection connection;
         try {
@@ -378,14 +380,13 @@ public class Sync extends IntentService {
             handler.post(sendProgress);
             stopForeground(true);
             networkError = true;
-            e.printStackTrace();
             answer = new StringBuilder("Server is unreachable, please try again later.");
         } catch (IOException e) {
             progress = -1;
             handler.post(sendProgress);
             stopForeground(true);
             networkError = true;
-            e.printStackTrace();
+            Crashlytics.logException(e);
             answer = new StringBuilder("I/O Error");
         }
         return answer.toString();

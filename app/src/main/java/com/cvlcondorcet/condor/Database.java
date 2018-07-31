@@ -20,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -163,7 +164,7 @@ class Database {
                 Log.i("DB-SYNC", toBeDownloaded.toString());
                 database.replace(DBOpenHelper.General.TABLE_NAME, null, values);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
         }
         return toBeDownloaded;
@@ -194,7 +195,7 @@ class Database {
                 values.put(DBOpenHelper.Posts.COLUMN_PIC, element.getString("picture"));
                 database.replace(DBOpenHelper.Posts.TABLE_NAME, null, values);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
         }
     }
@@ -272,7 +273,7 @@ class Database {
                 values.put(DBOpenHelper.Events.COLUMN_PICT, element.getString("picture"));
                 database.replace(DBOpenHelper.Events.TABLE_NAME, null, values);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
         }
         database.delete(DBOpenHelper.Events.TABLE_NAME, DBOpenHelper.Events.COLUMN_STATE + " = 'deleted'", null);
@@ -411,6 +412,7 @@ class Database {
                     }
                 }
             } catch (JSONException ignored) {
+                Crashlytics.logException(ignored);
             }
         }
         try {
@@ -558,7 +560,7 @@ class Database {
             for (int i = 0 ; i < array.length() ; i++) {
                 results.add(array.getString(i));
             }
-        } catch (JSONException e) { e.printStackTrace(); }
+        } catch (JSONException e) { Crashlytics.logException(e); }
 
         return results;
     }

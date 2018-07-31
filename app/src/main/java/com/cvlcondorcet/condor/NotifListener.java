@@ -32,7 +32,7 @@ public class NotifListener extends FirebaseMessagingService {
         String what = message.getData().get("what");
        // Log.d("TEST", "From: " + messageT);
 //        Toast.makeText(this, "Message received", Toast.LENGTH_LONG).show();
-        if (messageT.startsWith("/topics/condor64")) {
+        if (messageT != null && messageT.startsWith("/topics/condor64")) {
             if (what != null) {
                 if (what.equals("sync")) {
                     if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_when_notified", false)) {
