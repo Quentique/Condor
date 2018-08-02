@@ -221,9 +221,17 @@ public class MainActivity extends AppCompatActivity {
                             case "events":
                                 selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_events));
                                 break;
+                            case "canteen":
+                                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_canteen));
+                                break;
+                            case "cvl":
+                                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_cvl));
+                                break;
                             case "maps":
                                 Bundle bundle = new Bundle();
-                                bundle.putString("place", getIntent().getStringExtra("place"));
+                                if (getIntent().hasExtra("place")) {
+                                    bundle.putString("place", getIntent().getStringExtra("place"));
+                                }
                                 Fragment fragment = MapsFragment.class.newInstance();
                                 fragment.setArguments(bundle);
                                 getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
@@ -532,8 +540,10 @@ public class MainActivity extends AppCompatActivity {
             if (newIntent.getExtras().containsKey("fragment")) {
                 if (newIntent.getStringExtra("fragment").equals("maps")) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("place", newIntent.getStringExtra("place"));
-                    Fragment fragment = null;
+                    if (newIntent.hasExtra("place")) {
+                        bundle.putString("place", newIntent.getStringExtra("place"));
+                    }
+                    Fragment fragment;
                     try {
                         fragment = MapsFragment.class.newInstance();
                         fragment.setArguments(bundle);
