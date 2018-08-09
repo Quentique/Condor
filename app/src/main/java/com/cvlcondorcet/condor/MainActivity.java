@@ -392,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.setAction("com.sncf.fusion.STATION");
                     try {
-                        if (getPackageManager().getPackageInfo("com.sncf.fusion", 0).versionCode > 220) {
+                        if (getPackageManager().getPackageInfo("com.sncf.fusion", 0).versionCode <= 220) {
                             intent.setComponent(new ComponentName("com.sncf.fusion", "com.sncf.fusion.ui.station.trainboard.StationBoardsActivity"));
                         } else {
                             intent.setComponent(new ComponentName("com.sncf.fusion", "com.sncf.fusion.feature.station.ui.trainboard.StationBoardsActivity"));
@@ -401,7 +401,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                     intent.putExtra("stationUic", "87184002");
                     intent.addCategory("DEFAULT");
-                    startActivity(intent);
+                    try {
+                        startActivity(intent);
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        intent = getPackageManager().getLaunchIntentForPackage("com.sncf.fusion");
+                        startActivity(intent);
+                    }
                 } else {
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "com.sncf.fusion")));

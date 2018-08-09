@@ -124,5 +124,6 @@
     <string name="clear_notif_title">Clear all notifications</string>
     <string name="clear_notif_summary">Remove all notifications within the app.</string>
     <string name="clear_notif_done">Notifications cleared.</string>
-    <string name="in_a_week">In a week, on the</string>
+    <string name="in_a_week">"In a weekn, on the "</string>
+    <string name="today">"Today at "</string>
 </resources>
