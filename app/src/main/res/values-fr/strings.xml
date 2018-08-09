@@ -122,4 +122,5 @@
     <string name="clear_notif_summary">Enlever les notifications dans l\'appli.</string>
     <string name="clear_notif_done">Notifications nettoyées.</string>
     <string name="in_a_week">"Dans une semaine, le "</string>
+    <string name="today">"Aujourd'hui à "</string>
 </resources>

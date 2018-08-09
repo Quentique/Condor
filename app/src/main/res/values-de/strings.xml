@@ -121,5 +121,6 @@
     <string name="clear_notif_title">Benachrichtungen beseitigen</string>
     <string name="clear_notif_summary">Entfernt die Benachrichtungen im App.</string>
     <string name="clear_notif_done">Benachrichtungen beseitigt.</string>
-    <string name="in_a_week">"In einer Woche, am "</string>
+    <string name="in_a_week">"In einer Woche am "</string>
+    <string name="today">"Heute um "</string>
 </resources>
