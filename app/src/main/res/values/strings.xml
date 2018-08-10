@@ -126,4 +126,5 @@
     <string name="clear_notif_done">Notifications cleared.</string>
     <string name="in_a_week">"In a weekn, on the "</string>
     <string name="today">"Today at "</string>
+    <string name="mark_as_seen">Mark as seen</string>
 </resources>

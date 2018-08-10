@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
             });
             builder.create().show();
             Intent servicee = new Intent(getApplicationContext(), Sync.class);
+            servicee.putExtra("from", "activity");
             startService(servicee);
             AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
             builder2.setItems(null,null);

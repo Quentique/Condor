@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -82,10 +83,12 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (newArt.contains(Integer.valueOf(post.getId()))) {
             ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setTypeface(null, Typeface.BOLD);
             ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setAnimation(anim);
+            ((ViewHolder) holder).button.setVisibility(View.VISIBLE);
             Log.i("POSTS", "WORKED");
         } else {
             ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setTypeface(null, Typeface.NORMAL);
             ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setAnimation(null);
+            ((ViewHolder) holder).button.setVisibility(View.GONE);
             Log.i("POSTS", "DIDN't WORKED");
         }
         Log.i("POSTS", "ID:"+post.getId());
@@ -200,6 +203,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
         public final TextView name, content, date, categories;
         public final ImageView pic, expand;
         public final LinearLayout lay;
+        public final Button button;
         private final Context context;
 
         public ViewHolder(View itemView, Context ctx) {
@@ -211,6 +215,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
             categories = itemView.findViewById(R.id.post_categories);
             pic = itemView.findViewById(R.id.post_pic);
             lay = itemView.findViewById(R.id.post_lay);
+            button = itemView.findViewById(R.id.viewed_button);
             expand = itemView.findViewById(R.id.content_button);
             expand.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -221,6 +226,23 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                     } else {
                         lay.setVisibility(View.VISIBLE);
                         expand.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_less_black_24dp));
+                    }
+                }
+            });
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        Post post = filteredList.get(pos);
+                        newArt.remove(Integer.valueOf(post.getId()));
+                        Database.updatePrefValue("posts", newArt, context);
+                        view.setVisibility(View.GONE);
+                        name.setAnimation(null);
+                        name.setTypeface(null, Typeface.NORMAL);
+                        Intent restart = new Intent(context, MainActivity.class);
+                        restart.putExtra("fragment", "nav");
+                        context.startActivity(restart);
                     }
                 }
             });
