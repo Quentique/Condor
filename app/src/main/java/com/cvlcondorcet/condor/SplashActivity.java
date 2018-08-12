@@ -43,6 +43,7 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             intent = new Intent(this, MainActivity.class);
+          //  intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_DEBUG_LOG_RESOLUTION);
             Log.i("OPENING", "SPLASH ACITIVTY");
             try {
                 List<String> list = getIntent().getData().getPathSegments();
@@ -59,13 +60,17 @@ public class SplashActivity extends AppCompatActivity {
                             }
                             break;
                         case "maps":
-                            if (!list.get(1).equals("")) {
+                            if (list.size() >= 2 && !list.get(1).equals("")) {
                                 intent.putExtra("fragment", "maps");
                                 intent.putExtra("place", list.get(1));
-                                intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_DEBUG_LOG_RESOLUTION);
+                               // intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_DEBUG_LOG_RESOLUTION);
                                 startActivity(intent);
 
                                 //NavUtils.navigateUpTo(this, intent);
+                            } else {
+                                intent.putExtra("fragment", "maps");
+                                intent.putExtra("place", "");
+                                startActivity(intent);
                             }
                             break;
                         case "cgu":
@@ -74,7 +79,13 @@ public class SplashActivity extends AppCompatActivity {
                             Log.i("TEST", "CGU");
                             startActivity(intent2);
                             break;
-
+                        case "cvl":
+                            intent.putExtra("fragment", "cvl");
+                            startActivity(intent);
+                            break;
+                        case "canteen":
+                            intent.putExtra("fragment", "canteen");
+                            startActivity(intent);
                         default:
                             Log.i("TEST", "DEFAULT CASE");
                             startActivity(intent);
