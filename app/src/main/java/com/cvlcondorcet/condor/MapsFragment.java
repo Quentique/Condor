@@ -126,10 +126,10 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             }
         });
 
-        String test;
+        String test = "";
         try {
             test = getArguments().getString("place");
-        } catch (Exception e) { test = ""; }
+        } catch (NullPointerException e) { test = ""; }
 
         if (test.equals("")) {
             loadPdf("GEN.pdf");

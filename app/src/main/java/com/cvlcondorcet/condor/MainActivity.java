@@ -211,36 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //Log.i("CONDOR", getIntent().getExtras().toString());
                 if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("fragment")) {
-                    try {
-                        switch (getIntent().getStringExtra("fragment")) {
-                            case "sync":
-                                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_sync));
-                                break;
-                            case "posts":
-                                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
-                                break;
-                            case "events":
-                                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_events));
-                                break;
-                            case "canteen":
-                                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_canteen));
-                                break;
-                            case "cvl":
-                                selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_cvl));
-                                break;
-                            case "maps":
-                                Bundle bundle = new Bundle();
-                                if (getIntent().hasExtra("place")) {
-                                    bundle.putString("place", getIntent().getStringExtra("place"));
-                                }
-                                Fragment fragment = MapsFragment.class.newInstance();
-                                fragment.setArguments(bundle);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
-                        }
-                    } catch (Exception e) {
-                        Log.i("TEST", getIntent().getExtras().toString());
-                        selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
-                    }
+                    selectFromParam(getIntent().getStringExtra("fragment"));
                 } else {
                     selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
                 }
@@ -444,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
                 value = value.substring(24);
                 fragment = (Fragment) fragmentClass.newInstance();
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
                 navigationView.setCheckedItem(item.getItemId());
 
             } catch (Exception ignored) { Crashlytics.logException(ignored);
@@ -539,6 +510,39 @@ public class MainActivity extends AppCompatActivity {
         return icon;
     }
 
+    private void selectFromParam(String extra) {
+        try {
+            switch (extra) {
+                case "sync":
+                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_sync));
+                    break;
+                case "posts":
+                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_posts));
+                    break;
+                case "events":
+                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_events));
+                    break;
+                case "canteen":
+                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_canteen));
+                    break;
+                case "cvl":
+                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_cvl));
+                    break;
+                case "maps":
+                    Bundle bundle = new Bundle();
+                    if (getIntent().hasExtra("place")) {
+                        bundle.putString("place", getIntent().getStringExtra("place"));
+                    } else { bundle.putString("place", ""); }
+                    Fragment fragment = MapsFragment.class.newInstance();
+                    fragment.setArguments(bundle);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
+            }
+        } catch (Exception e) {
+           // Log.i("TEST", getIntent().getExtras().toString());
+            selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
+        }
+    }
+
     @Override
     public void onNewIntent(Intent newIntent) {
         Log.i("MAIN", "New intent received");
@@ -548,7 +552,7 @@ public class MainActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     if (newIntent.hasExtra("place")) {
                         bundle.putString("place", newIntent.getStringExtra("place"));
-                    }
+                    } else { bundle.putString("place", ""); }
                     Fragment fragment;
                     try {
                         fragment = MapsFragment.class.newInstance();
@@ -560,6 +564,8 @@ public class MainActivity extends AppCompatActivity {
 
                 } else if (newIntent.getStringExtra("fragment").equals("nav")) {
                     setupDrawerContent(navigationView);
+                } else {
+                    selectFromParam(newIntent.getStringExtra("fragment"));
                 }
             } else if (newIntent.getExtras().containsKey("name") && newIntent.getStringExtra("name").equals("cgu")) {
                 //Intent intent2 = new Intent(this, LicensesActivity.class);
