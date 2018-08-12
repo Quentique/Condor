@@ -106,10 +106,11 @@ public class ConsentActivity extends IntroActivity {
     @SuppressLint("CommitPrefEdits")
     @Override
     protected IntroButton.Behaviour generateFinalButtonBehaviour() {
-        final Intent nextActivity = new Intent(this, MainActivity.class);
+        final Intent nextActivity = new Intent(this, SplashActivity.class);
         edit = PreferenceManager.getDefaultSharedPreferences(this).edit();
         Log.i("TEST", PreferenceManager.getDefaultSharedPreferences(this).getString("language", "test"));
         edit.putInt("version", BuildConfig.VERSION_CODE);
+        edit.apply();
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         return new IntroButton.ProgressToNextActivity(nextActivity, edit);
     }
