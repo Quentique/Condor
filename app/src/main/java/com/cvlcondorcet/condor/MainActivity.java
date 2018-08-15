@@ -423,8 +423,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Log.i("11", value);
-        params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, value);
-        analytics.logEvent("fragment", params);
+        if (value.equals("")) {
+            params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, value);
+            analytics.logEvent("fragment", params);
+        }
         drawerLayout.closeDrawers();
     }
 
@@ -564,6 +566,9 @@ public class MainActivity extends AppCompatActivity {
 
                 } else if (newIntent.getStringExtra("fragment").equals("nav")) {
                     setupDrawerContent(navigationView);
+                } else if (newIntent.getStringExtra("fragment").equals("restart")) {
+                    setupDrawerContent(navigationView);
+                    selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
                 } else {
                     selectFromParam(newIntent.getStringExtra("fragment"));
                 }
