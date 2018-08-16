@@ -580,10 +580,10 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     selectFromParam(newIntent.getStringExtra("fragment"));
                 }
-            } else if (newIntent.getExtras().containsKey("name") && newIntent.getStringExtra("name").equals("cgu")) {
+            }/* else if (newIntent.getExtras().containsKey("name") && newIntent.getStringExtra("name").equals("cgu")) {
                 //Intent intent2 = new Intent(this, LicensesActivity.class);
                 // intent2.putExtra()
-            }
+            }*/
         }
     }
 }
