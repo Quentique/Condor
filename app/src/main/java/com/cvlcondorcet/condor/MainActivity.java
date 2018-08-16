@@ -46,8 +46,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import io.fabric.sdk.android.Fabric;
-
 
 /**
  * Main activity, frame for fragments, home for navigation drawer, etc.
@@ -96,10 +94,10 @@ public class MainActivity extends AppCompatActivity {
             Log.i("STARTUP", "SOMETHING WENT WRONG");
         }
 
-        if (default_preferences.getBoolean("crashlytics", false)) {
+      /*  if (default_preferences.getBoolean("crashlytics", false)) {
             Log.i("TEST", "AUTOINITIALIZATION CRASHLYTICS");
             Fabric.with(this, new Crashlytics());
-        }
+        }*/
 
         mFirebaseRemoteConfig.fetch(0)
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
