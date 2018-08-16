@@ -80,7 +80,7 @@ public class PostViewerActivity extends AppCompatActivity {
             }
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError err) {
-                if (err.getPrimaryError()  == SslError.SSL_EXPIRED) {
+                if (err.getPrimaryError() == SslError.SSL_EXPIRED) {
                     handler.cancel();
                 } else {
                     handler.proceed();

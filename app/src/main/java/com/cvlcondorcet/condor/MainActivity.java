@@ -44,8 +44,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import io.fabric.sdk.android.Fabric;
-
 
 /**
  * Main activity, frame for fragments, home for navigation drawer, etc.
@@ -77,9 +75,9 @@ public class MainActivity extends AppCompatActivity {
         preferences = getSharedPreferences("notifications",0);
         default_preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (default_preferences.getBoolean("crashlytics", false)) {
+      /*  if (default_preferences.getBoolean("crashlytics", false)) {
             Fabric.with(this, new Crashlytics());
-        }
+        }*/
 
         mFirebaseRemoteConfig.fetch(0)
 

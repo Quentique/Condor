@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
@@ -33,6 +34,12 @@ public class SplashActivity extends AppCompatActivity {
         }
         if (pref.getBoolean("crashlytics", false)) {
             Fabric.with(this, new Crashlytics());
+        } else {
+            Crashlytics.Builder builder = new Crashlytics.Builder();
+            CrashlyticsCore.Builder builder2 = new CrashlyticsCore.Builder();
+            builder2.disabled(true);
+            builder.core(builder2.build());
+            Fabric.with(this, builder.build());
         }
         if (pref.getInt("version",0) < BuildConfig.VERSION_CODE) {
             intent = new Intent(this, ConsentActivity.class);
