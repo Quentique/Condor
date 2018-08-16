@@ -2,24 +2,29 @@ package com.cvlcondorcet.condor;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
@@ -28,6 +33,9 @@ import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import io.supercharge.shimmerlayout.ShimmerLayout;
 
 import static android.view.View.GONE;
 
@@ -40,6 +48,7 @@ import static android.view.View.GONE;
 public class MainFragment extends Fragment {
     private Database db;
     private WebView webview;
+    private ArrayList<String> correspondance;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     @Override
@@ -70,7 +79,7 @@ public class MainFragment extends Fragment {
             color = Color.parseColor(db.timestamp("color"));
         } catch (Exception e ) {
             color = Color.parseColor("#000000");
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         title.setTextColor(color);
         title.setShadowLayer(2.0f, 6.0f,6.0f,Color.parseColor("#000000"));
@@ -104,10 +113,69 @@ public class MainFragment extends Fragment {
         image3.setImageResource(R.drawable.ic_mail_black_32dp);
         contactTitle3.setText("Mail : ");
         contactValue3.setText(db.timestamp("mail"));
-        final String facebook = db.timestamp("facebook");
-        final String twitter = db.timestamp("twitter");
         final String high = db.timestamp("website");
-        final String ent = db.timestamp("ent_link");
+        JsonArray social;
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                if (correspondance.get((Integer) v.getTag()).contains("facebook")) {
+                        PackageManager packageManager = getActivity().getPackageManager();
+                        String toshow;
+                        try {
+                            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
+                            if (versionCode >= 3002850) { //newer versions of fb app
+                               toshow=  "fb://facewebmodal/f?href=" + correspondance.get((Integer) v.getTag());
+                            } else { //older versions of fb app
+                                toshow= "fb://page/" + correspondance.get((Integer) v.getTag());
+                            }
+                        } catch (PackageManager.NameNotFoundException e) {
+                            toshow= correspondance.get((Integer) v.getTag()); //normal web url
+                        }
+                    intent = new Intent(Intent.ACTION_VIEW, Uri.parse(toshow));
+                } else {
+                    intent = new Intent(Intent.ACTION_VIEW, Uri.parse(correspondance.get((Integer) v.getTag())));
+                }
+                startActivity(intent);
+            }
+        };
+        JsonParser parser = new JsonParser();
+        Log.i("SOC", "INITALIZING PARSER");
+        try {
+            social = parser.parse(db.timestamp("social_networks")).getAsJsonArray();
+        } catch (IllegalStateException e) { social = new JsonArray(); }
+        Log.i("SOCC", String.valueOf(social.size()));
+        int i;
+        correspondance = new ArrayList<>();
+        LinearLayout tablelayout = view.findViewById(R.id.tablelayout_soc);
+
+        Log.i("MATHS", String.valueOf(Math.ceil((double)social.size()/4)));
+        for (i = 0 ; i < Math.ceil((double)social.size()/4); i++){
+            Log.i("SOC", "Entering first loop");
+            LinearLayout row = new LinearLayout(getActivity());
+            row.setTag(i);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 4f);
+            row.setLayoutParams(params);
+            row.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            row.setWeightSum(4f);
+            int k;
+            int kl = (social.size()-4*i <= 4) ? social.size() : (i+1)*4;
+            for (k = i*4; k<kl; k++) {
+                Log.i("SOC", "Entering second-loop");
+                    JsonObject object = social.get(k).getAsJsonObject();
+                    ImageButton button = (ImageButton) getLayoutInflater().inflate(R.layout.social_network_button, row, false);
+                    LinearLayout.LayoutParams lay = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+                    button.setLayoutParams(lay);
+                    button.setTag(k);
+                    button.setImageURI(Uri.parse(getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString()));
+                    Log.i("TEST", getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString());
+                    correspondance.add(k, object.get("link").getAsString());
+                    button.setOnClickListener(listener);
+                    row.addView(button);
+            }
+            tablelayout.addView(row);
+        }
+
         db.close();
 
         if (MainActivity.allowConnect(getActivity()) && mFirebaseRemoteConfig.getBoolean("website")) {
@@ -162,50 +230,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.facebook_logo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Uri uri = Uri.parse("https://www.facebook.com/pg/"+facebook);
-                try {
-                    ApplicationInfo appInfo = getActivity().getPackageManager().getApplicationInfo("com.facebook.katana", 0);
-                    if (appInfo.enabled) {
-                        uri = Uri.parse("fb://page/"+ facebook);
-                    }
-                } catch (PackageManager.NameNotFoundException ignored) {}
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
-
-        view.findViewById(R.id.twitter_logo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!twitter.contentEquals("")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitter));
-                    startActivity(intent);
-                }
-            }
-        });
-
-        view.findViewById(R.id.highschool_logo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!high.contentEquals("")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(high));
-                    startActivity(intent);
-                }
-            }
-        });
-        view.findViewById(R.id.ent_logo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!ent.contentEquals("")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(ent));
-                    startActivity(intent);
-                }
-            }
-        });
         view.findViewById(R.id.news_quick).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -245,21 +269,40 @@ public class MainFragment extends Fragment {
         if (!mFirebaseRemoteConfig.getBoolean("canteen")) {
             view.findViewById(R.id.canteen_quick).setVisibility(GONE);
         }
+        if (MainActivity.preferences.getInt("posts_count",0) > 0) {
+            ShimmerLayout layouttt = view.findViewById(R.id.news_quick).findViewById(R.id.shimmer);
+            layouttt.startShimmerAnimation();
+        }
+        if(MainActivity.preferences.getInt("events_count", 0) > 0) {
+            ShimmerLayout layout = view.findViewById(R.id.events_quick).findViewById(R.id.shimmer);
+            layout.startShimmerAnimation();
+        }
+        if (MainActivity.preferences.getBoolean("canteen", false)) {
+            ShimmerLayout layout = view.findViewById(R.id.canteen_quick).findViewById(R.id.shimmer);
+            layout.startShimmerAnimation();
+        }
     }
 
+    /**
+     * Extracts a banner from the high-school's website
+     */
     private class LoadingWeb extends AsyncTask<String, Void, Void> {
         String toDisplay = "";
         String high = "";
         protected Void doInBackground(String... args) {
             try {
-                high = args[0];
-                Document doc = Jsoup.connect(args[0]).postDataCharset("UTF-8").get();
-                Element element2 = doc.getElementsByTag("head").first();
-                Element element = doc.getElementById("graphene-slider");
-                toDisplay = element2.toString();
-                toDisplay +="<style>.carousel { background: transparent; width: 100%; margin: auto;} head, body, div { background: transparent; margin: auto;}</style>";
-                toDisplay += element.toString();
-            } catch (IOException e) {}
+                try {
+                    try {
+                        high = args[0];
+                        Document doc = Jsoup.connect(args[0]).postDataCharset("UTF-8").get();
+                        Element element2 = doc.getElementsByTag("head").first();
+                        Element element = doc.getElementById("graphene-slider");
+                        toDisplay = element2.toString();
+                        toDisplay += "<style>.carousel { background: transparent; width: 100%; margin: auto;} head, body, div { background: transparent; margin: auto;}</style>";
+                        toDisplay += element.toString();
+                    } catch (IllegalArgumentException ignored) {}
+                } catch (NullPointerException ignored) {}
+            } catch (IOException ignored) {}
             return null;
         }
 

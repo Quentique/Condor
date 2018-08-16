@@ -17,10 +17,13 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.view.View.GONE;
 
@@ -87,7 +90,7 @@ public class PostViewerActivity extends AppCompatActivity {
         setSupportActionBar(bar);
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException ignored) {}
 
         String id = getIntent().getStringExtra("id");
         if (!id.equals("0")) {
@@ -103,13 +106,15 @@ public class PostViewerActivity extends AppCompatActivity {
                 setTitle(view.getTitle());
             } else {
                 new Loading().execute("id", id);
+                ArrayList<Integer> newArt = Database.parsePrefNot("posts", this);
+                newArt.remove(Integer.valueOf(id));
+                Database.updatePrefValue("posts", newArt, this);
             }
         } else {
             new LoadingWeb().execute(getIntent().getStringExtra("link"));
         }
-
-
     }
+
 
     /**
      * Comes back to main activity (when home button pressed).
@@ -140,7 +145,7 @@ public class PostViewerActivity extends AppCompatActivity {
                 toDisplay = "<link rel=\"stylesheet\" href=\"style.css\"/>";
                 toDisplay += doc.select(".post").first().html();
 
-            } catch (IOException e) {}
+            } catch (IOException e) { Crashlytics.logException(e); }
             return null;
         }
 
@@ -177,6 +182,7 @@ public class PostViewerActivity extends AppCompatActivity {
             date.setText(post.getFormatedDate());
             cat.setText(post.getFormatedCategories());
             db.close();
+
         }
     }
 }

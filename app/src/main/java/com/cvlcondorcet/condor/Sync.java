@@ -10,7 +10,11 @@ import android.database.SQLException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
+
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;
@@ -119,6 +123,10 @@ public class Sync extends IntentService {
     @Override
     public void onHandleIntent(Intent i)
     {
+        String act = "none";
+        if (i.getExtras() != null && i.getExtras().containsKey("from")) {
+            act = i.getStringExtra("from");
+        }
         progressMessage = "Syncing...";
         CharSequence tickerText = getString(R.string.sync_notif_name);
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -129,10 +137,17 @@ public class Sync extends IntentService {
         } else {
             noti = new Notification.Builder(this);
         }
-        noti.setContentTitle(getResources().getString(R.string.sync_app_start_title))
+        Intent newIntent = new Intent(this, MainActivity.class);
+        newIntent.putExtra("fragment", "sync");
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(newIntent);
+        PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        noti.setContentTitle(getResources().getString(R.string.sync))
                 .setContentText(tickerText)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.ic_launcher_material)
                 .setOngoing(true)
+                .setContentIntent(intent)
                 .setTicker(getString(R.string.sync_start_ticker));
         if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(Notification.VISIBILITY_PUBLIC); }
 
@@ -159,6 +174,8 @@ public class Sync extends IntentService {
         if (!networkError) {
             try {
                 db.open();
+                db.initialiseSync();
+
                 JSONArray maps = get(MAPS_URL);
                 db.updateMaps(maps);
                 JSONArray gen = get(GEN_URL);
@@ -185,10 +202,18 @@ public class Sync extends IntentService {
                 noti.setProgress(100, 100, false);
                 noti.setContentText(getString(R.string.sync_end));
                 manager.notify(5, noti.build());
+                Log.i("SYNC", "ABOUT TO CALL CONFIGURATION");
+
+                if (db.endingSync() && act.equals("activity")) {
+                    Log.i("SYNC", "CALLED CONFIGURATION");
+                    Intent restart = new Intent(this, MainActivity.class);
+                    restart.putExtra("fragment", "restart");
+                    startActivity(restart);
+                }
                 db.close();
             } catch(SQLException e){
                 progress = -2;
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             noti.setOngoing(false);
@@ -215,29 +240,37 @@ public class Sync extends IntentService {
      * @return          {@link JSONArray JSONArray} containing the requested values
      */
     private JSONArray get(String content) {
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         URL url = null;
         JSONArray tab = new JSONArray();
         try {
 
             try {
                 String machin;
-                if (content.equals(GEN_URL)) {
-                    machin = db.timestamp("timestamp");
-                } else if (content.equals(MAPS_URL)) {
-                    machin = db.timestamp("maps_change");
-                } else {
-                    machin = db.timestamp("last_sync");
+                switch (content) {
+                    case GEN_URL:
+                        machin = db.timestamp("timestamp");
+                        break;
+                    case MAPS_URL:
+                        machin = db.timestamp("maps_change");
+                        break;
+                    default:
+                        machin = db.timestamp("last_sync");
+                        break;
                 }
+                machin = machin.replaceAll("\\s", "T");
+                Log.i("CONDOR", machin);
                 url = new URL(base_URL + content + KEY + "&timestamp=" + machin);
+                Log.i("TEST", url.toString());
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
 
             HttpURLConnection connection = null;
             try {
                 connection = (HttpURLConnection) url.openConnection();
             } catch (IOException e) {
+                Crashlytics.logException(e);
                 progress = -1;
                 progressMessage = "An network error has occurred while syncing. Please try again later.";
                 handler.post(sendProgress);
@@ -248,20 +281,20 @@ public class Sync extends IntentService {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null)
-                    answer += inputLine;
+                    answer.append(inputLine);
                 in.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             } finally {
                 connection.disconnect();
             }
             try {
-                tab = new JSONArray(answer);
+                tab = new JSONArray(answer.toString());
             } catch (JSONException e) {
-                e.printStackTrace();
+                Crashlytics.logException(e);
             }
-        } catch (NullPointerException e) {
-
+        } catch (NullPointerException ignored) {
+            Crashlytics.logException(ignored);
         }
         return tab;
     }
@@ -290,7 +323,7 @@ public class Sync extends IntentService {
             output.close();
             input.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
     }
 
@@ -300,11 +333,11 @@ public class Sync extends IntentService {
      */
     private String serverState() {
         URL url = null;
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         try{
             url = new URL(base_URL + check_URL + KEY);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Crashlytics.logException(e);
         }
         HttpURLConnection connection;
         try {
@@ -314,7 +347,7 @@ public class Sync extends IntentService {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 while ((inputLine = in.readLine()) != null)
-                    answer += inputLine;
+                    answer.append(inputLine);
                 in.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -322,7 +355,7 @@ public class Sync extends IntentService {
                 handler.post(sendProgress);
                 stopForeground(true);
                 networkError = true;
-                answer = "Server is unreachable, please try again later.";
+                answer = new StringBuilder("Server is unreachable, please try again later.");
             } finally {
                 connection.disconnect();
             }
@@ -331,17 +364,16 @@ public class Sync extends IntentService {
             handler.post(sendProgress);
             stopForeground(true);
             networkError = true;
-            e.printStackTrace();
-            answer = "Server is unreachable, please try again later.";
+            answer = new StringBuilder("Server is unreachable, please try again later.");
         } catch (IOException e) {
             progress = -1;
             handler.post(sendProgress);
             stopForeground(true);
             networkError = true;
-            e.printStackTrace();
-            answer = "I/O Error";
+            Crashlytics.logException(e);
+            answer = new StringBuilder("I/O Error");
         }
-        return answer;
+        return answer.toString();
     }
 
     /**
@@ -363,15 +395,11 @@ public class Sync extends IntentService {
         intent.putExtra("progressMessage", progressMessage);
         sendBroadcast(intent);
         if (progress == -1) {
-            Intent newIntent = new Intent(this, MainActivity.class);
-            newIntent.putExtra("fragment", "sync");
-            PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             noti.setContentTitle(getResources().getString(R.string.error))
                     .setContentText(Jsoup.parse(progressMessage).text())
-                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setSmallIcon(R.drawable.ic_launcher_material)
                     .setOngoing(false)
                     .setAutoCancel(true)
-                    .setContentIntent(intent)
                     .setProgress(0, 0, false);
             manager.notify(10, noti.build());
         }

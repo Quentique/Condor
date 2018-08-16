@@ -74,7 +74,6 @@
     <string name="date_format">dd/MM</string>
     <string name="hour_format">HH\'h\'mm</string>
     <string name="click_sync">Cliquez pour synchroniser</string>
-    <string name="new_content">Nouveau contenu</string>
     <string name="at">" à "</string>
     <string name="sync_firebase">Synchronisation auto</string>
     <string name="sync_firebase_more">Synchroniser automatiquement quand une mise à jour est disponible.</string>
@@ -84,4 +83,45 @@
     <string name="plan">PLAN</string>
     <string name="decline">REFUSER</string>
     <string name="accept">ACCEPTER</string>
+    <string name="new_content">Du contenu nouveau est disponible au téléchargement</string>
+    <string name="new_content_toread">Nouveau contenu !</string>
+    <string name="new_canteen">Nouveau menu de la cantine !</string>
+    <string name="new_cvl">Du nouveau sur le CVL</string>
+    <string name="new_events">Nouveaux évènements</string>
+    <string name="new_maps">Nouveaux endroits</string>
+    <string name="new_posts">Nouvelles actualités</string>
+    <string name="drop_to_see">Dérouler pour plus de détails</string>
+    <string name="continued">Continuer</string>
+    <string name="content">Contenu</string>
+    <string name="your_data">Vos données</string>
+    <string name="delete_unique">Supprimer l\'identifiant unique</string>
+    <string name="export_data">Exporter mes données</string>
+    <string name="see_data">Voir mes données</string>
+    <string name="crash_data">Données de crash</string>
+    <string name="stats_data">Données statistiques</string>
+    <string name="stats_data_summary">Envoi de données statistiques à l\'éditeur.</string>
+    <string name="crash_data_summary">Envoi de rapports de crash à l\'éditeur</string>
+    <string name="delete_summary">Supprimer toutes vos données.</string>
+    <string name="copy_error">Nous sommes au regret de ne pas pouvoir exporter vos données, merci de contacter le·la DPO.</string>
+    <string name="condor_end"><![CDATA[<p style=\"text-align: justify;\">Vous vous apprêtez à rénoncer à utiliser Condor. Si vous continuez, <strong>toutes vos données</strong> seront supprimés de nos serveurs dans les conditions que vous avez précédemment acceptées.</p>]]></string>
+    <string name="first_window"><![CDATA[<p style=\"text-align: justify;\">Vous avez installé Condor avec succès et nous vous en remercions. </p><br/><br/><strong>Pour utiliser Condor, nous avons besoin de votre consentement !</strong>]]></string>
+    <string name="end_sync"><![CDATA[<p style=\"text-align: justify;\">Nous vous remercions de la confiance que vous nous accordée.</p><br/><br/><strong>Nous synchronisons actuellement les derniers éléments !</strong>]]></string>
+    <string name="need_data"><![CDATA[<p style=\"text-align: justify;\">Nous avons besoin de vos données. Si néanmoins vous souhaitez les supprimer, continuez.</p>]]></string>
+    <string name="data_copied">Vos données ont été exportées dans le presse-papier</string>
+    <string name="gtu_accept">Je déclare accepter les présentes conditions d\'utilisation.</string>
+    <string name="conf_accept">Je déclare accepter la présente politique de confidentialité.</string>
+    <string name="stats_accept">J\'accepte la transmission de données statistiques à la MDL du Lycée Condorcet.</string>
+    <string name="crash_accepts">J\'accepte la transmission de mes données de crash à la MDL du Lycée Condorcet.</string>
+    <string name="congrats">Félicitations !</string>
+    <string name="new_posts_one">"Nouvelle actualité : "</string>
+    <string name="new_events_one">"Nouveau évènement : "</string>
+    <string name="conf">Politique de confidentialité</string>
+    <string name="sync_notification_name">Notification de synchronisation</string>
+    <string name="sync_summary_notif">Notification qui montre le nouveau contenu de Condor.</string>
+    <string name="clear_notif_title">Nettoyer les notifications</string>
+    <string name="clear_notif_summary">Enlever les notifications dans l\'appli.</string>
+    <string name="clear_notif_done">Notifications nettoyées.</string>
+    <string name="in_a_week">"Dans une semaine, le "</string>
+    <string name="today">"Aujourd'hui à "</string>
+    <string name="mark_as_seen">Marqué comme vu</string>
 </resources>

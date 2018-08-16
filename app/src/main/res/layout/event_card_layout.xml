@@ -8,7 +8,8 @@
     android:paddingEnd="10dp"
     android:foreground="?attr/selectableItemBackground"
     android:stateListAnimator="@animator/lift_on_touch"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/title_event"

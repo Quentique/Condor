@@ -98,7 +98,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
 
             @Override
             public boolean onSuggestionClick(int position) {
-
                 searchView.clearFocus();
                 Cursor cursor =(Cursor)adapter.getItem(position);
                 loadPdf(adapter.getItemId(position));
@@ -117,10 +116,10 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             }
         });
 
-        String test;
+        String test = "";
         try {
             test = getArguments().getString("place");
-        } catch (Exception e) { test = ""; }
+        } catch (NullPointerException e) { test = ""; }
 
         if (test.equals("")) {
             loadPdf("GEN.pdf");
@@ -132,6 +131,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 loadPdf(db.getPlaceId(test));
             }
         }
+        MainActivity.preferences.edit().putBoolean("maps", false).apply();
     }
 
     @Override
@@ -326,8 +326,8 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 public void run() {
                     try {
                         Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    } catch (InterruptedException ignored) {
+
                     }
                     try {
                         getActivity().runOnUiThread(new Runnable() {
@@ -337,7 +337,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                                 pdf.zoomWithAnimation((float) x, (float) y, 2.5f);
                             }
                         });
-                    } catch(NullPointerException e) {}
+                    } catch(NullPointerException ignored) {}
                 }
             }).start();
             layout.setVisibility(View.VISIBLE);
@@ -345,11 +345,11 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         }
     }
 
-    public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
+    class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
-        private Context context;
-        private List<String> expandableListTitle;
-        private LinkedHashMap<String, List<String>> expandableListDetail;
+        private final Context context;
+        private final List<String> expandableListTitle;
+        private final LinkedHashMap<String, List<String>> expandableListDetail;
 
         public CustomExpandableListAdapter(Context context, List<String> expandableListTitle, LinkedHashMap<String, List<String>> expandableListDetail) {
             this.context = context;

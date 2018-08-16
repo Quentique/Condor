@@ -74,7 +74,7 @@
     <string name="began">"Began on "</string>
     <string name="date_format">dd/MM</string>
     <string name="hour_format">HH:mm</string>
-    <string name="new_content">New Content</string>
+    <string name="new_content">New content is available for downloading</string>
     <string name="click_sync">Click to sync</string>
     <string name="at">" at "</string>
     <string name="cvl" translatable="false">CVL</string>
@@ -87,5 +87,44 @@
     <string name="plan">MAP</string>
     <string name="decline">DECLINE</string>
     <string name="accept">AGREE</string>
-
+    <string name="new_content_toread">New content!</string>
+    <string name="new_posts">New posts</string>
+    <string name="new_events">New events</string>
+    <string name="new_cvl">New on the CVL</string>
+    <string name="new_maps">New places</string>
+    <string name="new_canteen">New canteen menu!</string>
+    <string name="drop_to_see">Pull down to see more</string>
+    <string name="continued">Continue</string>
+    <string name="content">Content</string>
+    <string name="your_data">Your data</string>
+    <string name="delete_unique">Delete the unique id</string>
+    <string name="export_data">Export my data</string>
+    <string name="see_data">See my data</string>
+    <string name="crash_data">Crash data</string>
+    <string name="stats_data">Statistical data</string>
+    <string name="stats_data_summary">Sending of analytics data for the app\'s editor</string>
+    <string name="crash_data_summary">Sending of crash reports to app\'s editor.</string>
+    <string name="delete_summary">Delete all your information.</string>
+    <string name="end_sync"><![CDATA[<p style=\"text-align: justify;\">Thank you for the confidence you have placed in us.</p><br/><strong>We are now syncing the last elements!</strong>]]></string>
+    <string name="need_data"><![CDATA[<p style=\"text-align: justify;\">We need your data. If you nevertheless still want to delete them, continue.</p>]]></string>
+    <string name="data_copied">Your data has been exported in the clipboard.</string>
+    <string name="copy_error">We regret that we can\'t export your data. Please contact the DPO.</string>
+    <string name="condor_end"><![CDATA[<p style=\"text-align: justify;\">You are about to give up on using Condor. If you continue, <strong>all your data</strong>will be deleted according to the conditions you have previously accepted.</p>]]></string>
+    <string name="first_window"><![CDATA[<p style=\"text-align: justify;\">Condor was successfully installed and we thank you.</p><br/><strong>To use Condor, we however need your consent!</strong>]]></string>
+    <string name="gtu_accept">I hereby accept the terms and conditions.</string>
+    <string name="conf_accept">"I hereby accept this privacy policy. "</string>
+    <string name="stats_accept">I hereby accept the transmission of statistic data to the MDL of the Lycée Condorcet.</string>
+    <string name="crash_accepts">I hereby accept the transmission of crash data to the MDL of the Lycée Condorcet.</string>
+    <string name="congrats">Congratulations!</string>
+    <string name="new_posts_one">New post :</string>
+    <string name="new_events_one">New event :</string>
+    <string name="conf">Privacy Policy</string>
+    <string name="sync_notification_name">Sync notification</string>
+    <string name="sync_summary_notif">Notification that displays the new content.</string>
+    <string name="clear_notif_title">Clear all notifications</string>
+    <string name="clear_notif_summary">Remove all notifications within the app.</string>
+    <string name="clear_notif_done">Notifications cleared.</string>
+    <string name="in_a_week">"In a weekn, on the "</string>
+    <string name="today">"Today at "</string>
+    <string name="mark_as_seen">Mark as seen</string>
 </resources>

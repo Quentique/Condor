@@ -58,7 +58,7 @@
     <string name="to_single_day">" bis "</string>
     <string name="client_default">There are no email clients installed.</string>
     <string name="licenses">LIZENZEN</string>
-    <string name="bug_send_feedback_here">Bug? Vorschlaf? Senden Sie ein Feedback!</string>
+    <string name="bug_send_feedback_here">Bug? Vorschlag? Senden Sie ein Feedback!</string>
     <string name="home">Home</string>
     <string name="help">Hilfe</string>
     <string name="maps">Karten</string>
@@ -74,7 +74,7 @@
     <string name="date_format">dd.MM</string>
     <string name="hour_format">H.mm</string>
     <string name="click_sync">Klicken Sie um zu synchronisieren</string>
-    <string name="new_content">Neue Inhalte</string>
+    <string name="new_content">Neuer Inhalt zum Herunterladen verfügbar</string>
     <string name="at">" um "</string>
     <string name="sync_firebase">Selbstsynchronisation</string>
     <string name="sync_firebase_more">Automatisch synchronisieren, wenn eine Aktualisierung verfügbar ist.</string>
@@ -84,4 +84,44 @@
     <string name="plan">PLAN</string>
     <string name="decline">ABLEHNEN</string>
     <string name="accept">ANNEHMEN</string>
+    <string name="new_content_toread">Neuer Inhalt!</string>
+    <string name="new_canteen">Neuer Mensa-Speiseplan!</string>
+    <string name="new_cvl">Neues über CVL</string>
+    <string name="new_events">Neue Events</string>
+    <string name="new_maps">Neue Orte</string>
+    <string name="new_posts">Neue Nachrichten</string>
+    <string name="drop_to_see">Öffnen für mehr</string>
+    <string name="continued">Weiter</string>
+    <string name="content">Inhalt</string>
+    <string name="your_data">Ihre Daten</string>
+    <string name="delete_unique">Die einmalige Kennung löschen</string>
+    <string name="export_data">Meine Daten exportieren</string>
+    <string name="see_data">Meine Daten sehen</string>
+    <string name="crash_data">Crashdaten</string>
+    <string name="stats_data">Statistikdaten</string>
+    <string name="stats_data_summary">Senden von Statistikdaten an den Herausgeber.</string>
+    <string name="crash_data_summary">Senden von Crashberichten an den Herausgeber.</string>
+    <string name="delete_summary">Alle Ihre Daten löschen.</string>
+    <string name="end_sync"><![CDATA[<p style=\"text-align: justify;\">Wir danken Ihnen für das Vertrauen, das Sie uns entgegengebracht haben.</p><br/><br/><strong>Wir synchronisieren zurzeit die letzten Elementen!</strong>]]></string>
+    <string name="need_data"><![CDATA[<p style=\"text-align: justify;\">Wir brauchen Ihre Daten. Wenn Sie sie trotzdem löschen wollen, gehen Sie weiter.</p>]]></string>
+    <string name="data_copied">Ihre Daten wurden in der Zwischenablage exportiert.</string>
+    <string name="copy_error">Mit Bedauern müssen wir Ihnen mitteilen, dass Ihre Daten nicht exportiert werden konnten. Bitte Kontakt mit dem·der DPO nehmen.</string>
+    <string name="condor_end"><![CDATA[<p style=\"text-align: justify;\">Sie sind im Begriff, darauf zu verzichten, Condor zu benutzen. Wenn Sie weitergehen, werden <strong>Ihre ganzen Daten</strong> aus unseren Servern in den Bedingungen gelöscht, die Sie vorher akzeptiert haben.</p>]]></string>
+    <string name="first_window"><![CDATA[<p style=\"text-align: justify;\">Condor wurde mit Erfolg installiert, und wir bedanken uns.</p><br/><br/><strong>Um Condor benutzen zu dürfen, brauchen wir Ihre Zustimmung!</strong>]]></string>
+    <string name="gtu_accept">Ich erkläre mich mit den vorliegenden allgemeinen Nutzungsbedingungen einverstanden.</string>
+    <string name="conf_accept">Ich erkläre mich mit der vorliegenden Datenschutzpolitik einverstanden.</string>
+    <string name="stats_accept">Ich erkläre mich mit der Statistikdatenübertragung an das MDL von dem Lycée Condorcet einverstanden.</string>
+    <string name="crash_accepts">Ich erkläre mich mit der Crashberichtsübertragung an das MDL von dem Lycée Condorcet einverstanden.</string>
+    <string name="congrats">Gratulierung!</string>
+    <string name="new_posts_one">"Neue Nachricht : "</string>
+    <string name="new_events_one">Neues Event :</string>
+    <string name="conf">Datenschutzpolitik</string>
+    <string name="sync_notification_name">Synchronisationsbenachrichtung</string>
+    <string name="sync_summary_notif">Benachrichtung, die den neuen Inhalt zeigt.</string>
+    <string name="clear_notif_title">Benachrichtungen beseitigen</string>
+    <string name="clear_notif_summary">Entfernt die Benachrichtungen im App.</string>
+    <string name="clear_notif_done">Benachrichtungen beseitigt.</string>
+    <string name="in_a_week">"In einer Woche am "</string>
+    <string name="today">"Heute um "</string>
+    <string name="mark_as_seen">Als eingesehen markieren</string>
 </resources>

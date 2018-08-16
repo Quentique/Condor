@@ -3,11 +3,16 @@ package com.cvlcondorcet.condor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,12 +35,16 @@ import java.util.List;
 
 class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Post> list, filteredList, catList;
+    private ArrayList<Integer> newArt;
     private final Context ctx;
+    private final Animation anim;
 
     public RecyclerViewAdapterPosts(Context ctx, List<Post> items, int item) {
         this.ctx = ctx;
         this.list = items;
         this.filteredList = items;
+        this.anim = AnimationUtils.loadAnimation(ctx, R.anim.blink);
+        newArt = Database.parsePrefNot("posts", ctx);
     }
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewtype){
@@ -46,6 +55,8 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
     public int getItemCount() {
         return (filteredList != null) ? filteredList.size() : 0;
     }
+
+    public void actualise() { newArt = Database.parsePrefNot("posts", ctx); }
 
     /**
      * Transfers data to object
@@ -67,15 +78,29 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
      */
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Post post = filteredList.get(position);
-
-        ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setText(Jsoup.parse(post.getName()).text());
-        ((RecyclerViewAdapterPosts.ViewHolder) holder).content.setText(Jsoup.parse(post.getContent()).text());
-        ((RecyclerViewAdapterPosts.ViewHolder) holder).date.setText(post.getFormatedDate());
-        ((ViewHolder) holder).categories.setText(post.getFormatedCategories());
+       // Log.i("DEBUGGGGG", "ICH BIN DA");
+        RecyclerViewAdapterPosts.ViewHolder viewHolder = ((RecyclerViewAdapterPosts.ViewHolder) holder);
+        if (newArt.contains(Integer.valueOf(post.getId()))) {
+            viewHolder.name.setTypeface(null, Typeface.BOLD);
+            viewHolder.name.setAnimation(anim);
+            viewHolder.button.setVisibility(View.VISIBLE);
+            Log.i("POSTS", "WORKED");
+        } else {
+            viewHolder.name.setTypeface(null, Typeface.NORMAL);
+            viewHolder.name.setAnimation(null);
+            viewHolder.button.setVisibility(View.GONE);
+            Log.i("POSTS", "DIDN't WORKED");
+        }
+        Log.i("POSTS", "ID:"+post.getId());
+        viewHolder.name.setText(Jsoup.parse(post.getName()).text());
+        Log.i("GT", post.getName());
+        viewHolder.content.setText(Jsoup.parse(post.getContent()).text());
+        viewHolder.date.setText(post.getFormatedDate());
+        viewHolder.categories.setText(post.getFormatedCategories());
         try {
-            Picasso.with(ctx).load(post.getPicture()).into(((ViewHolder) holder).pic);
-            ((RecyclerViewAdapterPosts.ViewHolder) holder).pic.setVisibility(View.VISIBLE);
-        }catch (IllegalArgumentException e ) { e.printStackTrace(); ((RecyclerViewAdapterPosts.ViewHolder) holder).pic.setVisibility(View.GONE);}
+            Picasso.with(ctx).load(post.getPicture()).into(viewHolder.pic);
+            viewHolder.pic.setVisibility(View.VISIBLE);
+        }catch (IllegalArgumentException e ) { viewHolder.pic.setVisibility(View.GONE);}
     }
 
     /**
@@ -106,7 +131,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                     } catch (NullPointerException e) { filteredList = new ArrayList<>(); filteredList.addAll(catList); }
                     try {
                         Collections.sort(filteredList, Collections.<Post>reverseOrder());
-                    } catch (NullPointerException e) {}
+                    } catch (NullPointerException ignored) {}
                     ((Activity) ctx).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -149,7 +174,6 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                             copy.removeAll(catList);
                         }
                     } else {
-
                         catList = new ArrayList<>();
                         catList.addAll(list);
                     }
@@ -165,13 +189,18 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
      * @author Quentin DE MUYNCK
      * @see RecyclerViewAdapterPosts#onBindViewHolder(RecyclerView.ViewHolder, int)
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final TextView name, content, date, categories;
-        public final ImageView pic, expand;
-        public final LinearLayout lay;
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final TextView name;
+        final TextView content;
+        final TextView date;
+        final TextView categories;
+        final ImageView pic;
+        final ImageView expand;
+        final LinearLayout lay;
+        final Button button;
         private final Context context;
 
-        public ViewHolder(View itemView, Context ctx) {
+        ViewHolder(View itemView, Context ctx) {
             super(itemView);
             context = ctx;
             name = itemView.findViewById(R.id.post_title);
@@ -180,6 +209,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
             categories = itemView.findViewById(R.id.post_categories);
             pic = itemView.findViewById(R.id.post_pic);
             lay = itemView.findViewById(R.id.post_lay);
+            button = itemView.findViewById(R.id.viewed_button);
             expand = itemView.findViewById(R.id.content_button);
             expand.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -190,6 +220,23 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                     } else {
                         lay.setVisibility(View.VISIBLE);
                         expand.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_less_black_24dp));
+                    }
+                }
+            });
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        Post post = filteredList.get(pos);
+                        newArt.remove(Integer.valueOf(post.getId()));
+                        Database.updatePrefValue("posts", newArt, context);
+                        view.setVisibility(View.GONE);
+                        name.setAnimation(null);
+                        name.setTypeface(null, Typeface.NORMAL);
+                        Intent restart = new Intent(context, MainActivity.class);
+                        restart.putExtra("fragment", "nav");
+                        context.startActivity(restart);
                     }
                 }
             });
@@ -215,7 +262,10 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (post.getId().equals("0")) {
                     intent.putExtra("link", post.getLink());
                 }
+                Log.i("POSTS", "ABOUT TO EXECUTE");
                 context.startActivity(intent);
+
+                Log.i("POSTS", "EXECUTED");
             }
         }
     }

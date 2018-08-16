@@ -36,6 +36,7 @@
                 android:textAlignment="center"
                 android:foreground="?attr/selectableItemBackground"
                 android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/logo"
                 android:background="#00ffffff"/>
             <TextView
@@ -62,9 +63,17 @@
                     android:layout_gravity="center_horizontal"
                     style="?android:attr/buttonBarButtonStyle"/>
                 <Button android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/cgu"
+                android:id="@+id/cgu"
+                android:textAlignment="center"
+                android:background="#0000"
+                android:layout_gravity="center_horizontal"
+                style="?android:attr/buttonBarButtonStyle"/>
+                <Button android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:text="@string/cgu"
-                    android:id="@+id/cgu"
+                    android:text="@string/conf"
+                    android:id="@+id/conf"
                     android:textAlignment="center"
                     android:background="#0000"
                     android:layout_gravity="center_horizontal"

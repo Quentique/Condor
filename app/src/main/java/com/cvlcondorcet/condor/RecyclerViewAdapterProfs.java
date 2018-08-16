@@ -39,16 +39,20 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
      * @return  a ViewHolder
      */
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewtype){
-        if (viewtype == SINGLE) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_one_day_layout, parent, false);
-            return new ViewHolder(v);
-        } else if (viewtype == SEVERAL){
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_several_days_layout, parent, false);
-            return new ViewHolder2(v);
-        } else {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_one_day_spe_hours_layout, parent, false);
-            Log.i("HELLO", "VIEWHOLDER3");
-            return new ViewHolder3(v);
+        switch (viewtype) {
+            case SINGLE: {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_one_day_layout, parent, false);
+                return new ViewHolder(v);
+            }
+            case SEVERAL: {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_several_days_layout, parent, false);
+                return new ViewHolder2(v);
+            }
+            default: {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_one_day_spe_hours_layout, parent, false);
+                Log.i("HELLO", "VIEWHOLDER3");
+                return new ViewHolder3(v);
+            }
         }
 
     }

@@ -62,7 +62,7 @@ class PostsLoader extends AsyncTaskLoader<List<Post>> {
                     rssFeed.add(post);
                 }
 
-                }catch (IllegalArgumentException e) {}
+                }catch (IllegalArgumentException ignored) { }
                 data.addAll(rssFeed);
             } catch (IOException e) {
                 e.printStackTrace();

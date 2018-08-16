@@ -20,6 +20,7 @@ import java.io.IOException;
 
 /**
  * WebView that displays a restricted part of web page and handling some navigation.
+ *
  * @author Quentin DE MUYNCK
  */
 
@@ -36,7 +37,7 @@ public class BusFragment extends Fragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.optymo);
         progress = view.findViewById(R.id.loading_layout);
         web_view = view.findViewById(R.id.web_view_bus);
@@ -45,7 +46,7 @@ public class BusFragment extends Fragment {
              * Avoids default method and loads the page inside the current WebView if it corresponds to the genuine website.
              * @param view  the WebView
              * @param url   the URL that must be loaded
-             * @return  True if we handle, False otherwise
+             * @return True if we handle, False otherwise
              */
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -53,7 +54,9 @@ public class BusFragment extends Fragment {
                     progress.setVisibility(View.VISIBLE);
                     new Loading().execute(url);
                     return true;
-                } else { return false; }
+                } else {
+                    return false;
+                }
 
             }
 
@@ -79,6 +82,7 @@ public class BusFragment extends Fragment {
 
     /**
      * Handles back pressed button and redirects it to WebView to go back.
+     *
      * @see MainActivity#onBackPressed()
      */
     public boolean backPressed() {
@@ -102,6 +106,7 @@ public class BusFragment extends Fragment {
         public void onPreExecute() {
             progress.setVisibility(View.VISIBLE);
         }
+
         @Override
         public Void doInBackground(String... args) {
             if (MainActivity.allowConnect(getActivity())) {
@@ -113,17 +118,21 @@ public class BusFragment extends Fragment {
                     Element el2 = doc.select("#go-to-main").first();
                     element.add(el);
                     element.add(el2);
-                } catch (IOException e) {}
+                } catch (IOException ignored) {
+                }
             } else {
                 progress.setVisibility(View.GONE);
             }
             return null;
         }
+
         @Override
         public void onPostExecute(Void result) {
             try {
                 web_view.loadDataWithBaseURL(null, element.toString(), "text/html", "UTF-8", url);
-            } catch (NullPointerException e) {web_view.loadData("<html><body><strong style=\"font-size: 300%\">Vos paramètres ne permettent pas de charger cette page.</strong></body></html>", null, "utf-8");}
+            } catch (NullPointerException e) {
+                web_view.loadData("<html><body><strong style=\"font-size: 300%\">Vos paramètres ne permettent pas de charger cette page.</strong></body></html>", null, "utf-8");
+            }
         }
     }
 

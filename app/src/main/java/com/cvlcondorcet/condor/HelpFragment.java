@@ -62,7 +62,7 @@ public class HelpFragment extends Fragment {
         version.setText("Version " + BuildConfig.VERSION_NAME);
         Time time = new Time(Time.getCurrentTimezone());
         time.setToNow();
-        id.setText("© 2017-"+String.valueOf(time.year)+" Quentin DE MUYNCK\n All rights reserved.");
+        id.setText("© 2018 -"+String.valueOf(time.year)+" Quentin DE MUYNCK\n All rights reserved.");
         Button button = view.findViewById(R.id.licenses);
         button.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
@@ -77,6 +77,15 @@ public class HelpFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), LicensesActivity.class);
                 intent.putExtra("name", "cgu");
+                getActivity().startActivity(intent);
+            }
+        });
+        Button button4 = view.findViewById(R.id.conf);
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LicensesActivity.class);
+                intent.putExtra("name", "conf");
                 getActivity().startActivity(intent);
             }
         });
