@@ -20,6 +20,7 @@ import java.io.IOException;
 
 /**
  * WebView that displays a restricted part of web page and handling some navigation.
+ *
  * @author Quentin DE MUYNCK
  */
 
@@ -31,13 +32,12 @@ public class BusFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bus, container, false);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.optymo);
         progress = view.findViewById(R.id.loading_layout);
         web_view = view.findViewById(R.id.web_view_bus);
@@ -46,17 +46,17 @@ public class BusFragment extends Fragment {
              * Avoids default method and loads the page inside the current WebView if it corresponds to the genuine website.
              * @param view  the WebView
              * @param url   the URL that must be loaded
-             * @return  True if we handle, False otherwise
+             * @return True if we handle, False otherwise
              */
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                Log.i("E", "OVERRIDE");
                 if (url.contains("optymo")) {
                     progress.setVisibility(View.VISIBLE);
-//                    Log.i("E", "INSIDE");
                     new Loading().execute(url);
                     return true;
-                } else { return false; }
+                } else {
+                    return false;
+                }
 
             }
 
@@ -77,12 +77,12 @@ public class BusFragment extends Fragment {
         web_view.getSettings().setUseWideViewPort(true);
         web_view.getSettings().setDefaultTextEncodingName("utf-8");
 
-//        Log.i("g", "FRAMGNET STARTED");
         new Loading().execute(url);
     }
 
     /**
      * Handles back pressed button and redirects it to WebView to go back.
+     *
      * @see MainActivity#onBackPressed()
      */
     public boolean backPressed() {
@@ -106,34 +106,33 @@ public class BusFragment extends Fragment {
         public void onPreExecute() {
             progress.setVisibility(View.VISIBLE);
         }
+
         @Override
         public Void doInBackground(String... args) {
-//            Log.i("DO", "BACKGROUND");
             if (MainActivity.allowConnect(getActivity())) {
                 try {
                     url = args[0];
                     element = new Elements();
-                    //Log.i("e", user);
                     Document doc = Jsoup.connect(url).userAgent(user).header("Accept-Language", "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3").header("Accept-Encoding", "gzip, deflate").get();
                     Element el = doc.select("head").first();
                     Element el2 = doc.select("#go-to-main").first();
-                   // Log.i("HELLO", el2.toString());
                     element.add(el);
                     element.add(el2);
-                    //Log.i("DO", "FOREGOUND");
-                } catch (IOException e) {}
+                } catch (IOException ignored) {
+                }
             } else {
                 progress.setVisibility(View.GONE);
             }
             return null;
         }
+
         @Override
         public void onPostExecute(Void result) {
-            //Log.i("START", "LOADING");
             try {
                 web_view.loadDataWithBaseURL(null, element.toString(), "text/html", "UTF-8", url);
-            } catch (NullPointerException e) {web_view.loadData("<html><body><strong style=\"font-size: 300%\">Vos paramètres ne permettent pas de charger cette page.</strong></body></html>", null, "utf-8");}
-            //Log.i("END", "LOADING");
+            } catch (NullPointerException e) {
+                web_view.loadData("<html><body><strong style=\"font-size: 300%\">Vos paramètres ne permettent pas de charger cette page.</strong></body></html>", null, "utf-8");
+            }
         }
     }
 

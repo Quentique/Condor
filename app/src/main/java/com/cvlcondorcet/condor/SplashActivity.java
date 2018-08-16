@@ -21,7 +21,7 @@ import io.fabric.sdk.android.Fabric;
  */
 
 public class SplashActivity extends AppCompatActivity {
-    protected Intent intent;
+    private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,14 +112,14 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    protected void launchPosts(String id) {
+    private void launchPosts(String id) {
         Intent intent2 = new Intent(this, PostViewerActivity.class);
         intent2.putExtra("id", id);
         startActivity(intent);
         startActivity(intent2);
     }
 
-    protected void launchEvents(String id) {
+    private void launchEvents(String id) {
         Intent intent2 = new Intent(this, EventViewerActivity.class);
         intent2.putExtra("id", id);
         startActivity(intent);

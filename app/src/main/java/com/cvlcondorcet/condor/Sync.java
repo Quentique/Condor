@@ -130,7 +130,6 @@ public class Sync extends IntentService {
             act = i.getStringExtra("from");
         }
         progressMessage = "Syncing...";
-        //Log.i("NOTI", "DDDDDONE");
         CharSequence tickerText = getString(R.string.sync_notif_name);
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -144,7 +143,6 @@ public class Sync extends IntentService {
         newIntent.putExtra("fragment", "sync");
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addNextIntentWithParentStack(newIntent);
-        // PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
         noti.setContentTitle(getResources().getString(R.string.sync))
@@ -156,7 +154,6 @@ public class Sync extends IntentService {
         if (Build.VERSION.SDK_INT >= 21) { noti.setVisibility(Notification.VISIBILITY_PUBLIC); }
 
         noti.setProgress(0, 0, true);
-       // Log.i("NOTI", "DONE");
 
         FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
         Bundle params = new Bundle();
@@ -170,7 +167,6 @@ public class Sync extends IntentService {
             params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "fail");
             progress = -1;
             progressMessage = continueSync;
-           // Log.i("TESTSYNC", progressMessage);
             displayProgress();
             handler.removeCallbacks(sendProgress);
             networkError = true;
@@ -181,7 +177,6 @@ public class Sync extends IntentService {
             try {
                 db.open();
                 db.initialiseSync();
-               // Log.i("SYNC", "GENERAL SYNC");
                 JSONArray maps = get(MAPS_URL);
                 db.updateMaps(maps);
                 JSONArray gen = get(GEN_URL);
@@ -193,22 +188,16 @@ public class Sync extends IntentService {
                     progress += 20 / liste.size();
                     changeProgress(progress, "Downloading file " + j + "/" + liste.size());
                     downloadFile(liste.get(j).toString());
-                   // Log.i("SYNC", "DOWNLOADING FILE");
                 }
                 changeProgress(50, "News....");
                 rssURL = db.timestamp("website") + "feed";
                 JSONArray posts = get(POSTS_URL);
-               // Log.i("SYNC", "POSTS SYNC");
                 db.updatePosts(posts);
                 changeProgress(70, "Events....");
                 JSONArray events = get(EVENTS_URL);
                 db.updateEvents(events);
-               /* JSONArray profs = get(PROFS_URL);
-               // Log.i("SYNC", "PROFS SYNC");*/
                 changeProgress(90, "Ending sync...");
-              //  db.updateProfs(profs);
                 db.beginSync();
-              //  Log.i("SYNC", "END SYNC");
                 progressMessage = "Sync ended.";
                 progress = 100;
                 noti.setProgress(100, 100, false);
@@ -232,7 +221,6 @@ public class Sync extends IntentService {
             noti.setAutoCancel(true);
             noti.setTicker(getString(R.string.end_sync_ticker));
             manager.notify(2, noti.build());
-            //manager.cancel(1);
             handler.removeCallbacks(sendProgress);
             displayProgress();
             if (Build.VERSION.SDK_INT >= 26) {
@@ -282,7 +270,6 @@ public class Sync extends IntentService {
             HttpURLConnection connection = null;
             try {
                 connection = (HttpURLConnection) url.openConnection();
-              //  Log.i("NETWORK ERROR", hello);
             } catch (IOException e) {
                 Crashlytics.logException(e);
                 progress = -1;
@@ -302,7 +289,6 @@ public class Sync extends IntentService {
             } finally {
                 connection.disconnect();
             }
-           // Log.i("E", answer);
             try {
                 tab = new JSONArray(answer.toString());
             } catch (JSONException e) {
@@ -337,7 +323,6 @@ public class Sync extends IntentService {
             output.flush();
             output.close();
             input.close();
-          //  Log.i("EBUG", "File downloaded " + file);
         } catch (IOException e) {
             Crashlytics.logException(e);
         }

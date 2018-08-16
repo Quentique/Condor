@@ -24,7 +24,6 @@ public class CanteenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         MainActivity.preferences.edit().putBoolean("canteen", false).apply();
-        // Defines the xml file for the fragment
         return inflater.inflate(R.layout.fragment_canteen, parent, false);
     }
 
@@ -70,11 +69,11 @@ public class CanteenFragment extends Fragment {
                          public void run() {
                              try {
                                  view.zoomWithAnimation(20, 710, 2.3f);
-                             } catch (NullPointerException e) {
+                             } catch (NullPointerException ignored) {
                              }
                          }
                      });
-                 } catch (NullPointerException e) { }
+                 } catch (NullPointerException ignored) { }
             }
         }).start();
     }

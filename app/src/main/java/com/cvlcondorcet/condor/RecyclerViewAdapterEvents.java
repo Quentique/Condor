@@ -25,10 +25,10 @@ import java.util.List;
  */
 class RecyclerViewAdapterEvents extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Event> events;
-    private Context ctx;
+    private final List<Event> events;
+    private final Context ctx;
     private ArrayList<Integer> newEvents;
-    private Animation anim;
+    private final Animation anim;
 
     public RecyclerViewAdapterEvents(List<Event> events, Context ctx) {
         this.events = events;
@@ -49,30 +49,31 @@ class RecyclerViewAdapterEvents extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Log.i("EVENTS", "BindViewHolder");
         Event event = events.get(position);
-       if (newEvents.contains(Integer.valueOf(event.getId()))) {
-            ((ViewHolder) holder).name.setTypeface(null, Typeface.BOLD);
-            ((ViewHolder) holder).name.setAnimation(anim);
+        ViewHolder viewHolder = ((ViewHolder) holder);
+        if (newEvents.contains(Integer.valueOf(event.getId()))) {
+            viewHolder.name.setTypeface(null, Typeface.BOLD);
+             viewHolder.name.setAnimation(anim);
             Log.i("POSTS", "WORKED");
         } else {
-            ((ViewHolder) holder).name.setTypeface(null, Typeface.NORMAL);
-            ((ViewHolder) holder).name.setAnimation(null);
-            Log.i("POSTS", "DIDN't WORKED");
+           viewHolder.name.setTypeface(null, Typeface.NORMAL);
+           viewHolder.name.setAnimation(null);
+           Log.i("POSTS", "DIDN't WORKED");
         }
-        ((ViewHolder) holder).name.setText(Html.fromHtml(event.getName()));
+        viewHolder.name.setText(Html.fromHtml(event.getName()));
         String date;
         if (event.getDateBegin().equals(event.getDateEnd())) {
             date = ctx.getResources().getString(R.string.from_the) + event.getDateBegin() + " " + ctx.getResources().getString(R.string.from_single_day).toLowerCase() + event.getHourBegin() + ctx.getResources().getString(R.string.to_single_day) + event.getHourEnd();
         } else {
             date = ctx.getResources().getString(R.string.from) + event.getDateBegin() + ctx.getResources().getString(R.string.to) + event.getDateEnd();
         }
-        ((ViewHolder) holder).date.setText(date);
+        viewHolder.date.setText(date);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView name, date;
-        private Context ctx;
+        private final Context ctx;
 
-        public ViewHolder(View v, Context ctx) {
+        ViewHolder(View v, Context ctx) {
             super(v);
             name = v.findViewById(R.id.title_event);
             date = v.findViewById(R.id.date_info);

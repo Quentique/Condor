@@ -80,27 +80,28 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Post post = filteredList.get(position);
        // Log.i("DEBUGGGGG", "ICH BIN DA");
+        RecyclerViewAdapterPosts.ViewHolder viewHolder = ((RecyclerViewAdapterPosts.ViewHolder) holder);
         if (newArt.contains(Integer.valueOf(post.getId()))) {
-            ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setTypeface(null, Typeface.BOLD);
-            ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setAnimation(anim);
-            ((ViewHolder) holder).button.setVisibility(View.VISIBLE);
+            viewHolder.name.setTypeface(null, Typeface.BOLD);
+            viewHolder.name.setAnimation(anim);
+            viewHolder.button.setVisibility(View.VISIBLE);
             Log.i("POSTS", "WORKED");
         } else {
-            ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setTypeface(null, Typeface.NORMAL);
-            ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setAnimation(null);
-            ((ViewHolder) holder).button.setVisibility(View.GONE);
+            viewHolder.name.setTypeface(null, Typeface.NORMAL);
+            viewHolder.name.setAnimation(null);
+            viewHolder.button.setVisibility(View.GONE);
             Log.i("POSTS", "DIDN't WORKED");
         }
         Log.i("POSTS", "ID:"+post.getId());
-        ((RecyclerViewAdapterPosts.ViewHolder) holder).name.setText(Jsoup.parse(post.getName()).text());
+        viewHolder.name.setText(Jsoup.parse(post.getName()).text());
         Log.i("GT", post.getName());
-        ((RecyclerViewAdapterPosts.ViewHolder) holder).content.setText(Jsoup.parse(post.getContent()).text());
-        ((RecyclerViewAdapterPosts.ViewHolder) holder).date.setText(post.getFormatedDate());
-        ((ViewHolder) holder).categories.setText(post.getFormatedCategories());
+        viewHolder.content.setText(Jsoup.parse(post.getContent()).text());
+        viewHolder.date.setText(post.getFormatedDate());
+        viewHolder.categories.setText(post.getFormatedCategories());
         try {
-            Picasso.with(ctx).load(post.getPicture()).into(((ViewHolder) holder).pic);
-            ((RecyclerViewAdapterPosts.ViewHolder) holder).pic.setVisibility(View.VISIBLE);
-        }catch (IllegalArgumentException e ) { ((RecyclerViewAdapterPosts.ViewHolder) holder).pic.setVisibility(View.GONE);}
+            Picasso.with(ctx).load(post.getPicture()).into(viewHolder.pic);
+            viewHolder.pic.setVisibility(View.VISIBLE);
+        }catch (IllegalArgumentException e ) { viewHolder.pic.setVisibility(View.GONE);}
     }
 
     /**
@@ -166,15 +167,11 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                         try {
                             catList.clear();
                         } catch (NullPointerException e) {
-                         //   Log.i("NULL", "NullPointerException Thrown");
                             catList = new ArrayList<>();
                         }
-                       // Log.i("BE", "Entering loop for");
                         for (int i = 0; i < array.size(); i++) {
-                        //    Log.i("DE", "First loop");
                             for (int j = 0; j < copy.size(); j++) {
                                 Post post = copy.get(j);
-                           //     Log.i("e", array.get(i));
                                 if (post.getCategories().contains(array.get(i))) {
                                     catList.add(post);
                                 }
@@ -182,10 +179,8 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                             copy.removeAll(catList);
                         }
                     } else {
-
                         catList = new ArrayList<>();
                         catList.addAll(list);
-                       // Log.i("EE", "ARRAY NULL / SET LIST TO CATLIST");
                     }
                     filter(queryy);
                 } catch (Exception e ) {e.printStackTrace();}
@@ -199,14 +194,18 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
      * @author Quentin DE MUYNCK
      * @see RecyclerViewAdapterPosts#onBindViewHolder(RecyclerView.ViewHolder, int)
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final TextView name, content, date, categories;
-        public final ImageView pic, expand;
-        public final LinearLayout lay;
-        public final Button button;
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        final TextView name;
+        final TextView content;
+        final TextView date;
+        final TextView categories;
+        final ImageView pic;
+        final ImageView expand;
+        final LinearLayout lay;
+        final Button button;
         private final Context context;
 
-        public ViewHolder(View itemView, Context ctx) {
+        ViewHolder(View itemView, Context ctx) {
             super(itemView);
             context = ctx;
             name = itemView.findViewById(R.id.post_title);

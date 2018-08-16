@@ -46,11 +46,7 @@ public class GTUFragment extends Fragment {
                 }
             }
         });
-      /*  LinearLayout check1 = (LinearLayout) getLayoutInflater().inflate(R.layout.consent_checkbox, (ViewGroup) view.findViewById(R.id.base_consent), true);
-        check1.findViewById(R.id.checkbox_consent).setTag(1);
 
-       ((TextView) check1.findViewById(R.id.consent_text)).setText("COUCOU");
-       ((CheckBox) check1.findViewById(R.id.checkbox_consent)).setOnCheckedChangeListener(myCheckboxListener);*/
        if (getArguments().containsKey("id")) {
            if (getArguments().getInt("id") == 1) {
                vview.loadUrl("file:///android_asset/cgu.html");
@@ -82,7 +78,7 @@ public class GTUFragment extends Fragment {
     /**
      * Handling navigation according to user's consent (or non-consent)
      */
-    private CompoundButton.OnCheckedChangeListener myCheckboxListener = new CompoundButton.OnCheckedChangeListener() {
+    private final CompoundButton.OnCheckedChangeListener myCheckboxListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             switch ((Integer) buttonView.getTag()) {

@@ -104,12 +104,8 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
 
             @Override
             public boolean onSuggestionClick(int position) {
-               // Log.i("TESTT", String.valueOf(adapter.getItemId(position)));
-
                 searchView.clearFocus();
                 Cursor cursor =(Cursor)adapter.getItem(position);
-               // Log.i("TESTT", "C" +cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_ID)));
-               // Log.i("TESTT", adapter.getCursor().getString(position));
                 loadPdf(adapter.getItemId(position));
                 searchView.setQuery(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)), true);
 
@@ -361,11 +357,11 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
         }
     }
 
-    public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
+    class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
-        private Context context;
-        private List<String> expandableListTitle;
-        private LinkedHashMap<String, List<String>> expandableListDetail;
+        private final Context context;
+        private final List<String> expandableListTitle;
+        private final LinkedHashMap<String, List<String>> expandableListDetail;
 
         public CustomExpandableListAdapter(Context context, List<String> expandableListTitle, LinkedHashMap<String, List<String>> expandableListDetail) {
             this.context = context;

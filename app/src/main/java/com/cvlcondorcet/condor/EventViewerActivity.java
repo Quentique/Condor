@@ -44,7 +44,7 @@ public class EventViewerActivity extends AppCompatActivity {
         setTitle(getString(R.string.event));
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch( NullPointerException e) {}
+        } catch( NullPointerException ignored) {}
 
         Database db = new Database(this);
         db.open();

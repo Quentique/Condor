@@ -1,5 +1,6 @@
 package com.cvlcondorcet.condor;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -45,6 +46,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import io.fabric.sdk.android.Fabric;
+
 
 /**
  * Main activity, frame for fragments, home for navigation drawer, etc.
@@ -56,8 +59,9 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private Class fragmentClass;
     public static String locale;
+    public static String TOPIC_ID = "***REMOVED***";
     private HashMap<Integer, Class> correspondance;
-    // --Commented out by Inspection (28/07/2018 09:34):private BroadcastReceiver mRegistrationBroadcastReceiver;
+   // private BroadcastReceiver mRegistrationBroadcastReceiver;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     public static SharedPreferences preferences, default_preferences;
 
@@ -90,6 +94,11 @@ public class MainActivity extends AppCompatActivity {
             Log.i("STARTUP", "DONE");
         } else {
             Log.i("STARTUP", "SOMETHING WENT WRONG");
+        }
+
+        if (default_preferences.getBoolean("crashlytics", false)) {
+            Log.i("TEST", "AUTOINITIALIZATION CRASHLYTICS");
+            Fabric.with(this, new Crashlytics());
         }
 
         mFirebaseRemoteConfig.fetch(0)
@@ -125,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
         /* Setting up the toolbar and the navigation drawer */
         Toolbar bar = findViewById(R.id.toolbar);
         setSupportActionBar(bar);
-      //  getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         try {
             getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, 0));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -209,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
                     servicee.putExtra("from", "activity");
                     startService(servicee);
                 }
-                //Log.i("CONDOR", getIntent().getExtras().toString());
                 if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("fragment")) {
                     selectFromParam(getIntent().getStringExtra("fragment"));
                 } else {
@@ -217,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        FirebaseMessaging.getInstance().subscribeToTopic("***REMOVED***");
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC_ID);
         Log.i("CONDOR", "\""+FirebaseInstanceId.getInstance().getId()+"\"");
 
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
@@ -476,6 +483,7 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     private Context loadLanguage(Context c) {
         if (PreferenceManager.getDefaultSharedPreferences(c).getString("language", "default").equals("default")) {
             return c;
