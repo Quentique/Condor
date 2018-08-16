@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager;
 public class GTUFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        Log.i("FRAGMENT", "CREATED");
         return inflater.inflate(R.layout.fragment_consent_base, parent, false);
 
     }
@@ -34,12 +32,9 @@ public class GTUFragment extends Fragment {
         vview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.i("URL", url);
                 if (!(url.startsWith("http") || url.startsWith("mailto"))) {
-                    Log.i("TEST", "Click NOT handle with httpds");
                     return true;
                 } else {
-                    Log.i("TEST", "Click handle with httpds");
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     view.getContext().startActivity(intent);
                     return true;

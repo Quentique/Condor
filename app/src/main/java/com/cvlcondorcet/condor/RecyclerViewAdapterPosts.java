@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,22 +77,17 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
      */
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Post post = filteredList.get(position);
-       // Log.i("DEBUGGGGG", "ICH BIN DA");
         RecyclerViewAdapterPosts.ViewHolder viewHolder = ((RecyclerViewAdapterPosts.ViewHolder) holder);
         if (newArt.contains(Integer.valueOf(post.getId()))) {
             viewHolder.name.setTypeface(null, Typeface.BOLD);
             viewHolder.name.setAnimation(anim);
             viewHolder.button.setVisibility(View.VISIBLE);
-            Log.i("POSTS", "WORKED");
         } else {
             viewHolder.name.setTypeface(null, Typeface.NORMAL);
             viewHolder.name.setAnimation(null);
             viewHolder.button.setVisibility(View.GONE);
-            Log.i("POSTS", "DIDN't WORKED");
         }
-        Log.i("POSTS", "ID:"+post.getId());
         viewHolder.name.setText(Jsoup.parse(post.getName()).text());
-        Log.i("GT", post.getName());
         viewHolder.content.setText(Jsoup.parse(post.getContent()).text());
         viewHolder.date.setText(post.getFormatedDate());
         viewHolder.categories.setText(post.getFormatedCategories());
@@ -262,10 +256,8 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (post.getId().equals("0")) {
                     intent.putExtra("link", post.getLink());
                 }
-                Log.i("POSTS", "ABOUT TO EXECUTE");
                 context.startActivity(intent);
 
-                Log.i("POSTS", "EXECUTED");
             }
         }
     }

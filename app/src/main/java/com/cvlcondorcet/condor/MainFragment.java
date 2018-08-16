@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,18 +139,14 @@ public class MainFragment extends Fragment {
             }
         };
         JsonParser parser = new JsonParser();
-        Log.i("SOC", "INITALIZING PARSER");
         try {
             social = parser.parse(db.timestamp("social_networks")).getAsJsonArray();
         } catch (IllegalStateException e) { social = new JsonArray(); }
-        Log.i("SOCC", String.valueOf(social.size()));
         int i;
         correspondance = new ArrayList<>();
         LinearLayout tablelayout = view.findViewById(R.id.tablelayout_soc);
 
-        Log.i("MATHS", String.valueOf(Math.ceil((double)social.size()/4)));
         for (i = 0 ; i < Math.ceil((double)social.size()/4); i++){
-            Log.i("SOC", "Entering first loop");
             LinearLayout row = new LinearLayout(getActivity());
             row.setTag(i);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 4f);
@@ -161,14 +156,12 @@ public class MainFragment extends Fragment {
             int k;
             int kl = (social.size()-4*i <= 4) ? social.size() : (i+1)*4;
             for (k = i*4; k<kl; k++) {
-                Log.i("SOC", "Entering second-loop");
                     JsonObject object = social.get(k).getAsJsonObject();
                     ImageButton button = (ImageButton) getLayoutInflater().inflate(R.layout.social_network_button, row, false);
                     LinearLayout.LayoutParams lay = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
                     button.setLayoutParams(lay);
                     button.setTag(k);
                     button.setImageURI(Uri.parse(getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString()));
-                    Log.i("TEST", getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString());
                     correspondance.add(k, object.get("link").getAsString());
                     button.setOnClickListener(listener);
                     row.addView(button);

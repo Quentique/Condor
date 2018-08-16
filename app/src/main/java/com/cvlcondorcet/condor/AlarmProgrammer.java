@@ -4,12 +4,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Programs the different alarms, which order displaying notification for events
@@ -45,11 +43,7 @@ public class AlarmProgrammer {
         PendingIntent intent = PendingIntent.getBroadcast(ctx, Integer.parseInt(id), newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent intent2 = PendingIntent.getBroadcast(ctx, (Integer.parseInt(id)+36)*90, newIntent, PendingIntent.FLAG_ONE_SHOT);
         manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), intent);
-
-        Log.i("ALARM VEILLE", "Event " + id + " has been scheduled on " +String.valueOf(calendar.get(Calendar.DAY_OF_MONTH))+"/"+String.valueOf(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.FRANCE))+"/"+String.valueOf(calendar.get(Calendar.YEAR))+ " - "+String.valueOf(calendar.get(Calendar.HOUR_OF_DAY))+":"+String.valueOf(calendar.get(Calendar.MINUTE)));
         manager.set(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), intent2);
-        Log.i("ALARM WEEK", "Event " + id + " has been scheduled on " +String.valueOf(calendar2.get(Calendar.DAY_OF_MONTH))+"/"+String.valueOf(calendar2.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.FRANCE))+"/"+String.valueOf(calendar2.get(Calendar.YEAR))+ " - "+String.valueOf(calendar2.get(Calendar.HOUR_OF_DAY))+":"+String.valueOf(calendar2.get(Calendar.MINUTE)));
-
     }
 
     /**
@@ -76,7 +70,6 @@ public class AlarmProgrammer {
             } catch (Exception ignored) {}
             if (event.getDateBeginDate().after(new Date())) {
                 setAlarm(ctx, event.getId(), event.getDateBeginDate());
-                Log.i("DATE AFTER", "Event " + event.getId() + " passed scheduleAllAlarms loop");
             }
 
         }

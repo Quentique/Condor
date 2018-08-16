@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
-import android.util.Log;
 import android.widget.RelativeLayout;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -106,7 +105,6 @@ public class ConsentActivity extends IntroActivity {
     protected IntroButton.Behaviour generateFinalButtonBehaviour() {
         final Intent nextActivity = new Intent(this, SplashActivity.class);
         edit = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        Log.i("TEST", PreferenceManager.getDefaultSharedPreferences(this).getString("language", "test"));
         edit.putInt("version", BuildConfig.VERSION_CODE);
         edit.apply();
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);

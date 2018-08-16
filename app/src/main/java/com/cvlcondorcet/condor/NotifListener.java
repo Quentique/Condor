@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -30,7 +29,7 @@ public class NotifListener extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage message) {
         String messageT = message.getFrom();
         String what = message.getData().get("what");
-        if (messageT != null && messageT.startsWith("/topics/condor64")) {
+        if (messageT != null && messageT.startsWith("/topics/condor54")) {
             if (what != null) {
                 if (what.equals("sync")) {
                     if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("sync_when_notified", false)) {
@@ -114,7 +113,6 @@ public class NotifListener extends FirebaseMessagingService {
                         newIntent = new Intent(this, MainActivity.class);
                         for (Map.Entry<String, String> entry : message.getData().entrySet()) {
                             newIntent.putExtra(entry.getKey(), entry.getValue());
-                            Log.i("CONDOR", entry.getKey() + " / " + entry.getValue());
                         }
                     }
                     newIntent.setFlags(Intent.FLAG_DEBUG_LOG_RESOLUTION);

@@ -12,7 +12,6 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 public class InstanceIDService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
-           // Log.d("TEST", "Refreshed token: " + refreshedToken);
             subscribeTopic(token);
     }
     private void subscribeTopic(String token) {

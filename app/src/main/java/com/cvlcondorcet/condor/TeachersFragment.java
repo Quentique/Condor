@@ -9,7 +9,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -113,7 +112,6 @@ public class TeachersFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<List<TeachersAbsence>> loader, List<TeachersAbsence> data) {
         adapter.setData(data);
-        Log.i("HELLO", "LOAD FINISHED");
     }
 
     @Override
@@ -144,7 +142,6 @@ public class TeachersFragment extends Fragment
     @Override
     public boolean onQueryTextChange(String query) {
         query = query.toLowerCase();
-        Log.i("e", "Query");
         adapter.filter(query);
         recycler.scrollToPosition(0);
         return true;

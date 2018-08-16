@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -29,23 +28,17 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         if (!pref.getBoolean("firebase", false)) {
             FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(false);
-            Log.i("TEST", "FirebaseAnalytics disabled");
         } else {
-            Log.i("TEST", "AUTOINITIALIZATION FirebaseAnalytics");
             FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
         }
         if (pref.getBoolean("crashlytics", false)) {
-            Log.i("TEST", "AUTOINITIALIZATION CRASHLYTICS");
             Fabric.with(this, new Crashlytics());
         }
-        Log.i("CONSENT", String.valueOf(pref.getInt("version", 0)));
         if (pref.getInt("version",0) < BuildConfig.VERSION_CODE) {
             intent = new Intent(this, ConsentActivity.class);
             startActivity(intent);
         } else {
             intent = new Intent(this, MainActivity.class);
-          //  intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_DEBUG_LOG_RESOLUTION);
-            Log.i("OPENING", "SPLASH ACITIVTY");
             try {
                 List<String> list = getIntent().getData().getPathSegments();
                 if (!list.isEmpty()) {
@@ -76,7 +69,6 @@ public class SplashActivity extends AppCompatActivity {
                         case "cgu":
                             Intent intent2 = new Intent(this, LicensesActivity.class);
                             intent2.putExtra("name", "cgu");
-                            Log.i("TEST", "CGU");
                             startActivity(intent2);
                             break;
                         case "cvl":
@@ -87,7 +79,6 @@ public class SplashActivity extends AppCompatActivity {
                             intent.putExtra("fragment", "canteen");
                             startActivity(intent);
                         default:
-                            Log.i("TEST", "DEFAULT CASE");
                             startActivity(intent);
                             break;
                     }
@@ -95,7 +86,6 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             } catch (NullPointerException e) {
-                Log.i("ERROR", "CATCH EXCEPTION");
                 if (getIntent().getExtras() != null) {
                     if (getIntent().getExtras().containsKey("posts")) {
                         launchPosts(getIntent().getExtras().getString("posts"));

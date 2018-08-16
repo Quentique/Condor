@@ -11,8 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
-
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -202,10 +200,8 @@ public class Sync extends IntentService {
                 noti.setProgress(100, 100, false);
                 noti.setContentText(getString(R.string.sync_end));
                 manager.notify(5, noti.build());
-                Log.i("SYNC", "ABOUT TO CALL CONFIGURATION");
 
                 if (db.endingSync() && act.equals("activity")) {
-                    Log.i("SYNC", "CALLED CONFIGURATION");
                     Intent restart = new Intent(this, MainActivity.class);
                     restart.putExtra("fragment", "restart");
                     startActivity(restart);
@@ -259,9 +255,7 @@ public class Sync extends IntentService {
                         break;
                 }
                 machin = machin.replaceAll("\\s", "T");
-                Log.i("CONDOR", machin);
                 url = new URL(base_URL + content + KEY + "&timestamp=" + machin);
-                Log.i("TEST", url.toString());
             } catch (MalformedURLException e) {
                 Crashlytics.logException(e);
             }

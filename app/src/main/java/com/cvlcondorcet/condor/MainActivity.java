@@ -30,7 +30,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -38,7 +37,6 @@ import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
@@ -61,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     public static String locale;
     public static String TOPIC_ID = "***REMOVED***";
     private HashMap<Integer, Class> correspondance;
-   // private BroadcastReceiver mRegistrationBroadcastReceiver;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     public static SharedPreferences preferences, default_preferences;
 
@@ -73,31 +70,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       /* Crashlytics crashlyticsKit = new Crashlytics.Builder()
-                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build();*/
 
-// Initialize Fabric with the debug-disabled crashlytics.
-        //Fabric.with(this, crashlyticsKit);
-        /* Initialising Firebase and remote control */
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-      /*  FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build();
-        mFirebaseRemoteConfig.setConfigSettings(configSettings);*/
         mFirebaseRemoteConfig.setDefaults(R.xml.defaults_remote_param);
 
         preferences = getSharedPreferences("notifications",0);
         default_preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(default_preferences.getBoolean("firebase", false)) {
-            Log.i("STARTUP", "DONE");
-        } else {
-            Log.i("STARTUP", "SOMETHING WENT WRONG");
-        }
-
         if (default_preferences.getBoolean("crashlytics", false)) {
-            Log.i("TEST", "AUTOINITIALIZATION CRASHLYTICS");
             Fabric.with(this, new Crashlytics());
         }
 
@@ -224,7 +204,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC_ID);
-        Log.i("CONDOR", "\""+FirebaseInstanceId.getInstance().getId()+"\"");
 
         getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
@@ -247,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("class", fragmentClass);
-        Log.i("CONDOR", "Saving instance State");
     }
 
     @Override
@@ -265,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         loadLanguage(this);
-        Log.i("CONFIGURATION", "CONFIGURATION CHANGED CALLED");
         recreate();
     }
     /**
@@ -298,18 +275,10 @@ public class MainActivity extends AppCompatActivity {
 
         int posts_count  = preferences.getInt("posts_count", 0);
         int events_count = preferences.getInt("events_count", 0);
-        Log.i("START", String.valueOf(posts_count));
-        Log.i("START", String.valueOf(events_count));
         boolean cvl = preferences.getBoolean("cvl", false);
         boolean maps = preferences.getBoolean("maps", false);
-        if (maps){
-            Log.i("DEAT","WORKED");
-        } else {
-            Log.i("DEAT","NOT WORKED");
-        }
         boolean canteen = preferences.getBoolean("canteen", false);
         int count = posts_count+events_count;
-        Log.i("START", String.valueOf(count));
         if (posts_count > 0) {
             nav.getMenu().findItem(R.id.nav_posts).setActionView(R.layout.menu_counter);
             setMenuCounter(R.id.nav_posts, posts_count);
@@ -331,8 +300,6 @@ public class MainActivity extends AppCompatActivity {
             count++;
         } else { nav.getMenu().findItem(R.id.nav_canteen).setActionView(null);  }
         getSupportActionBar().setHomeAsUpIndicator(setBadgeCount(this, count));
-
-
 
         nav.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -425,7 +392,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Log.i("11", value);
         if (value.equals("")) {
             params.putString(FirebaseAnalytics.Param.CONTENT_TYPE, value);
             analytics.logEvent("fragment", params);
@@ -542,14 +508,12 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.your_placeholder, fragment).addToBackStack(String.valueOf(fragment.getId())).commitAllowingStateLoss();
             }
         } catch (Exception e) {
-           // Log.i("TEST", getIntent().getExtras().toString());
             selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
         }
     }
 
     @Override
     public void onNewIntent(Intent newIntent) {
-        Log.i("MAIN", "New intent received");
         if (newIntent.getExtras() != null) {
             if (newIntent.getExtras().containsKey("fragment")) {
                 if (newIntent.getStringExtra("fragment").equals("maps")) {
@@ -575,10 +539,7 @@ public class MainActivity extends AppCompatActivity {
                     selectFromParam(newIntent.getStringExtra("fragment"));
                 }
 
-            }/* else if (newIntent.getExtras().containsKey("name") && newIntent.getStringExtra("name").equals("cgu")) {
-                //Intent intent2 = new Intent(this, LicensesActivity.class);
-                // intent2.putExtra()
-            }*/
+            }
         }
     }
 }

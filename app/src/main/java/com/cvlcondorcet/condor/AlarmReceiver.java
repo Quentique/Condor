@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.Html;
-import android.util.Log;
 
 import java.util.Calendar;
 
@@ -38,7 +37,6 @@ public class AlarmReceiver extends BroadcastReceiver {
                 String content;
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(e.getDateBeginDate());
-                Log.i("ALARM RECEIVED", "Alarm intent received for " + e.getId() + " alias " + e.getName());
                 cal.add(Calendar.DAY_OF_MONTH, -1);
                 boolean toContinue = false;
                 content = "";

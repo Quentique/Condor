@@ -13,7 +13,6 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
 import android.text.Html;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -33,10 +32,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
         getActivity().setTitle(R.string.settings);
-        if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("firebase", false)) {
-            Log.i("SHARED", "ACTIVE");
-
-        } else { Log.i("SHARED", "INACTIVE"); }
 
         findPreference("firebase").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -71,7 +66,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
                     builder.setItems(R.array.cat, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Log.i("THIS IS A TEST", String.valueOf(which));
                             FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getContext());
                             switch (which) {
                                 case 0:
@@ -187,9 +181,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
             FirebaseAnalytics.getInstance(getContext()).setAnalyticsCollectionEnabled(false);
             FirebaseAnalytics.getInstance(getContext()).resetAnalyticsData();
         }
-        if(sharedPreferences.getBoolean("firebase", false)) {
-            Log.i("SHARED", "ACTIVE");
-        } else { Log.i("SHARED", "INACTIVE"); }
     }
 
     @Override

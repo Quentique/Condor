@@ -50,7 +50,6 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
             default: {
                 View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.profs_one_day_spe_hours_layout, parent, false);
-                Log.i("HELLO", "VIEWHOLDER3");
                 return new ViewHolder3(v);
             }
         }
@@ -94,9 +93,7 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
                 result = ctx.getString(R.string.neutral_title);
                 break;
         }
-        Log.i("DEBUGGGGG", "ICH BIN DA");
         if (absence.getMultipleDays()) {
-            Log.i("EEE", absence.getTitle());
             ((ViewHolder2) holder).name.setText(result + " " + absence.getName());
             ((ViewHolder2) holder).date.setText(ctx.getString(R.string.from) + absence.getBeginning() + ctx.getString(R.string.to) + absence.getEnd());
         } else if (absence.getDate() == null)
@@ -117,7 +114,6 @@ class RecyclerViewAdapterProfs extends RecyclerView.Adapter<RecyclerView.ViewHol
     public int getItemViewType(int position) {
         if (filteredList.get(position).getMultipleDays())
         {
-            Log.i("DE", "SEVERAL");
             return SEVERAL;
         } else if (filteredList.get(position).getDate() == null){ Log.i("de", "SINGLE"); return SINGLE; } else { Log.i("DE", "SINGLE SPE");
             return 2; }

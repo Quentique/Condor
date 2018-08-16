@@ -18,7 +18,6 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -69,15 +68,12 @@ class Database {
      * Initialises variables for sync (count for new content)
      */
     void initialiseSync() {
-        Log.i("SYNC", "Initalising function called");
         SharedPreferences pref = ctx.getSharedPreferences("notifications", 0);
         canteen = pref.getBoolean("canteen", false);
         maps = pref.getBoolean("maps", false);
         cvl = pref.getBoolean("cvl", false);
             events = parsePrefNot("events", ctx);
-            Log.i("SYNC", events.toString());
             posts = parsePrefNot("posts", ctx);
-            Log.i("SYNC", posts.toString());
     }
 
     void open() throws SQLException { database = helper.getWritableDatabase(); }
@@ -159,7 +155,6 @@ class Database {
                         }
                         break;
                 }
-                Log.i("DB-SYNC", toBeDownloaded.toString());
                 database.replace(DBOpenHelper.General.TABLE_NAME, null, values);
             } catch (JSONException e) {
                 Crashlytics.logException(e);
@@ -274,7 +269,6 @@ class Database {
             }
         }
         database.delete(DBOpenHelper.Events.TABLE_NAME, DBOpenHelper.Events.COLUMN_STATE + " = 'deleted'", null);
-       // database.delete(DBOpenHelper.Events.TABLE_NAME, DBOpenHelper.Events.COLUMN_END + " < CURRENT_TIMESTAMP", null);
         AlarmProgrammer.scheduleAllAlarms(ctx);
     }
 
@@ -315,7 +309,6 @@ class Database {
             database.execSQL("INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_ID + ", " + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + " VALUES (" + id + ",'last_sync', datetime('now', 'localtime'))");
         }
         cursor.close();
-        Log.i("DB", "INSERT OR REPLACE INTO " + DBOpenHelper.General.TABLE_NAME + " (" + DBOpenHelper.General.COLUMN_ID + ", " + DBOpenHelper.General.COLUMN_NAME + ", " + DBOpenHelper.General.COLUMN_VALUE + ")" + " VALUES (" + id + ",'last_sync', datetime('now', 'localtime'))");
     }
 
     void deleteTable(String table) {
@@ -571,7 +564,6 @@ class Database {
         SharedPreferences pref = ctx.getSharedPreferences("notifications",0);
         toReturn = gson.fromJson(pref.getString(key, ""), founder);
         if (toReturn == null) toReturn = new ArrayList<>();
-        Log.i("DATABASE", "ACTION DEMANDED : "+toReturn.toString());
         return toReturn;
     }
 
@@ -586,7 +578,6 @@ class Database {
         SharedPreferences pref = ctx.getSharedPreferences("notifications",0);
         SharedPreferences.Editor editor=  pref.edit();
         editor.putString(key, gson.toJson(array));
-        //Log.i("TESTTTT", String.valueOf(pref.getInt(key,0)-1));
         editor.putInt(key+"_count", array.size());
         editor.apply();
     }
@@ -596,7 +587,6 @@ class Database {
      * @return true if new content, false otherwise.
      */
     boolean endingSync() {
-        Log.i("SYNC", "Ending sync function called");
         if (events.size() == 0 && posts.size() == 0 && !maps & !cvl & !canteen) {
 
             return false;
@@ -611,7 +601,6 @@ class Database {
             editor.putBoolean("canteen", canteen);
             editor.putString("events", gson.toJson(events));
             editor.putString("posts", gson.toJson(posts));
-            Log.i("SYNC", gson.toJson(events));
             editor.apply();
             if (PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("sync_notif", true)) {
                 String content = "";
@@ -658,11 +647,6 @@ class Database {
                 PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                 noti.setContentIntent(intent);
                 manager.notify(3, noti.build());
-                if (pref.getBoolean("maps", false)) {
-                    Log.i("DATA", "WORKEDDDDD");
-                } else {
-                    Log.i("DATA", "NOT WORKEDDDDD");
-                }
             }
             return true;
         }

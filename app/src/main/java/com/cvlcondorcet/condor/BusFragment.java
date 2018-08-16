@@ -25,7 +25,7 @@ import java.io.IOException;
  */
 
 public class BusFragment extends Fragment {
-    private static final String url = "http://www.optymo.fr/infos_trafic/";
+    private static final String url = "https://www.optymo.fr/infos_trafic/";
     private WebView web_view;
     private ProgressBar progress;
     private String user;

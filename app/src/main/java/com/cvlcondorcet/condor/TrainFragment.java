@@ -107,7 +107,6 @@ public class TrainFragment extends Fragment {
                     Element el2 = doc.select(".page-content").first();
                     element.add(el);
                     element.add(el2);
-                  //  Log.i("DO", "FOREGOUND");
                 } catch (IOException e) {
                     Crashlytics.logException(e);}
             }
@@ -115,10 +114,8 @@ public class TrainFragment extends Fragment {
         }
         @Override
         public void onPostExecute(Void result) {
-           // Log.i("START", "LOADING");
             try {
                 web_view.loadDataWithBaseURL("http://m.sncf.com", element.toString(), "text/html", "gzip", "");
-                // Log.i("END", "LOADING");
             } catch(NullPointerException e) { Crashlytics.logException(e); }
         }
     }

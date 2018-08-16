@@ -2,7 +2,6 @@ package com.cvlcondorcet.condor;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
 import java.util.List;
 
@@ -32,7 +31,6 @@ class TeachersLoader extends AsyncTaskLoader<List<TeachersAbsence>> {
         db.open();
         List<TeachersAbsence> data = db.getTeachersAbsence();
         db.close();
-        Log.i("HELLO", "Background done");
         return data;
     }
 
