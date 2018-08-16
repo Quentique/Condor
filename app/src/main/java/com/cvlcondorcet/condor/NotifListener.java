@@ -30,8 +30,6 @@ public class NotifListener extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage message) {
         String messageT = message.getFrom();
         String what = message.getData().get("what");
-       // Log.d("TEST", "From: " + messageT);
-//        Toast.makeText(this, "Message received", Toast.LENGTH_LONG).show();
         if (messageT != null && messageT.startsWith("/topics/condor64")) {
             if (what != null) {
                 if (what.equals("sync")) {
@@ -57,16 +55,14 @@ public class NotifListener extends FirebaseMessagingService {
                         newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
                         stackBuilder.addNextIntentWithParentStack(newIntent);
-                        // PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                         PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                       // PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                         noti.setContentTitle(getString(R.string.new_content))
                                 .setSmallIcon(R.drawable.ic_launcher_material)
                                 .setContentText(getString(R.string.click_sync))
                                 .setContentIntent(intent);
                         noti.setAutoCancel(true);
                         manager.notify(1, noti.build());
-                    }                // Log.i("TEST", "NOTIFICATION RECEIVED");
+                    }
                 } else if (what.startsWith("delete")) {
                     String table;
                     switch (what) {
@@ -123,7 +119,6 @@ public class NotifListener extends FirebaseMessagingService {
                     newIntent.setFlags(Intent.FLAG_DEBUG_LOG_RESOLUTION);
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
                     stackBuilder.addNextIntentWithParentStack(newIntent);
-                   // PendingIntent intent = PendingIntent.getActivity(this, 1, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     PendingIntent intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                     noti.setContentIntent(intent);
                     noti.setAutoCancel(true);
@@ -133,7 +128,7 @@ public class NotifListener extends FirebaseMessagingService {
         }
     }
 
-    public static boolean deleteDir(File dir) {
+    private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
             for (int i = 0; i < children.length; i++) {

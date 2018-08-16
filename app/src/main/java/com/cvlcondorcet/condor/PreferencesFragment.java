@@ -38,7 +38,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
 
         } else { Log.i("SHARED", "INACTIVE"); }
 
-        ((SwitchPreferenceCompat) findPreference("firebase")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        findPreference("firebase").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (!((SwitchPreferenceCompat) preference).isChecked()) {

@@ -36,7 +36,6 @@ public class EventsFragment extends Fragment {
 
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        //Log.i("START", "EVENTS FRAGMENT LOADED");
         db.close();
     }
 

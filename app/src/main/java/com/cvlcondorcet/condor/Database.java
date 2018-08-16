@@ -138,8 +138,6 @@ class Database {
                         break;
                     case "social_networks":
                         if (!element.getString("value").equals(timestamp("social_networks"))) {
-                           // Log.i("TEST", element.getJSONArray("value").toString());
-                          //  JSONArray arrayS = element.getJSONObject("value").toJSONArray(element.getJSONObject("value").names());
                             JsonParser parser = new JsonParser();
                             JsonArray arrayH;
                             int k;
@@ -186,7 +184,6 @@ class Database {
                 values.put(DBOpenHelper.Posts.COLUMN_NAME, element.getString("name"));
                 values.put(DBOpenHelper.Posts.COLUMN_CONTENT, element.getString("content"));
                 values.put(DBOpenHelper.Posts.COLUMN_DATE, element.getString("date"));
-               // Log.i("DEBUG", element.getString("state"));
                 if (element.getString("state").contains("deleted")) {
                     values.put(DBOpenHelper.Posts.COLUMN_STATE, 1);
                     posts.remove(Integer.valueOf(element.getInt("id")));
@@ -293,7 +290,6 @@ class Database {
         if (cursor != null && cursor.getCount()>0) {
             try {
                 cursor.moveToFirst();
-               // Log.i("DEBUGONCE", cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
                 return cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE));
             } finally {
                 cursor.close();

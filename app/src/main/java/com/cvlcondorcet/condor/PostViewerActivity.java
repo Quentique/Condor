@@ -90,7 +90,7 @@ public class PostViewerActivity extends AppCompatActivity {
         setSupportActionBar(bar);
         try {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException ignored) {}
 
         String id = getIntent().getStringExtra("id");
        // Log.i("ID", "'" + id +"'");

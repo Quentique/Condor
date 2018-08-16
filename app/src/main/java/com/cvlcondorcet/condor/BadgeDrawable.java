@@ -16,7 +16,7 @@ import android.util.TypedValue;
 /**
  * Created by Admin on 2/25/2016.
  */
-public class BadgeDrawable extends Drawable {
+class BadgeDrawable extends Drawable {
 
     private float mTextSize;
     private Paint mBadgePaint;

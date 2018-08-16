@@ -113,10 +113,7 @@ public class MainFragment extends Fragment {
         image3.setImageResource(R.drawable.ic_mail_black_32dp);
         contactTitle3.setText("Mail : ");
         contactValue3.setText(db.timestamp("mail"));
-       /* final String facebook = db.timestamp("facebook");
-        final String twitter = db.timestamp("twitter");*/
         final String high = db.timestamp("website");
-       // final String ent = db.timestamp("ent_link");
         JsonArray social;
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -142,8 +139,7 @@ public class MainFragment extends Fragment {
                 startActivity(intent);
             }
         };
-            JsonParser parser = new JsonParser();
-           // social = new JSONArray(db.timestamp("social_networks"));
+        JsonParser parser = new JsonParser();
         Log.i("SOC", "INITALIZING PARSER");
         try {
             social = parser.parse(db.timestamp("social_networks")).getAsJsonArray();
@@ -167,12 +163,11 @@ public class MainFragment extends Fragment {
             for (k = i*4; k<kl; k++) {
                 Log.i("SOC", "Entering second-loop");
                     JsonObject object = social.get(k).getAsJsonObject();
-                    ImageButton button = (ImageButton) getLayoutInflater().inflate(R.layout.social_network_button, (ViewGroup) row, false);
+                    ImageButton button = (ImageButton) getLayoutInflater().inflate(R.layout.social_network_button, row, false);
                     LinearLayout.LayoutParams lay = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
                     button.setLayoutParams(lay);
                     button.setTag(k);
                     button.setImageURI(Uri.parse(getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString()));
-                   // Picasso.with(getActivity()).load(getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString()).into(button);
                     Log.i("TEST", getActivity().getFilesDir().toString()+"/"+object.get("image").getAsString());
                     correspondance.add(k, object.get("link").getAsString());
                     button.setOnClickListener(listener);
@@ -181,10 +176,6 @@ public class MainFragment extends Fragment {
             tablelayout.addView(row);
         }
 
-       /* tablelayout.setColumnShrinkable(0, true);
-        tablelayout.setColumnStretchable(1, true);
-        tablelayout.setColumnStretchable(2, true);
-        tablelayout.setColumnStretchable(3, true);*/
         db.close();
 
         if (MainActivity.allowConnect(getActivity()) && mFirebaseRemoteConfig.getBoolean("website")) {
@@ -211,10 +202,9 @@ public class MainFragment extends Fragment {
         (layout1.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* String phone = String.valueOf(((TextView)view.findViewById(R.id.value_contact)).getText());
+                String phone = String.valueOf(((TextView)view.findViewById(R.id.value_contact)).getText());
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                startActivity(intent);*/
-                Crashlytics.getInstance().crash();
+                startActivity(intent);
             }
         });
         (layout2.findViewById(R.id.cardview_contact)).setOnClickListener(new View.OnClickListener() {
@@ -310,9 +300,9 @@ public class MainFragment extends Fragment {
                         toDisplay = element2.toString();
                         toDisplay += "<style>.carousel { background: transparent; width: 100%; margin: auto;} head, body, div { background: transparent; margin: auto;}</style>";
                         toDisplay += element.toString();
-                    } catch (IllegalArgumentException e) {}
-                } catch (NullPointerException e) {}
-            } catch (IOException e) {}
+                    } catch (IllegalArgumentException ignored) {}
+                } catch (NullPointerException ignored) {}
+            } catch (IOException ignored) {}
             return null;
         }
 

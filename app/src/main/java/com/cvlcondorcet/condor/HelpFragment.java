@@ -25,10 +25,6 @@ import android.widget.Toast;
 
 public class HelpFragment extends Fragment {
 
-    /*@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }*/
     private int click = 0;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -46,7 +42,6 @@ public class HelpFragment extends Fragment {
             public void onClick(View view) {
                 click++;
                 if (click == 7) {
-                   // final Toast toast = Toast.makeText(getActivity(), "« Quand les gens retrouveraient nos corps calcinés, ils se demanderaient ce qu'on fabriquait ensemble. »", Toast.LENGTH_LONG);
 				   final Toast toast = Toast.makeText(getActivity(), "« S'enfuir, se retrouver, s'ouvrir, s'embrasser, s'émanciper, s'acharner, se découvrir, s'associer, se compromettre, se confronter. »", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_HORIZONTAL| Gravity.TOP, 0, 70);
                     toast.show();

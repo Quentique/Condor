@@ -14,7 +14,11 @@ import java.util.Date;
  */
 
 class Event {
-    private String name, desc, place, picture, id;
+    private final String name;
+    private final String desc;
+    private final String place;
+    private final String picture;
+    private final String id;
     private Date begin, end;
     public static String format, format2;
 

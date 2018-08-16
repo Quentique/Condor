@@ -26,7 +26,6 @@ public class LicensesActivity extends AppCompatActivity {
              */
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                Log.i("E", "OVERRIDE");
                 if (url.contains("conf")) {
                     view.loadUrl("file:///android_asset/conf.html");
                     return true;

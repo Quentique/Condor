@@ -54,10 +54,8 @@ public class ConsentActivity extends IntroActivity {
         changeHorizontalDividerVisibility(true);
         getRootView().setBackgroundColor(getResources().getColor(R.color.secondaryTextColor));
         getRootView().findViewById(com.matthewtamlin.sliding_intro_screen_library.R.id.intro_activity_viewPager).setBackgroundColor(getResources().getColor(R.color.secondaryTextColor));
-       // getRootView().findViewById(com.matthewtamlin.sliding_intro_screen_library.R.id.intro_activity_progressIndicatorHolder).setBackgroundColor(getResources().getColor(R.color.primaryColor));
         ((RelativeLayout.LayoutParams) getRootView().findViewById(com.matthewtamlin.sliding_intro_screen_library.R.id.intro_activity_viewPager).getLayoutParams()).setMargins(0, 0, 0, 140);
         getRootView().findViewById(com.matthewtamlin.sliding_intro_screen_library.R.id.intro_activity_progressIndicatorHolder).setBackgroundColor(getResources().getColor(R.color.primaryColor));
-        //hideStatusBar();
 
         addPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
