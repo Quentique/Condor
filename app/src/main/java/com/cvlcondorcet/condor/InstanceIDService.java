@@ -15,6 +15,6 @@ public class InstanceIDService extends FirebaseMessagingService {
             subscribeTopic(token);
     }
     private void subscribeTopic(String token) {
-       FirebaseMessaging.getInstance().subscribeToTopic("***REMOVED***");
+       FirebaseMessaging.getInstance().subscribeToTopic(MainActivity.TOPIC_ID);
     }
 }
