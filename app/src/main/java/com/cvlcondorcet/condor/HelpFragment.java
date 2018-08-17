@@ -62,7 +62,7 @@ public class HelpFragment extends Fragment {
         version.setText("Version " + BuildConfig.VERSION_NAME);
         Time time = new Time(Time.getCurrentTimezone());
         time.setToNow();
-        id.setText("© 2018 -"+String.valueOf(time.year)+" Quentin DE MUYNCK\n All rights reserved.");
+        id.setText("© 2016 - "+String.valueOf(time.year)+" Quentin DE MUYNCK\n All rights reserved.");
         Button button = view.findViewById(R.id.licenses);
         button.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
@@ -97,7 +97,7 @@ public class HelpFragment extends Fragment {
                 intent.setType("*/*");
                 intent.setData(Uri.parse("mailto:"));
                 intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"support@cvlcondorcet.fr"});
-                intent.putExtra(Intent.EXTRA_SUBJECT, "[CONDOR] - ");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "[CONDOR] - Rapport depuis l'application");
                 intent.putExtra(Intent.EXTRA_TEXT, "Sujet :\nMessage : ");
                 if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                     startActivity(intent);

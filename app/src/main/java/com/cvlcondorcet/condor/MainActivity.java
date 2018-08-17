@@ -536,7 +536,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     selectFromParam(newIntent.getStringExtra("fragment"));
                 }
-
             }
         }
     }

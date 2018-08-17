@@ -61,7 +61,7 @@ public class CanteenFragment extends Fragment {
             public void run() {
                 try {
                     Thread.sleep(1000);
-                }catch (InterruptedException e) { e.printStackTrace(); }
+                }catch (InterruptedException ignored) { }
 
                  try {
                      getActivity().runOnUiThread(new Runnable() {

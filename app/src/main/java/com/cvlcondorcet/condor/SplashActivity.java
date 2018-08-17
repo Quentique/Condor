@@ -66,7 +66,6 @@ public class SplashActivity extends AppCompatActivity {
                                 intent.putExtra("place", list.get(1));
                                // intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_DEBUG_LOG_RESOLUTION);
                                 startActivity(intent);
-                                //NavUtils.navigateUpTo(this, intent);
                             } else {
                                 intent.putExtra("fragment", "maps");
                                 intent.putExtra("place", "");

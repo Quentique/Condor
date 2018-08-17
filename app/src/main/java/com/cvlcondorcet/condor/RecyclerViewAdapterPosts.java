@@ -172,7 +172,7 @@ class RecyclerViewAdapterPosts extends RecyclerView.Adapter<RecyclerView.ViewHol
                         catList.addAll(list);
                     }
                     filter(queryy);
-                } catch (Exception e ) {e.printStackTrace();}
+                } catch (Exception ignored ) {}
 
             }
         }).start();

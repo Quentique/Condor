@@ -239,7 +239,7 @@ class Database {
                     values.put(DBOpenHelper.Maps.COLUMN_MARK, element.getString("mark"));
                     database.replace(DBOpenHelper.Maps.TABLE_NAME, null, values);
                 } catch (JSONException e){
-                    e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
             }
             maps=true;
@@ -260,8 +260,9 @@ class Database {
                 values.put(DBOpenHelper.Events.COLUMN_END, element.getString("end"));
                 values.put(DBOpenHelper.Events.COLUMN_PLACE, element.getString("place"));
                 values.put(DBOpenHelper.Events.COLUMN_STATE, element.getString("state"));
-                if (element.getString("state").equals("deleted"))
+                if (element.getString("state").equals("deleted")) {
                     events.remove(Integer.valueOf(element.getInt("id")));
+                }
                 values.put(DBOpenHelper.Events.COLUMN_PICT, element.getString("picture"));
                 database.replace(DBOpenHelper.Events.TABLE_NAME, null, values);
             } catch (JSONException e) {

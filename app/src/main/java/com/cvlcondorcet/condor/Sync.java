@@ -110,7 +110,6 @@ public class Sync extends IntentService {
         handler.removeCallbacks(sendProgress);
         stopForeground(true);
         super.onDestroy();
-
     }
 
     /**
@@ -336,7 +335,7 @@ public class Sync extends IntentService {
         HttpURLConnection connection;
         try {
             connection = (HttpURLConnection) url.openConnection();
-            connection.setConnectTimeout(20000);
+            connection.setConnectTimeout(10000);
             try {
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
@@ -344,7 +343,6 @@ public class Sync extends IntentService {
                     answer.append(inputLine);
                 in.close();
             } catch (IOException e) {
-                e.printStackTrace();
                 progress = -1;
                 handler.post(sendProgress);
                 stopForeground(true);
