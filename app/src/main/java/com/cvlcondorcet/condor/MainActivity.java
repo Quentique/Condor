@@ -54,11 +54,12 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Class fragmentClass;
-    public static String locale;
-    public static String TOPIC_ID = "***REMOVED***";
     private HashMap<Integer, Class> correspondance;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
+
     public static SharedPreferences preferences, default_preferences;
+    public static String locale;
+    public static String TOPIC_ID = "***REMOVED***";
 
     /**
      * Sets up activity, loading language and locale.

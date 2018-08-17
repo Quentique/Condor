@@ -343,6 +343,7 @@ public class Sync extends IntentService {
                     answer.append(inputLine);
                 in.close();
             } catch (IOException e) {
+                e.printStackTrace();
                 progress = -1;
                 handler.post(sendProgress);
                 stopForeground(true);
