@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.SslErrorHandler;
@@ -25,6 +26,9 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static android.content.Intent.ACTION_SEND;
+import static android.content.Intent.EXTRA_SUBJECT;
+import static android.content.Intent.EXTRA_TEXT;
 import static android.view.View.GONE;
 
 /**
@@ -40,6 +44,7 @@ public class PostViewerActivity extends AppCompatActivity {
     private Database db;
     private TextView title, date, cat;
     private ProgressBar progress;
+    private String id;
 
     /**
      * Sets up activity, starts loading post.
@@ -92,7 +97,7 @@ public class PostViewerActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } catch (NullPointerException ignored) {}
 
-        String id = getIntent().getStringExtra("id");
+        id = getIntent().getStringExtra("id");
        // Log.i("ID", "'" + id +"'");
         if (!id.equals("0")) {
             if (getIntent().getExtras().containsKey("link")) {
@@ -129,8 +134,25 @@ public class PostViewerActivity extends AppCompatActivity {
             relaunch.putExtra("fragment","posts");
             NavUtils.navigateUpTo(this, relaunch);
             return true;
+        } else if (item.getItemId() == R.id.share_button) {
+            Intent intent = new Intent(ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(EXTRA_SUBJECT, "Condor");
+            if (id.equals("0")) {
+                intent.putExtra(EXTRA_TEXT, "Look at this post !\n"+getIntent().getStringExtra("link"));
+            } else {
+                intent.putExtra(EXTRA_TEXT, "Look at this post in Condor!\nhttps://app.cvlcondorcet.fr/posts/" + id);
+            }
+            startActivity(Intent.createChooser(intent, "Choose one"));
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_share, menu);
+        return true;
     }
 
     /**

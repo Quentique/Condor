@@ -31,7 +31,11 @@ import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -45,6 +49,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -221,6 +226,47 @@ public class MainActivity extends AppCompatActivity {
                     selectDrawerItem(navigationView.getMenu().findItem(R.id.nav_home));
                 }
             }
+            Random rand = new Random();
+            if (default_preferences.getBoolean("share_app", true)  && rand.nextInt(5 + 1) == 4) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setCancelable(true);
+                builder.setIcon(R.drawable.ic_launcher);
+                View mView = getLayoutInflater().inflate(R.layout.share_dialog, null);
+                final CheckBox box = mView.findViewById(R.id.checkBox);
+                box.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        if (compoundButton.isChecked()) {
+                            default_preferences.edit().putBoolean("share_app", false).apply();
+                        } else {
+                            default_preferences.edit().putBoolean("share_app", true).apply();
+                        }
+                    }
+                });
+                builder.setView(mView);
+                builder.setTitle(R.string.share_condor);
+                builder.setMessage(R.string.enjoyr_condor);
+                builder.setPositiveButton("Yeah!!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Condor");
+                        String s = getString(R.string.recommendation);
+                        s += "https://app.cvlcondorcet.fr";
+                        intent.putExtra(Intent.EXTRA_TEXT,s);
+                        startActivity(Intent.createChooser(intent, "Choose one"));
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.setNegativeButton("No thanks", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.create().show();
+            }
         }
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC_ID);
         Log.i("CONDOR", "\""+FirebaseInstanceId.getInstance().getId()+"\"");
@@ -279,8 +325,44 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.share_button:
+                Log.i("TEST", String.valueOf(getSupportFragmentManager().findFragmentById(R.id.your_placeholder).getView().getId()));
+                Log.i("TEST2222", String.valueOf(R.layout.fragment_main));
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Condor");
+                String value = "";
+                switch (getSupportFragmentManager().findFragmentById(R.id.your_placeholder).getClass().getSimpleName()) {
+                    case "CVLFragment":
+                        value += "Discover more about our CVL on Condor!\nhttps://app.cvlcondorcet.fr/cvl/";
+                        break;
+                    case "CanteenFragment":
+                        value +="Check our canteen's menu on Condor!\nhttps://app.cvlcondorcet.fr/canteen/";
+                        break;
+                    case "PostsFragment":
+                        value += "See all news on Condor!\nhttps://app.cvlcondorcet.fr/posts/";
+                        break;
+                    case "EventsFragment":
+                        value +="See all events on Condor!\nhttps://app.cvlcondorcet.fr/events/";
+                        break;
+                    case "HelpFragment":
+                        value +="See our GUT on Condor!\nhttps://app.cvlcondorcet.fr/mentions/";
+                        break;
+                    default:
+                        value += "Discover Condor!\nhttps://app.cvlcondorcet.fr";
+                        break;
+                }
+                intent.putExtra(Intent.EXTRA_TEXT, value);
+                startActivity(Intent.createChooser(intent, "Choose one"));
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_share, menu);
+        return true;
     }
 
     /**

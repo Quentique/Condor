@@ -127,4 +127,8 @@
     <string name="in_a_week">"In a weekn, on the "</string>
     <string name="today">"Today at "</string>
     <string name="mark_as_seen">Mark as seen</string>
+    <string name="don_t_show_this_message_again">Don\'t show this message again</string>
+    <string name="share_condor">Share Condor</string>
+    <string name="enjoyr_condor">Are you enjorying Condor? What about sharing it with your friends?!</string>
+    <string name="recommendation">Recommendation</string>
 </resources>

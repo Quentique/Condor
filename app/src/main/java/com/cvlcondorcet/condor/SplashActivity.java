@@ -80,7 +80,7 @@ public class SplashActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                             break;
-                        case "cgu":
+                        case "mentions":
                             Intent intent2 = new Intent(this, LicensesActivity.class);
                             intent2.putExtra("name", "cgu");
                             Log.i("TEST", "CGU");
