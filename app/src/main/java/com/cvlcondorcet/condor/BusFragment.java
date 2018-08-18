@@ -41,6 +41,7 @@ public class BusFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(R.string.optymo);
+        setHasOptionsMenu(true);
         progress = view.findViewById(R.id.loading_layout);
         web_view = view.findViewById(R.id.web_view_bus);
         web_view.setWebViewClient(new WebViewClient() {

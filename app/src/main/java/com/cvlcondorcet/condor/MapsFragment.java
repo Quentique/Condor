@@ -74,7 +74,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_maps, menu);
-        final MenuItem item2 = menu.findItem(R.id.share_maps);
+        final MenuItem item2 = menu.findItem(R.id.share_button);
         final MenuItem item = menu.findItem(R.id.action_search_maps);
         @SuppressWarnings("deprecation") final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         SearchView.SearchAutoComplete searchAutoCompleteTextView = searchView.findViewById(R.id.search_src_text);
@@ -88,23 +88,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             }
         });
 
-        item2.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent intent = new Intent(ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(EXTRA_SUBJECT, "Condor");
-                String toAdd;
-                if (!currentId.equals("none")) {
-                    toAdd = getString(R.string.meet_up_here)+currentId;
-                } else {
-                    toAdd = getString(R.string.maps_share);
-                }
-                intent.putExtra(EXTRA_TEXT, toAdd);
-                startActivity(Intent.createChooser(intent, "Choose one"));
-                return false;
-            }
-        });
         db = new Database(getActivity());
         db.open();
         adapter = (SimpleCursorAdapter)db.getSuggestions();
@@ -176,6 +159,27 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public void onPause() {
         super.onPause();
         db.close();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.share_button:
+                Intent intent = new Intent(ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(EXTRA_SUBJECT, "Condor");
+                String toAdd;
+                if (!currentId.equals("none")) {
+                    toAdd = getString(R.string.meet_up_here)+currentId;
+                } else {
+                    toAdd = getString(R.string.maps_share);
+                }
+                intent.putExtra(EXTRA_TEXT, toAdd);
+                startActivity(Intent.createChooser(intent, "Choose one"));
+                return true;
+            default:
+                return false;
+        }
     }
 
     public void onStop() {

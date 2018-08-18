@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private Class fragmentClass;
     public static String locale;
-    public static String TOPIC_ID = "***REMOVED***";
+    public static String TOPIC_ID = "000000";
     private HashMap<Integer, Class> correspondance;
    // private BroadcastReceiver mRegistrationBroadcastReceiver;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
@@ -348,6 +348,8 @@ public class MainActivity extends AppCompatActivity {
                     case "HelpFragment":
                         value += getString(R.string.gtu_share);
                         break;
+                    case "MapsFragment":
+                        return false;
                     default:
                         value += getString(R.string.discover_condor);
                         break;
