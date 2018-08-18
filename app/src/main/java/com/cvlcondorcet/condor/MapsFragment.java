@@ -96,9 +96,9 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 intent.putExtra(EXTRA_SUBJECT, "Condor");
                 String toAdd;
                 if (!currentId.equals("none")) {
-                    toAdd = "Meet up here !\nhttps://app.cvlcondorcet.fr/maps/"+currentId;
+                    toAdd = getString(R.string.meet_up_here)+currentId;
                 } else {
-                    toAdd = "Discover Condor's maps !\nhttps://app.cvlcondorcet.fr/maps/";
+                    toAdd = getString(R.string.maps_share);
                 }
                 intent.putExtra(EXTRA_TEXT, toAdd);
                 startActivity(Intent.createChooser(intent, "Choose one"));

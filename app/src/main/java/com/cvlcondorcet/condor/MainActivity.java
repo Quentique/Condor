@@ -334,22 +334,22 @@ public class MainActivity extends AppCompatActivity {
                 String value = "";
                 switch (getSupportFragmentManager().findFragmentById(R.id.your_placeholder).getClass().getSimpleName()) {
                     case "CVLFragment":
-                        value += "Discover more about our CVL on Condor!\nhttps://app.cvlcondorcet.fr/cvl/";
+                        value += getString(R.string.cvl_share);
                         break;
                     case "CanteenFragment":
-                        value +="Check our canteen's menu on Condor!\nhttps://app.cvlcondorcet.fr/canteen/";
+                        value +=getString(R.string.canteen_shares);
                         break;
                     case "PostsFragment":
-                        value += "See all news on Condor!\nhttps://app.cvlcondorcet.fr/posts/";
+                        value += getString(R.string.posts_share);
                         break;
                     case "EventsFragment":
-                        value +="See all events on Condor!\nhttps://app.cvlcondorcet.fr/events/";
+                        value += getString(R.string.events_share);
                         break;
                     case "HelpFragment":
-                        value +="See our GUT on Condor!\nhttps://app.cvlcondorcet.fr/mentions/";
+                        value += getString(R.string.gtu_share);
                         break;
                     default:
-                        value += "Discover Condor!\nhttps://app.cvlcondorcet.fr";
+                        value += getString(R.string.discover_condor);
                         break;
                 }
                 intent.putExtra(Intent.EXTRA_TEXT, value);

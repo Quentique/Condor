@@ -139,9 +139,9 @@ public class PostViewerActivity extends AppCompatActivity {
             intent.setType("text/plain");
             intent.putExtra(EXTRA_SUBJECT, "Condor");
             if (id.equals("0")) {
-                intent.putExtra(EXTRA_TEXT, "Look at this post !\n"+getIntent().getStringExtra("link"));
+                intent.putExtra(EXTRA_TEXT, getString(R.string.look_post_out)+getIntent().getStringExtra("link"));
             } else {
-                intent.putExtra(EXTRA_TEXT, "Look at this post in Condor!\nhttps://app.cvlcondorcet.fr/posts/" + id);
+                intent.putExtra(EXTRA_TEXT, getString(R.string.look_posts_condor) + id);
             }
             startActivity(Intent.createChooser(intent, "Choose one"));
             return true;

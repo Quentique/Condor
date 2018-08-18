@@ -89,7 +89,7 @@ public class EventViewerActivity extends AppCompatActivity {
             Intent intent = new Intent(ACTION_SEND);
             intent.setType("text/plain");
             intent.putExtra(EXTRA_SUBJECT, "Condor");
-            intent.putExtra(EXTRA_TEXT,"Look at this event in Condor!\nhttps://app.cvlcondorcet.fr/events/"+event.getId());
+            intent.putExtra(EXTRA_TEXT,getString(R.string.look_event_share)+event.getId());
             startActivity(Intent.createChooser(intent, "Choose one"));
         }
         return super.onOptionsItemSelected(item);

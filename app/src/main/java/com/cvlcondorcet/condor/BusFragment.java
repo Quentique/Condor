@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -78,6 +80,13 @@ public class BusFragment extends Fragment {
         web_view.getSettings().setDefaultTextEncodingName("utf-8");
 
         new Loading().execute(url);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (menu != null)
+            menu.findItem(R.id.share_button).setVisible(false);
     }
 
     /**

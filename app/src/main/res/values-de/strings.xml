@@ -124,4 +124,19 @@
     <string name="in_a_week">"In einer Woche am "</string>
     <string name="today">"Heute um "</string>
     <string name="mark_as_seen">Als eingesehen markieren</string>
+    <string name="don_t_show_this_message_again">Diese Nachricht nicht mehr zeigen</string>
+    <string name="share_condor">Condor teilen</string>
+    <string name="enjoyr_condor">Sie mögen Condor? Teilen Sie mal Condor mit Ihren Freunden!</string>
+    <string name="recommendation">Lass mich dir Condor zu empfehlen!</string>
+    <string name="discover_condor">Entdeck\' Condor! https://app.cvlcondorcet.fr</string>
+    <string name="gtu_share">Sehe unsere ANB auf Condor! https://app.cvlcondorcet.fr/mentions/</string>
+    <string name="events_share">Find mal alle Events auf Condor! https://app.cvlcondorcet.fr/events/</string>
+    <string name="posts_share">Finde mal alle Nachrichte auf Condor! https://app.cvlcondorcet.fr/posts/</string>
+    <string name="canteen_shares">Guck mal die Mensaplan auf Condor! https://app.cvlcondorcet.fr/canteen/</string>
+    <string name="cvl_share">Entdeck\' mehr über unser CVL auf Condor! https://app.cvlcondorcet.fr/cvl/</string>
+    <string name="meet_up_here">Treffen wir uns hier! https://app.cvlcondorcet.fr/maps/</string>
+    <string name="maps_share">Entdeck\' Condors Karte! https://app.cvlcondorcet.fr/maps/</string>
+    <string name="look_post_out">Guck mal diese Post!</string>
+    <string name="look_posts_condor">Guck mal diese Post in Condor! https://app.cvlcondorcet.fr/posts/</string>
+    <string name="look_event_share">Guck mal diese Event in Condor! https://app.cvlcondorcet.fr/events/</string>
 </resources>
