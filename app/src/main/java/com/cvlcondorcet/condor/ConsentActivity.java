@@ -106,6 +106,7 @@ public class ConsentActivity extends IntroActivity {
         final Intent nextActivity = new Intent(this, SplashActivity.class);
         edit = PreferenceManager.getDefaultSharedPreferences(this).edit();
         edit.putInt("version", BuildConfig.VERSION_CODE);
+        edit.putBoolean("share_app", true);
         edit.apply();
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         return new IntroButton.ProgressToNextActivity(nextActivity, edit);

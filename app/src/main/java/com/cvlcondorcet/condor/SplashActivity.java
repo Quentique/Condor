@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
         }
         if (pref.getBoolean("crashlytics", false)) {
             Fabric.with(this, new Crashlytics());
-        } else {
+        }  else {
             Crashlytics.Builder builder = new Crashlytics.Builder();
             CrashlyticsCore.Builder builder2 = new CrashlyticsCore.Builder();
             builder2.disabled(true);
@@ -72,7 +72,7 @@ public class SplashActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                             break;
-                        case "cgu":
+                        case "mentions":
                             Intent intent2 = new Intent(this, LicensesActivity.class);
                             intent2.putExtra("name", "cgu");
                             startActivity(intent2);

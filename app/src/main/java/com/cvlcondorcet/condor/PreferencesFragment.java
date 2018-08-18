@@ -13,6 +13,9 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
 import android.text.Html;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -32,6 +35,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
         getActivity().setTitle(R.string.settings);
+        setHasOptionsMenu(true);
 
         findPreference("firebase").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -194,5 +198,12 @@ public class PreferencesFragment extends PreferenceFragmentCompat implements Sha
     public void onPause(){
         super.onPause();
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        super.onCreateOptionsMenu(menu, menuInflater);
+        if (menu !=null) {
+            menu.findItem(R.id.share_button).setVisible(false);
+        }
     }
 }

@@ -505,7 +505,7 @@ class Database {
 
     Cursor getPlace(long id) {
         Cursor cursor = database.query(DBOpenHelper.Maps.TABLE_NAME,
-                new String[] {DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_FILE, DBOpenHelper.Maps.COLUMN_DESC, DBOpenHelper.Maps.COLUMN_POS, DBOpenHelper.Maps.COLUMN_MARK},
+                new String[] {DBOpenHelper.Maps.COLUMN_NAME,DBOpenHelper.Maps.COLUMN_DPNAME, DBOpenHelper.Maps.COLUMN_FILE, DBOpenHelper.Maps.COLUMN_DESC, DBOpenHelper.Maps.COLUMN_POS, DBOpenHelper.Maps.COLUMN_MARK},
                 DBOpenHelper.Maps.COLUMN_ID + " = " + String.valueOf(id),
                 null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {

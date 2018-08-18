@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -37,6 +39,7 @@ public class SyncingFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         getActivity().setTitle(getString(R.string.sync));
+        setHasOptionsMenu(true);
         button = view.findViewById(R.id.button_sync);
         displayPercent = view.findViewById(R.id.sync_display_percent);
         message = view.findViewById(R.id.sync_display_step);
@@ -89,6 +92,13 @@ public class SyncingFragment extends Fragment {
     public void onPause() {
         super.onPause();
         getActivity().unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (menu != null)
+            menu.findItem(R.id.share_button).setVisible(false);
     }
 
     /**

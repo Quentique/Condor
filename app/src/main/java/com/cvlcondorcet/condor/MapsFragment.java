@@ -2,6 +2,7 @@ package com.cvlcondorcet.condor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
@@ -36,6 +37,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static android.content.Intent.ACTION_SEND;
+import static android.content.Intent.EXTRA_SUBJECT;
+import static android.content.Intent.EXTRA_TEXT;
 import static android.view.View.GONE;
 
 /**
@@ -45,6 +49,7 @@ import static android.view.View.GONE;
 
 public class MapsFragment extends Fragment implements SearchView.OnQueryTextListener {
 
+    private static String currentId = "none";
     private String query;
     private RelativeLayout layout;
     private SimpleCursorAdapter adapter;
@@ -66,6 +71,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_maps, menu);
+        final MenuItem item2 = menu.findItem(R.id.share_button);
         final MenuItem item = menu.findItem(R.id.action_search_maps);
         @SuppressWarnings("deprecation") final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         SearchView.SearchAutoComplete searchAutoCompleteTextView = searchView.findViewById(R.id.search_src_text);
@@ -78,6 +84,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 return false;
             }
         });
+
         db = new Database(getActivity());
         db.open();
         adapter = (SimpleCursorAdapter)db.getSuggestions();
@@ -102,7 +109,6 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 Cursor cursor =(Cursor)adapter.getItem(position);
                 loadPdf(adapter.getItemId(position));
                 searchView.setQuery(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)), true);
-
                 cursor.close();
                 return false;
             }
@@ -146,6 +152,27 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
     public void onPause() {
         super.onPause();
         db.close();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.share_button:
+                Intent intent = new Intent(ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(EXTRA_SUBJECT, "Condor");
+                String toAdd;
+                if (!currentId.equals("none")) {
+                    toAdd = getString(R.string.meet_up_here)+currentId;
+                } else {
+                    toAdd = getString(R.string.maps_share);
+                }
+                intent.putExtra(EXTRA_TEXT, toAdd);
+                startActivity(Intent.createChooser(intent, "Choose one"));
+                return true;
+            default:
+                return false;
+        }
     }
 
     public void onStop() {
@@ -253,6 +280,8 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 .swipeHorizontal(true)
                 .enableAnnotationRendering(true)
                 .load();
+        if (!name.equals("GEN.pdf"))
+            currentId = name;
     }
 
     private void loadPdf(long id) {
@@ -261,6 +290,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
             cursor.moveToFirst();
             name.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DPNAME)));
             desc.setText(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_DESC)));
+            currentId = cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_NAME));
             try {
                 JSONArray array = new JSONArray(cursor.getString(cursor.getColumnIndex(DBOpenHelper.Maps.COLUMN_MARK)));
                 if (array.getString(1).equals("NU")) {
