@@ -49,7 +49,7 @@ public class Sync extends IntentService {
     private static final String GEN_URL = "***REMOVED***";
     private static final String POSTS_URL = "***REMOVED***";
     private static final String PROFS_URL = "***REMOVED***";
-    private static final String MAPS_URL = "***REMOVED***";
+    private static final String MAPS_URL = "***REMOVED****";
     private static final String EVENTS_URL = "***REMOVED***";
     private static final String KEY = "?q=***REMOVED***";
 

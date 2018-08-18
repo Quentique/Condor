@@ -136,7 +136,7 @@
     <string name="cvl_share">Entdeck\' mehr über unser CVL auf Condor! https://app.cvlcondorcet.fr/cvl/</string>
     <string name="meet_up_here">Treffen wir uns hier! https://app.cvlcondorcet.fr/maps/</string>
     <string name="maps_share">Entdeck\' Condors Karte! https://app.cvlcondorcet.fr/maps/</string>
-    <string name="look_post_out">Guck mal diese Post!</string>
+    <string name="look_post_out">Guck mal diese Post!\n</string>
     <string name="look_posts_condor">Guck mal diese Post in Condor! https://app.cvlcondorcet.fr/posts/</string>
     <string name="look_event_share">Guck mal diese Event in Condor! https://app.cvlcondorcet.fr/events/</string>
 </resources>
