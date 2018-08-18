@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static SharedPreferences preferences, default_preferences;
     public static String locale;
-    public static String TOPIC_ID = "***REMOVED***";
+    public static String TOPIC_ID = "0000";
 
     /**
      * Sets up activity, loading language and locale.

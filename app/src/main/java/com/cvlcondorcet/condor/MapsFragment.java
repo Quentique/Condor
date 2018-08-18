@@ -281,7 +281,7 @@ public class MapsFragment extends Fragment implements SearchView.OnQueryTextList
                 .enableAnnotationRendering(true)
                 .load();
         if (!name.equals("GEN.pdf"))
-            currentId = name;
+            currentId = "location/"+name.substring(0, name.length()-4);
     }
 
     private void loadPdf(long id) {
