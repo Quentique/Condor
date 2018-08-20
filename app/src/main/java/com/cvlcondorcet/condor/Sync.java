@@ -42,15 +42,15 @@ public class Sync extends IntentService {
 
     public final static String broadcast_URI = "com.cvlcondorcet.condor.broadcast.progress";
 
-    private static final String base_URL = "***REMOVED***";
-    private static final String uploads = "***REMOVED***";
-    private static final String check_URL = "***REMOVED***";
-    private static final String GEN_URL = "***REMOVED***";
-    private static final String POSTS_URL = "***REMOVED***";
-    private static final String PROFS_URL = "***REMOVED***";
-    private static final String MAPS_URL = "***REMOVED*****";
-    private static final String EVENTS_URL = "***REMOVED***";
-    private static final String KEY = "?q=***REMOVED***";
+    private static final String base_URL = "https://cvlcondorcet.fr/";
+    private static final String uploads = "uploads/";
+    private static final String check_URL = "check.php";
+    private static final String GEN_URL = "gen_deliver.php";
+    private static final String POSTS_URL = "pos_deliver.php";
+    private static final String PROFS_URL = "tea_deliver.php";
+    private static final String MAPS_URL = "map_deliver.php";
+    private static final String EVENTS_URL = "eve_deliver.php";
+    private static final String KEY = "?q=196eede6266723aee37f390e79de9e0e";
 
     public static String rssURL;
 

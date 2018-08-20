@@ -18,6 +18,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -394,12 +396,11 @@ class Database {
             cursor.moveToFirst();
             try {
                 JSONObject jObject = new JSONObject(cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
+               // JSONArray jArray = new JSONArray(cursor.getString(cursor.getColumnIndex(DBOpenHelper.General.COLUMN_VALUE)));
                 Iterator<?> keys = jObject.keys();
                 while (keys.hasNext()) {
-                    String key = (String) keys.next();
-                    if (jObject.get(key) instanceof String) {
-                        results.add(jObject.getString(key));
-                    }
+                  //  String key = (String) keys.next();
+                        results.add(jObject.getString((String) keys.next()));
                 }
             } catch (JSONException ignored) {
                 Crashlytics.logException(ignored);

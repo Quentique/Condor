@@ -110,7 +110,9 @@ public class MultiSelectionSpinner extends AppCompatSpinner implements
             }
         });
         dialog = builder.create();
-        dialog.show();
+        if (_items != null) {
+            dialog.show();
+        }
         return true;
     }
 
@@ -243,14 +245,15 @@ public class MultiSelectionSpinner extends AppCompatSpinner implements
     private String getSelectedItemsAsString() {
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
-
-        for (int i = 0; i < _items.length; ++i) {
-            if (mSelection[i]) {
-                if (foundOne) {
-                    sb.append(", ");
+        if (_items != null) {
+            for (int i = 0; i < _items.length; ++i) {
+                if (mSelection[i]) {
+                    if (foundOne) {
+                        sb.append(", ");
+                    }
+                    foundOne = true;
+                    sb.append(_items[i]);
                 }
-                foundOne = true;
-                sb.append(_items[i]);
             }
         }
         return sb.toString();

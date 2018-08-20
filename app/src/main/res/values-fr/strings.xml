@@ -5,7 +5,7 @@
     <string name="cancel">Annuler</string>
     <string name="canteen">Cantine</string>
     <string name="canteen_menu">Menu de la cantine</string>
-    <string name="cat_select">Sélectionnez des catégorie(s)</string>
+    <string name="cat_select">Sélectionnez des catégorie·s</string>
     <string name="date">Date</string>
     <string name="high_school">Lycée</string>
     <string name="morning">Matin</string>
@@ -126,7 +126,7 @@
     <string name="mark_as_seen">Marqué comme vu</string>
     <string name="don_t_show_this_message_again">Ne plus montrer ce message</string>
     <string name="share_condor">Partager Condor</string>
-    <string name="enjoyr_condor">Vous aimez Condor ? Partagez le avec vos ami·e·s !</string>
+    <string name="enjoyr_condor">Vous aimez Condor ? Partagez-le avec vos ami·e·s !</string>
     <string name="recommendation">Laisse moi te recommander Condor !</string>
     <string name="discover_condor">Découvre Condor ! https://app.cvlcondorcet.fr</string>
     <string name="gtu_share">Voir nos CGU sur Condor ! https://app.cvlcondorcet.fr/mentions/</string>
