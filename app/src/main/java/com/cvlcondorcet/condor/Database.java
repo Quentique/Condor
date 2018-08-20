@@ -462,7 +462,7 @@ class Database {
     Post getPost(String id) {
         Cursor cursor = database.query(DBOpenHelper.Posts.TABLE_NAME,
                 new String[] {DBOpenHelper.Posts.COLUMN_NAME, DBOpenHelper.Posts.COLUMN_CONTENT, DBOpenHelper.Posts.COLUMN_DATE, DBOpenHelper.Posts.COLUMN_PIC, DBOpenHelper.Posts.COLUMN_CAT},
-                DBOpenHelper.Posts.COLUMN_ID + " = " + id,
+                DBOpenHelper.Posts.COLUMN_ID + " = " + id + " AND " + DBOpenHelper.Posts.COLUMN_STATE + " != 1",
                 null, null, null, null);
         try {
             if (cursor != null && cursor.getCount() > 0) {
