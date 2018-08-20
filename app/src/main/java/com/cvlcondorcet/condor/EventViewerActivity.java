@@ -56,22 +56,30 @@ public class EventViewerActivity extends AppCompatActivity {
         String id = getIntent().getStringExtra("id");
         event = db.getEvent(id);
         db.close();
-        name.setText(Html.fromHtml(event.getName()));
-        desc.loadData(event.getDesc(), null, "utf-8");
-        where.setText(Html.fromHtml(event.getPlace()));
-        String date;
-        if (event.getDateBegin().equals(event.getDateEnd())) {
-            date = getResources().getString(R.string.from_the) + event.getDateBegin() + " " + getResources().getString(R.string.from_single_day).toLowerCase() + event.getHourBegin() + getResources().getString(R.string.to_single_day) + event.getHourEnd();
+        if (event != null) {
+            name.setText(Html.fromHtml(event.getName()));
+            desc.loadData(event.getDesc(), null, "utf-8");
+            where.setText(Html.fromHtml(event.getPlace()));
+            String date;
+            if (event.getDateBegin().equals(event.getDateEnd())) {
+                date = getResources().getString(R.string.from_the) + event.getDateBegin() + " " + getResources().getString(R.string.from_single_day).toLowerCase() + event.getHourBegin() + getResources().getString(R.string.to_single_day) + event.getHourEnd();
+            } else {
+                date = getResources().getString(R.string.from) + event.getDateBegin() + getResources().getString(R.string.to) + event.getDateEnd();
+            }
+            when.setText(date);
+            try {
+                Picasso.with(this).load(event.getPicture()).into(image);
+            } catch (IllegalArgumentException ignored) {
+            }
+            ArrayList<Integer> newEvents = Database.parsePrefNot("events", this);
+            newEvents.remove(Integer.valueOf(id));
+            Database.updatePrefValue("events", newEvents, this);
         } else {
-            date = getResources().getString(R.string.from) + event.getDateBegin() + getResources().getString(R.string.to) + event.getDateEnd();
+            Intent relaunch = new Intent(this, SplashActivity.class);
+            relaunch.putExtra("fragment","events");
+            startActivity(relaunch);
+            finish();
         }
-        when.setText(date);
-        try {
-            Picasso.with(this).load(event.getPicture()).into(image);
-        } catch(IllegalArgumentException ignored) {}
-        ArrayList<Integer> newEvents = Database.parsePrefNot("events", this);
-        newEvents.remove(Integer.valueOf(id));
-        Database.updatePrefValue("events", newEvents, this);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

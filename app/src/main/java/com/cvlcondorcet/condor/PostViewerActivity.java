@@ -198,13 +198,20 @@ public class PostViewerActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(Void nothing) {
-            view.loadDataWithBaseURL("file:///android_asset/", "<link rel=\"stylesheet\" href=\"style2.css\"/>"+post.getContent(),"text/html", "utf-8", "");
-            setTitle(post.getName());
-            title.setText(post.getName());
-            date.setText(post.getFormatedDate());
-            cat.setText(post.getFormatedCategories());
-            db.close();
-
+            if (post != null) {
+                view.loadDataWithBaseURL("file:///android_asset/", "<link rel=\"stylesheet\" href=\"style2.css\"/>" + post.getContent(), "text/html", "utf-8", "");
+                setTitle(post.getName());
+                title.setText(post.getName());
+                date.setText(post.getFormatedDate());
+                cat.setText(post.getFormatedCategories());
+                db.close();
+            } else {
+                db.close();
+                Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+                intent.putExtra("fragment", "posts");
+                startActivity(intent);
+                finish();
+            }
         }
     }
 }
