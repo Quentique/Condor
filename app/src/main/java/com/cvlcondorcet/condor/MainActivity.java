@@ -30,7 +30,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static SharedPreferences preferences, default_preferences;
     public static String locale;
-    public static String TOPIC_ID = "0000";
+    public static String TOPIC_ID = "***REMOVED***";
 
     /**
      * Sets up activity, loading language and locale.
@@ -76,19 +75,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i("CONDOR", "hello");
-
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         mFirebaseRemoteConfig.setDefaults(R.xml.defaults_remote_param);
 
         preferences = getSharedPreferences("notifications",0);
         default_preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-      /*  if(default_preferences.getBoolean("firebase", false)) {
-            Log.i("STARTUP", "DONE");
-        } else {
-            Log.i("STARTUP", "SOMETHING WENT WRONG");
-        }
 
       /*  if (default_preferences.getBoolean("crashlytics", false)) {
             Log.i("TEST", "AUTOINITIALIZATION CRASHLYTICS");
@@ -96,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         mFirebaseRemoteConfig.fetch(0)
-
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -312,8 +302,6 @@ public class MainActivity extends AppCompatActivity {
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.share_button:
-                Log.i("TEST", String.valueOf(getSupportFragmentManager().findFragmentById(R.id.your_placeholder).getView().getId()));
-                Log.i("TEST2222", String.valueOf(R.layout.fragment_main));
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_SUBJECT, "Condor");
